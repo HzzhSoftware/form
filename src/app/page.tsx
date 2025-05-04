@@ -5,9 +5,9 @@ export default function Home() {
     <div className="min-h-screen p-8 bg-gray-50">
       <main className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Welcome to Calendar</h1>
+          <h1 className="text-4xl font-bold mb-4">Welcome to Forms</h1>
           <p className="text-xl text-gray-600 mb-8">
-            The simple way to schedule meetings with your clients
+            The simple way to collect information from your users
             <br />
             {process.env.NEXT_PUBLIC_CDN_URL}
           </p>
@@ -24,16 +24,16 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {[
             {
-              title: 'Easy Scheduling',
-              description: 'Share your link and let clients book their preferred time'
+              title: 'Easy Form Building',
+              description: 'Create and customize forms in minutes with our intuitive builder'
             },
             {
-              title: 'Custom Meeting Types',
-              description: 'Create different meeting durations and prices'
+              title: 'Custom Fields',
+              description: 'Add different field types to collect exactly what you need'
             },
             {
-              title: 'Calendar Integration',
-              description: 'Sync with your favorite calendar app'
+              title: 'Data Management',
+              description: 'Organize and export your form submissions easily'
             }
           ].map((feature, index) => (
             <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
