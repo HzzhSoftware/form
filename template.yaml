@@ -12,6 +12,9 @@ Parameters:
   CertificateArn:
     Type: String
     Description: The ARN of the ACM certificate
+  HostedZoneId:
+    Type: String
+    Description: The hosted zone id
 
 Resources:
   formFunction:
@@ -86,6 +89,17 @@ Resources:
           AcmCertificateArn: !Ref CertificateArn
           SslSupportMethod: sni-only
           MinimumProtocolVersion: TLSv1.2_2021
+
+  DNSRecord:
+    Type: AWS::Route53::RecordSet
+    Properties:
+      HostedZoneName: kycombinator.com.
+      Name: !Ref DomainName
+      Type: A                                # This is correct
+      AliasTarget:
+        DNSName: !GetAtt CloudFrontDistribution.DomainName
+        HostedZoneId: !Ref HostedZoneId
+        EvaluateTargetHealth: false
 
 Outputs:
   ApiEndpoint:
