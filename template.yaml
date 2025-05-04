@@ -7,14 +7,14 @@ Parameters:
     Description: The URI of the container image
   DomainName:
     Type: String
-    Default: calendar.kycombinator.com
+    Default: form.kycombinator.com
     Description: Custom domain name for CloudFront
   CertificateArn:
     Type: String
     Description: The ARN of the ACM certificate
 
 Resources:
-  CalendarFunction:
+  formFunction:
     Type: AWS::Serverless::Function
     Properties:
       PackageType: Image
@@ -48,7 +48,7 @@ Resources:
           - !Ref DomainName
         Enabled: true
         DefaultCacheBehavior:
-          TargetOriginId: CalendarAPI
+          TargetOriginId: FrontEndServerlessAPI
           CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad  # CachingDisabled policy
           OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac  # AllViewerExceptHostHeader policy
           ForwardedValues:
@@ -74,7 +74,7 @@ Resources:
             Cookies:
               Forward: all
         Origins:
-          - Id: CalendarAPI
+          - Id: FrontEndServerlessAPI
             DomainName: !Sub "${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com"
             OriginPath: '/Prod'
             CustomOriginConfig:
