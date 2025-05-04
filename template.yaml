@@ -98,7 +98,7 @@ Resources:
       Type: A
       AliasTarget:
         DNSName: !GetAtt CloudFrontDistribution.DomainName
-        HostedZoneId: Z2FDTNDATAQYW2
+        HostedZoneId: !Ref HostedZoneId
         EvaluateTargetHealth: false
 
 Outputs:
