@@ -16,7 +16,7 @@ export default $config({
 
     new sst.aws.Nextjs("Form", {
       domain: {
-        name: "form.kycombinator.com",
+        name: "submit.kycombinator.com",
         dns: sst.aws.dns({
           zone: hostedZoneId
         }), // Add a DNS record to the domain
