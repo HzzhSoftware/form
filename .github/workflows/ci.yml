@@ -34,4 +34,6 @@ jobs:
         aws-region: us-east-1
 
     - name: Deploy with SST
-      run: npx sst deploy --stage prod 
+      run: |
+        npx sst remove --stage prod 
+        npx sst deploy --stage prod 
