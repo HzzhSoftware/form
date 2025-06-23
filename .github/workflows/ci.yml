@@ -35,5 +35,4 @@ jobs:
 
     - name: Deploy with SST
       run: |
-        npx sst remove --stage prod 
         npx sst deploy --stage prod 
