@@ -11,6 +11,9 @@ importers:
       '@aws-sdk/client-lambda':
         specifier: ^3.0.0
         version: 3.835.0
+      '@hzzhsoftware/types-form':
+        specifier: ^0.0.4
+        version: 0.0.4(zod@3.25.67)
       '@radix-ui/react-select':
         specifier: ^2.2.2
         version: 2.2.5(@types/react-dom@18.3.7(@types/react@18.3.23))(@types/react@18.3.23)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -410,6 +413,11 @@ packages:
   '@humanwhocodes/retry@0.4.3':
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
+
+  '@hzzhsoftware/types-form@0.0.4':
+    resolution: {integrity: sha512-P6C8PP/K2O9g5RYpuoitQzPRwm4QD9Zp/MT5hTfMC7gslNHpAxSxDFMTy0nlyKu0UaiYxMWTEI5GERIr+z0K0g==}
+    peerDependencies:
+      zod: ^3.25.67
 
   '@inquirer/confirm@5.1.12':
     resolution: {integrity: sha512-dpq+ielV9/bqgXRUbNH//KsY6WEw9DrGPmipkpmgC1Y46cwuBTNx7PXFWTjc3MQ+urcc0QxoVHcMI0FW4Ok0hg==}
@@ -4055,6 +4063,10 @@ snapshots:
   '@humanwhocodes/retry@0.3.1': {}
 
   '@humanwhocodes/retry@0.4.3': {}
+
+  '@hzzhsoftware/types-form@0.0.4(zod@3.25.67)':
+    dependencies:
+      zod: 3.25.67
 
   '@inquirer/confirm@5.1.12(@types/node@20.19.1)':
     dependencies:
