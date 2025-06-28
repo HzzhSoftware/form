@@ -9,6 +9,7 @@ async function fetchFormAPI<T>(endpoint: string, options: FetchOptions = {}): Pr
   const res = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers,
+    cache: 'no-store', // key change
   });
 
   if (!res.ok) {
