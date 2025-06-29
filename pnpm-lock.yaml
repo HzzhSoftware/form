@@ -13,7 +13,7 @@ importers:
         version: 3.835.0
       '@hzzhsoftware/types-form':
         specifier: ^0.0.4
-        version: 0.0.4(zod@3.25.67)
+        version: 0.0.4(zod@3.24.2)
       '@radix-ui/react-select':
         specifier: ^2.2.2
         version: 2.2.5(@types/react-dom@18.3.7(@types/react@18.3.23))(@types/react@18.3.23)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -4064,9 +4064,9 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@hzzhsoftware/types-form@0.0.4(zod@3.25.67)':
+  '@hzzhsoftware/types-form@0.0.4(zod@3.24.2)':
     dependencies:
-      zod: 3.25.67
+      zod: 3.24.2
 
   '@inquirer/confirm@5.1.12(@types/node@20.19.1)':
     dependencies:

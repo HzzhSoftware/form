@@ -2,26 +2,16 @@
 
 import React, { useState } from "react";
 
+import { Card, Form, FormField } from "@hzzhsoftware/types-form";
+
 interface FormProps {
-  form: {
-    id: string;
-    cards: {
-      id: string;
-      title: string;
-      fields: {
-        id: string;
-        label: string;
-        type: string;
-        options?: string[];
-      }[];
-    }[];
-  };
+  form: Form;
 }
 
 export default function FormClient({ form }: FormProps) {
   const initialValues = form.cards
-    .flatMap((card) => card.fields || [])
-    .reduce((acc, field) => ({ ...acc, [field.id]: "" }), {});
+    .flatMap((card: Card) => card.fields || [])
+    .reduce((acc: { [key: string]: string }, field: FormField) => ({ ...acc, [field.id]: "" }), {});
 
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
