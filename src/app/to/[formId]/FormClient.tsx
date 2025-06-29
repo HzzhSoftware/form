@@ -4,6 +4,8 @@ import React, { useState } from "react";
 
 import { Card, Form, FormField } from "@hzzhsoftware/types-form";
 
+import { submitForm } from "@/services/form";
+
 interface FormProps {
   form: Form;
 }
@@ -33,12 +35,8 @@ export default function FormClient({ form }: FormProps) {
     if (Object.keys(newErrors).length === 0) {
       console.log("Submitting:", values);
       try {
-        const res = await fetch("/api/submit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ formId: form.id, values })
-        });
-        if (!res.ok) {
+        const res = await submitForm(form.id, values);
+        if (!res) {
           throw new Error("Failed to submit form");
         }
         alert("Form submitted successfully!");
