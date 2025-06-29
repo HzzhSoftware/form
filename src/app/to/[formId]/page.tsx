@@ -1,6 +1,6 @@
-// app/(form)/[formId]/page.tsx
 import React from "react";
 import { getForm } from "@/services/form";
+import FormClient from "./FormClient";
 
 interface PageProps {
   params: { formId: string };
@@ -21,20 +21,11 @@ export default async function FormPage({ params }: PageProps) {
   }
 
   return (
-    <>
+    <div className="max-w-2xl mx-auto py-8">
       <h1 className="text-3xl font-bold mb-2">{form.name}</h1>
       <p className="text-gray-600 mb-6">{form.description}</p>
 
-      <div className="space-y-4">
-        {form.cards.map((card) => (
-          <div
-            key={card.id}
-            className="p-6 border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition"
-          >
-            <h2 className="text-xl font-semibold">{card.title}</h2>
-          </div>
-        ))}
-      </div>
-    </>
+      <FormClient form={form} />
+    </div>
   );
 }
