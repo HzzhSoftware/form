@@ -1,11 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 
-interface PageProps {
-  params: { customFormId: string };
-}
-
-export default async function CustomFormPage({ params }: PageProps) {
+export default async function CustomFormPage({ params }) {
   const { customFormId } = params;
 
   if (!customFormId) return notFound();

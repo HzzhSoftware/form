@@ -2,11 +2,7 @@ import React from "react";
 import { getForm } from "@/services/form";
 import FormClient from "./FormClient";
 
-interface PageProps {
-  params: { formId: string };
-}
-
-export default async function FormPage({ params }: PageProps) {
+export default async function FormPage({ params }) {
   const { formId } = params;
 
   let form = null;
