@@ -61,7 +61,7 @@ export function FormProvider({
     setErrors((prev) => ({ ...prev, [id]: "" }));
   };
 
-  const next = () => {
+  const next = async () => {
     const card = initialForm.cards[currentCardIdx];
     const newErrors: Record<string, string> = {};
 
@@ -76,6 +76,7 @@ export function FormProvider({
     if (Object.keys(newErrors).length === 0) {
       setDirection(1);
       setCurrentCardIdx((idx) => Math.min(idx + 1, initialForm.cards.length - 1));
+      await submitForm(formId, values, submissionId);
     }
   };
 
