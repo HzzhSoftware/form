@@ -11,22 +11,26 @@ interface FormProps {
   form: Form;
 }
 
+// quick UUID
+const generateId = () => crypto.randomUUID?.() || Math.random().toString(36).substring(2, 10);
+
 export default function FormClient({ form }: FormProps) {
+  const key = `submission_${form.id}`;
   const [submissionId, setSubmissionId] = useState<string | null>(null);
 
   useEffect(() => {
-    const key = `submission_${form.id}`;
-    const savedSubmissionId = localStorage.getItem(key);
-    if (savedSubmissionId) {
-      setSubmissionId(savedSubmissionId);
-      console.log(`Loaded submissionId: ${savedSubmissionId} for form ${form.id}`);
+    let saved = localStorage.getItem(key);
+    if (!saved) {
+      saved = generateId();
+      localStorage.setItem(key, saved);
+      console.log(`Created new submissionId: ${saved}`);
     } else {
-      const newSubmissionId = crypto.randomUUID();
-      setSubmissionId(newSubmissionId);
-      localStorage.setItem(key, newSubmissionId);
-      console.log(`No submissionId found for form ${form.id}, generated new one: ${newSubmissionId}`);
+      console.log(`Loaded existing submissionId: ${saved}`);
     }
-  }, [form.id]);
+    setSubmissionId(saved);
+  }, [key]);
+
+  if (!submissionId) return null; // or a loading spinner
 
   return (
     <FormProvider initialForm={form} submissionId={submissionId}>
