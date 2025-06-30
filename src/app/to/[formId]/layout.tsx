@@ -6,8 +6,8 @@ export default function FormLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-5xl mx-auto p-8">
+    <div className="min-h-screen">
+      <div className="max-w-5xl mx-auto">
         {children}
       </div>
     </div>

@@ -4,6 +4,8 @@
 /node_modules
 /mockapi/node_modules
 /.pnp
+/.sst
+/.open-next
 .pnp.*
 .yarn/*
 !.yarn/patches

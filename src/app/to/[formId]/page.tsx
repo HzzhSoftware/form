@@ -21,10 +21,7 @@ export default async function FormPage({ params }: PageProps) {
   }
 
   return (
-    <div className="max-w-2xl mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-2">{form.name}</h1>
-      <p className="text-gray-600 mb-6">{form.description}</p>
-
+    <div className="max-w-2xl mx-auto">
       <FormClient form={form} />
     </div>
   );
