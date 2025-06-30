@@ -7,7 +7,7 @@ export async function getForm(formId: string) {
 }
 
 /** Submit a form response */
-export async function submitForm(formId: string, values: Record<string, any>) {
+export async function submitForm(formId: string, values: Record<string, any>, submissionId: string) {
   return fetchFormAPI(`/${formId}/submit`, {
     method: "POST",
     body: JSON.stringify(values),

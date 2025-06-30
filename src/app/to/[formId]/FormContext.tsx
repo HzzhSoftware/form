@@ -5,6 +5,7 @@ import { Form, Card, FormField } from "@hzzhsoftware/types-form";
 import { submitForm } from "@/services/form";
 
 type FormContextType = {
+  submissionId: string;
   values: Record<string, string>;
   errors: Record<string, string>;
   currentCardIdx: number;
@@ -21,9 +22,11 @@ const FormContext = createContext<FormContextType | undefined>(undefined);
 
 export function FormProvider({
   initialForm,
+  submissionId,
   children
 }: {
   initialForm: Form;
+  submissionId: string;
   children: React.ReactNode;
 }) {
   const [currentCardIdx, setCurrentCardIdx] = useState(0);
@@ -95,18 +98,19 @@ export function FormProvider({
 
     if (Object.keys(allErrors).length === 0) {
       try {
-        await submitForm(formId, values);
+        await submitForm(formId, values, submissionId);
         alert("Form submitted successfully!");
-        localStorage.removeItem(`form_${formId}`);
       } catch (err) {
         console.error(err);
         alert("Submission failed.");
       }
     }
   };
+  
 
   return (
     <FormContext.Provider value={{
+      submissionId,
       values,
       errors,
       currentCardIdx,
