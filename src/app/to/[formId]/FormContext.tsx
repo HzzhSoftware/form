@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Form, Card, FormField } from "@hzzhsoftware/types-form";
 import { submitForm } from "@/services/form";
+import { useRouter } from "next/navigation";
 
 type FormContextType = {
   submissionId: string;
@@ -33,7 +34,7 @@ export function FormProvider({
   const [direction, setDirection] = useState(1);
   const [values, setValues] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
-
+  const router = useRouter();
   const formId = initialForm.id;
 
   useEffect(() => {
@@ -99,12 +100,13 @@ export function FormProvider({
     if (Object.keys(allErrors).length === 0) {
       try {
         await submitForm(formId, values, submissionId);
-        alert("Form submitted successfully!");
+        router.push(`/to/${formId}/thankyou`);
       } catch (err) {
         console.error(err);
         alert("Submission failed.");
       }
     }
+    
   };
   
 
