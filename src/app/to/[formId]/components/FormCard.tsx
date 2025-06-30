@@ -36,7 +36,7 @@ export default function FormCard() {
                 type={field.type || "text"}
                 value={values[field.id] || ""}
                 onChange={(e) => handleChange(field.id, e.target.value)}
-                className="w-full border rounded p-3"
+                className="w-full border-b p-3"
               />
               {errors[field.id] && (
                 <p className="text-red-500 text-sm">{errors[field.id]}</p>
