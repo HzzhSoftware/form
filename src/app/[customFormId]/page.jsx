@@ -2,7 +2,7 @@ import React from 'react';
 import { notFound } from 'next/navigation';
 
 export default async function CustomFormPage({ params }) {
-  const { customFormId } = params;
+  const { customFormId } = await params;
 
   if (!customFormId) return notFound();
 

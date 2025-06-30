@@ -3,7 +3,7 @@ import { getForm } from "@/services/form";
 import FormClient from "./FormClient";
 
 export default async function FormPage({ params }) {
-  const { formId } = params;
+  const { formId } = await params;
 
   let form = null;
   try {
@@ -17,8 +17,6 @@ export default async function FormPage({ params }) {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <FormClient form={form} />
-    </div>
+    <FormClient form={form} />
   );
 }

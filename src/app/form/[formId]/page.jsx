@@ -1,8 +1,8 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 
-export default function FormPage({ params }) {
-  const { formId } = params;
+export default async function FormPage({ params }) {
+  const { formId } = await params;
 
   if (!formId) return notFound();
 

@@ -9,6 +9,7 @@ type FormContextType = {
   errors: Record<string, string>;
   currentCardIdx: number;
   totalCards: number;
+  direction: number; // +1 next, -1 back
   handleChange: (id: string, value: string) => void;
   next: () => void;
   back: () => void;
@@ -26,12 +27,12 @@ export function FormProvider({
   children: React.ReactNode;
 }) {
   const [currentCardIdx, setCurrentCardIdx] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [values, setValues] = useState<Record<string, string>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const formId = initialForm.id;
 
-  // initialize values from localStorage or blank
   useEffect(() => {
     const saved = localStorage.getItem(`form_${formId}`);
     if (saved) {
@@ -47,7 +48,6 @@ export function FormProvider({
     }
   }, [formId, initialForm.cards]);
 
-  // save to localStorage
   useEffect(() => {
     localStorage.setItem(`form_${formId}`, JSON.stringify(values));
   }, [values, formId]);
@@ -70,11 +70,13 @@ export function FormProvider({
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
+      setDirection(1);
       setCurrentCardIdx((idx) => Math.min(idx + 1, initialForm.cards.length - 1));
     }
   };
 
   const back = () => {
+    setDirection(-1);
     setCurrentCardIdx((idx) => Math.max(idx - 1, 0));
   };
 
@@ -105,23 +107,22 @@ export function FormProvider({
 
   return (
     <FormContext.Provider value={{
-        values,
-        errors,
-        currentCardIdx,
-        totalCards: initialForm.cards.length,
-        handleChange,
-        next,
-        back,
-        submit,
-        form: initialForm
+      values,
+      errors,
+      currentCardIdx,
+      totalCards: initialForm.cards.length,
+      direction, // provide direction to consumers
+      handleChange,
+      next,
+      back,
+      submit,
+      form: initialForm
     }}>
-
       {children}
     </FormContext.Provider>
   );
 }
 
-// Custom hook for cleaner usage
 export function useFormContext() {
   const ctx = useContext(FormContext);
   if (!ctx) {
