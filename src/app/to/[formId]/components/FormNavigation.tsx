@@ -22,9 +22,6 @@ export default function FormNavigation() {
       >
         Back
       </button>
-      <span className="text-sm text-gray-600">
-        Card {currentCardIdx + 1} of {totalCards}
-      </span>
       {isLast ? (
         <button
           onClick={submit}

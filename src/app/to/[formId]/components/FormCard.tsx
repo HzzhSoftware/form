@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useFormContext } from "./FormContext";
+import { useFormContext } from "../FormContext";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function FormCard() {
