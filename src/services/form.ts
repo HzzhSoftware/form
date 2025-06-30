@@ -10,6 +10,6 @@ export async function getForm(formId: string) {
 export async function submitForm(formId: string, values: Record<string, any>, submissionId: string) {
   return fetchFormAPI(`/${formId}/submit`, {
     method: "POST",
-    body: JSON.stringify(values),
+    body: JSON.stringify({ values, submissionId }),
   });
 }
