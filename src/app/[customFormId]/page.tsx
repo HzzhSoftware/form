@@ -1,11 +1,11 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 
-export default async function CustomFormPage({
-  params,
-}: {
-  params: { customFormId: string }
-}) {
+interface PageProps {
+  params: { customFormId: string };
+}
+
+export default async function CustomFormPage({ params }: PageProps) {
   const { customFormId } = params;
 
   if (!customFormId) return notFound();
@@ -16,10 +16,15 @@ export default async function CustomFormPage({
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-4">Form: {customFormId}</h1>
           <p className="text-lg text-gray-600 mb-6">
-            This is a generic form page for the form ID: <span className="font-mono bg-gray-100 px-2 py-1 rounded">{customFormId}</span>
+            This is a generic form page for the form ID:{' '}
+            <span className="font-mono bg-gray-100 px-2 py-1 rounded">
+              {customFormId}
+            </span>
           </p>
           <div className="bg-white p-6 rounded-lg shadow-sm">
-            <p className="text-gray-500">You can customize this page to fetch and display form details based on the ID in the URL.</p>
+            <p className="text-gray-500">
+              You can customize this page to fetch and display form details based on the ID in the URL.
+            </p>
           </div>
         </div>
       </main>
