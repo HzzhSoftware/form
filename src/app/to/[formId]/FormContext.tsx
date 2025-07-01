@@ -55,9 +55,9 @@ export function FormProvider({
 
     async function loadSavedState() {
       try {
-        const saved = await getSubmission(formId, submissionId);
+        const saved = await getSubmission(formId, submissionId!);
         if (saved && typeof saved === "object") {
-          setValues(saved);
+          setValues(saved as Record<string, string>);
         } else {
           // initialize fresh state
           const initialValues = initialForm.cards
