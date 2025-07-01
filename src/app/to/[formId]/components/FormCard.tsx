@@ -21,9 +21,9 @@ export default function FormCard() {
       <AnimatePresence mode="wait">
         <motion.div
           key={card.id}
-          initial={{ y: direction > 0 ? -100 : 100, opacity: 0 }}
+          initial={{ y: direction > 0 ? 100 : -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: direction > 0 ? -100 : 100, opacity: 0 }}
+          exit={{ y: direction > 0 ? 100 : -100, opacity: 0 }}
           transition={{ duration: 0.4 }}
           className="space-y-6"
         >
