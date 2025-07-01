@@ -16,11 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-            <head>
+      <head>
         <link
           rel="stylesheet"
           href={`${process.env.NEXT_PUBLIC_CDN_URL}/globals.css`}
         />
+
       </head>
       <body
         className={`antialiased`}

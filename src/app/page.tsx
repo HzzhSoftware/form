@@ -14,10 +14,13 @@ export default function Home() {
           <div className="flex justify-center gap-4">
             <Link
               href="/docs"
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
             >
               Read Documentation
             </Link>
+            <div className="bg-primary text-[var(--secondary)] p-4">
+              Hello bg-primary test
+            </div>
           </div>
         </div>
 
