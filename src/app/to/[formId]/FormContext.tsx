@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Form, Card, FormField } from "@hzzhsoftware/types-form";
-import { submitForm } from "@/services/form";
+import { submitForm, getSubmission } from "@/services/form";
 import { useRouter } from "next/navigation";
 
 type FormContextType = {
@@ -21,15 +21,17 @@ type FormContextType = {
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
 
+// UUID generator fallback
+const generateId = () => crypto.randomUUID?.() || Math.random().toString(36).substring(2, 10);
+
 export function FormProvider({
   initialForm,
-  submissionId,
   children
 }: {
   initialForm: Form;
-  submissionId: string;
   children: React.ReactNode;
 }) {
+  const [submissionId, setSubmissionId] = useState<string | null>(null);
   const [currentCardIdx, setCurrentCardIdx] = useState(0);
   const [direction, setDirection] = useState(1);
   const [values, setValues] = useState<Record<string, string>>({});
@@ -37,24 +39,49 @@ export function FormProvider({
   const router = useRouter();
   const formId = initialForm.id;
 
+  // 🔥 Handle submissionId generation
   useEffect(() => {
-    const saved = localStorage.getItem(`form_${formId}`);
-    if (saved) {
-      setValues(JSON.parse(saved));
-    } else {
-      const initialValues = initialForm.cards
-        .flatMap((card: Card) => card.fields || [])
-        .reduce((acc: Record<string, string>, field: FormField) => ({
-          ...acc,
-          [field.id]: ""
-        }), {});
-      setValues(initialValues);
+    let submissionId = localStorage.getItem(`form_${formId}`);
+    if (!submissionId) {
+      submissionId = generateId();
+      localStorage.setItem(`form_${formId}`, submissionId);
     }
-  }, [formId, initialForm.cards]);
+    setSubmissionId(submissionId);
+  }, [formId]);
 
+  // 🔥 Once we have submissionId, load any saved state from backend
   useEffect(() => {
-    localStorage.setItem(`form_${formId}`, JSON.stringify(values));
-  }, [values, formId]);
+    if (!submissionId) return;
+
+    async function loadSavedState() {
+      try {
+        const saved = await getSubmission(formId, submissionId);
+        if (saved && typeof saved === "object") {
+          setValues(saved);
+        } else {
+          // initialize fresh state
+          const initialValues = initialForm.cards
+            .flatMap((card: Card) => card.fields || [])
+            .reduce((acc: Record<string, string>, field: FormField) => ({
+              ...acc,
+              [field.id]: ""
+            }), {});
+          setValues(initialValues);
+        }
+      } catch (err) {
+        console.error("Failed to load saved submission:", err);
+      }
+    }
+
+    loadSavedState();
+  }, [submissionId, formId, initialForm.cards]);
+
+  // 🔥 Save to localStorage for quick resume
+  useEffect(() => {
+    if (submissionId) {
+      localStorage.setItem(`form_${formId}_${submissionId}`, JSON.stringify(values));
+    }
+  }, [values, formId, submissionId]);
 
   const handleChange = (id: string, value: string) => {
     setValues((prev) => ({ ...prev, [id]: value }));
@@ -76,7 +103,7 @@ export function FormProvider({
     if (Object.keys(newErrors).length === 0) {
       setDirection(1);
       setCurrentCardIdx((idx) => Math.min(idx + 1, initialForm.cards.length - 1));
-      await submitForm(formId, values, submissionId);
+      await submitForm(formId, values, submissionId!);
     }
   };
 
@@ -100,16 +127,16 @@ export function FormProvider({
 
     if (Object.keys(allErrors).length === 0) {
       try {
-        await submitForm(formId, values, submissionId);
+        await submitForm(formId, values, submissionId!);
         router.push(`/to/${formId}/thankyou`);
       } catch (err) {
         console.error(err);
         alert("Submission failed.");
       }
     }
-    
   };
-  
+
+  if (!submissionId) return <div>Preparing form...</div>;
 
   return (
     <FormContext.Provider value={{
@@ -118,7 +145,7 @@ export function FormProvider({
       errors,
       currentCardIdx,
       totalCards: initialForm.cards.length,
-      direction, // provide direction to consumers
+      direction,
       handleChange,
       next,
       back,
