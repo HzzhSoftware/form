@@ -18,21 +18,21 @@ export default function FormNavigation() {
       <button
         onClick={back}
         disabled={isFirst}
-        className="px-5 py-2 bg-gray-300 rounded disabled:opacity-50"
+        className="px-5 py-2 bg-background-200 rounded disabled:opacity-50"
       >
         Back
       </button>
       {isLast ? (
         <button
           onClick={submit}
-          className="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700"
+          className="btn btn-secondary"
         >
           Submit
         </button>
       ) : (
         <button
           onClick={next}
-          className="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="btn btn-primary"
         >
           Next
         </button>
