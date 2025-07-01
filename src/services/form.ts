@@ -13,3 +13,10 @@ export async function submitForm(formId: string, values: Record<string, any>, su
     body: JSON.stringify({ ...values, submissionId }),
   });
 }
+
+/** Submit a form response */
+export async function getSubmission(formId: string, submissionId: string) {
+  return fetchFormAPI(`/${formId}/submit/${submissionId}`, {
+    method: "GET",
+  });
+}
