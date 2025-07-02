@@ -35,7 +35,7 @@ export default function FormCard() {
               </label>
               <input
                 type={field.type || "text"}
-                value={values[field.id] || ""}
+                value={values[field.id] ?? ""}
                 onChange={(e) => handleChange(field.id, e.target.value)}
                 required={field.required}
                 className="w-full border-b p-3"
