@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
 import { Form, Card, FormField } from "@hzzhsoftware/types-form";
 import { submitForm, getSubmission } from "@/services/form";
 import { useRouter } from "next/navigation";
@@ -21,33 +21,25 @@ type FormContextType = {
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
 
-// UUID generator fallback
-const generateId = () => crypto.randomUUID?.() || Math.random().toString(36).substring(2, 10);
-
 export function FormProvider({
   initialForm,
+  submissionId,
+  initialValues,
   children
 }: {
   initialForm: Form;
+  submissionId: string;
+  initialValues: Record<string, string>;
   children: React.ReactNode;
 }) {
-  const [submissionId, setSubmissionId] = useState<string | null>(null);
   const [currentCardIdx, setCurrentCardIdx] = useState(0);
   const [direction, setDirection] = useState(1);
-  const [values, setValues] = useState<Record<string, string>>({});
+  const [values, setValues] = useState<Record<string, string>>(initialValues);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const router = useRouter();
   const formId = initialForm.id;
+  
 
-  // 🔥 Handle submissionId generation
-  useEffect(() => {
-    let submissionId = localStorage.getItem(`form_${formId}`);
-    if (!submissionId) {
-      submissionId = generateId();
-      localStorage.setItem(`form_${formId}`, submissionId);
-    }
-    setSubmissionId(submissionId);
-  }, [formId]);
 
   // 🔥 Once we have submissionId, load any saved state from backend
   useEffect(() => {
@@ -55,7 +47,7 @@ export function FormProvider({
 
     async function loadSavedState() {
       try {
-        const saved = await getSubmission(formId, submissionId!);
+        const saved = await getSubmission(formId, submissionId);
         if (saved && typeof saved === "object") {
           setValues(saved as Record<string, string>);
         } else {
@@ -134,9 +126,7 @@ export function FormProvider({
         alert("Submission failed.");
       }
     }
-  };
-
-  if (!submissionId) return <div>Preparing form...</div>;
+  };  
 
   return (
     <FormContext.Provider value={{
