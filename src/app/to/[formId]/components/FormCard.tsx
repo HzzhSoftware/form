@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useFormContext } from "../FormContext";
+import { useFormContext } from "./FormContext";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function FormCard() {
@@ -23,7 +23,7 @@ export default function FormCard() {
           key={card.id}
           initial={{ y: direction > 0 ? 100 : -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: direction > 0 ? 100 : -100, opacity: 0 }}
+          exit={{ y: direction > 0 ? -100 : 100, opacity: 0 }}
           transition={{ duration: 0.4 }}
           className="space-y-6"
         >
@@ -37,7 +37,6 @@ export default function FormCard() {
                 type={field.type || "text"}
                 value={values[field.id] ?? ""}
                 onChange={(e) => handleChange(field.id, e.target.value)}
-                required={field.required}
                 className="w-full border-b p-3"
               />
               {errors[field.id] && (

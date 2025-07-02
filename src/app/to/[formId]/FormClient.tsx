@@ -2,7 +2,7 @@
 
 import React, { Suspense, useEffect, useState } from "react";
 import { Form } from "@hzzhsoftware/types-form";
-import { FormProvider } from "./FormContext";
+import { FormProvider } from "./components/FormContext";
 import FormSubmissionWrapper from "./FormSubmissionWrapper";
 import FormCard from "./components/FormCard";
 import FormNavigation from "./components/FormNavigation";
