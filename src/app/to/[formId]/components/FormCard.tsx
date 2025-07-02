@@ -3,6 +3,7 @@
 import React from "react";
 import { useFormContext } from "./FormContext";
 import { AnimatePresence, motion } from "framer-motion";
+import Field from "./fields";
 
 export default function FormCard() {
   const {
@@ -15,6 +16,7 @@ export default function FormCard() {
   } = useFormContext();
 
   const card = form.cards[currentCardIdx];
+  console.log(card);
 
   return (
     <div className="relative w-full p-6 min-h-[400px] overflow-hidden">
@@ -33,11 +35,10 @@ export default function FormCard() {
                 {field.label}
                 {field.required && <span className="text-red-500 ml-1">*</span>}
               </label>
-              <input
-                type={field.type || "text"}
+              <Field
+                field={field}
                 value={values[field.id] ?? ""}
-                onChange={(e) => handleChange(field.id, e.target.value)}
-                className="w-full border-b p-3"
+                onChange={(val) => handleChange(field.id, val)}
               />
               {errors[field.id] && (
                 <p className="text-red-500 text-sm">{errors[field.id]}</p>
