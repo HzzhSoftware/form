@@ -29,8 +29,6 @@ export default function SubmissionWrapper({
       } finally {
         setLoading(false);
       }
-
-
     }
 
     let id = localStorage.getItem(`form_${formId}`);
@@ -40,7 +38,7 @@ export default function SubmissionWrapper({
     } else {
       load(id);
     }
-
+    setLoading(false);
     setSubmissionId(id);
   }, [formId]);
 
