@@ -31,11 +31,13 @@ export default function FormCard() {
             <div key={field.id}>
               <label className="block text-sm font-medium mb-1">
                 {field.label}
+                {field.required && <span className="text-red-500 ml-1">*</span>}
               </label>
               <input
                 type={field.type || "text"}
                 value={values[field.id] || ""}
                 onChange={(e) => handleChange(field.id, e.target.value)}
+                required={field.required}
                 className="w-full border-b p-3"
               />
               {errors[field.id] && (

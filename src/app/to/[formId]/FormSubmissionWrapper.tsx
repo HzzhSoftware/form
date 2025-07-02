@@ -18,19 +18,9 @@ export default function SubmissionWrapper({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let id = localStorage.getItem(`form_${formId}`);
-    if (!id) {
-      id = generateId();
-      localStorage.setItem(`form_${formId}`, id);
-    }
-    setSubmissionId(id);
-  }, [formId]);
-
-  useEffect(() => {
-    if (!submissionId) return;
-    async function load() {
+    async function load(submissionId: string) {
       try {
-        const data = await getSubmission(formId, submissionId!);
+        const data = await getSubmission(formId, submissionId);
         setSavedValues(data as Record<string, string>);
       } catch (err) {
         console.error("Failed to load saved submission:", err);
@@ -39,8 +29,17 @@ export default function SubmissionWrapper({
         setLoading(false);
       }
     }
-    load();
-  }, [formId, submissionId]);
+
+    let id = localStorage.getItem(`form_${formId}`);
+    if (!id) {
+      id = generateId();
+      localStorage.setItem(`form_${formId}`, id);
+    } else {
+      load(id);
+    }
+
+    setSubmissionId(id);
+  }, [formId]);
 
   if (!submissionId || loading) {
     return <FormLoading message="Preparing form..." />;
