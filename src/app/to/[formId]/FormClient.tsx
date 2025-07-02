@@ -17,7 +17,7 @@ export default function FormClient({ form }: FormProps) {
 
   return (
     <Suspense fallback={<FormLoading message="Loading form..." />}>
-      <FormSubmissionWrapper formId={form.id}>
+      <FormSubmissionWrapper form={form}>
         {(submissionId, savedValues) => (
           <FormProvider 
             initialForm={form} 
