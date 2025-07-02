@@ -21,6 +21,7 @@ export default function SubmissionWrapper({
     async function load(submissionId: string) {
       try {
         const data = await getSubmission(formId, submissionId);
+        console.log(data);
         setSavedValues(data as Record<string, string>);
       } catch (err) {
         console.error("Failed to load saved submission:", err);
@@ -28,6 +29,8 @@ export default function SubmissionWrapper({
       } finally {
         setLoading(false);
       }
+
+
     }
 
     let id = localStorage.getItem(`form_${formId}`);
