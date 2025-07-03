@@ -20,3 +20,33 @@ export async function getSubmission(formId: string, submissionId: string) {
     method: "GET",
   });
 }
+
+export async function listForms(page: number = 1, limit: number = 50) {
+  return fetchFormAPI(`?page=${page}&limit=${limit}`, {
+    method: "GET",
+  });
+}
+
+export async function createForm(form: Form) {
+  return fetchFormAPI(`/`, {
+    method: "POST",
+    body: JSON.stringify(form),
+  });
+}
+
+export async function updateForm(formId: string, form: Form) {
+  return fetchFormAPI(`/${formId}`, {
+    method: "PUT",
+    body: JSON.stringify(form),
+  });
+}
+
+export async function deleteForm(formId: string) {
+  return fetchFormAPI(`/${formId}`, {
+    method: "DELETE",
+  });
+}
+
+export async function listSubmissions(formId: string, page: number, limit: number) {
+  return fetchFormAPI(`/${formId}/submit?page=${page}&limit=${limit}`);
+}

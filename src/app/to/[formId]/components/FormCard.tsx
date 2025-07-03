@@ -16,7 +16,6 @@ export default function FormCard() {
   } = useFormContext();
 
   const card = form.cards[currentCardIdx];
-  console.log(card);
 
   return (
     <div className="relative w-full p-6 min-h-[400px] overflow-hidden">
