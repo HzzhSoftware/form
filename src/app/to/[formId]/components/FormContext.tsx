@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useMemo } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { Form, Card, FormField } from "@hzzhsoftware/types-form";
 import { submitForm, getSubmission } from "@/services/form";
 import { useRouter } from "next/navigation";
@@ -17,6 +17,7 @@ type FormContextType = {
   back: () => void;
   submit: () => Promise<void>;
   form: Form;
+  isSubmitting: boolean;
 };
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
@@ -36,6 +37,7 @@ export function FormProvider({
   const [direction, setDirection] = useState(1);
   const [values, setValues] = useState<Record<string, string>>(initialValues);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const formId = initialForm.id;
   
@@ -119,11 +121,14 @@ export function FormProvider({
 
     if (Object.keys(allErrors).length === 0) {
       try {
+        setIsSubmitting(true);
         await submitForm(formId, values, submissionId!);
         router.push(`/to/${formId}/thankyou`);
       } catch (err) {
         console.error(err);
         alert("Submission failed.");
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };  
@@ -140,7 +145,8 @@ export function FormProvider({
       next,
       back,
       submit,
-      form: initialForm
+      form: initialForm,
+      isSubmitting
     }}>
       {children}
     </FormContext.Provider>

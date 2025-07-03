@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormContext } from "./FormContext";
 import { AnimatePresence, motion } from "framer-motion";
 import Field from "./fields";
+import FormLoading from "./FormLoading";
 
 export default function FormCard() {
   const {
@@ -12,13 +13,27 @@ export default function FormCard() {
     handleChange,
     currentCardIdx,
     direction,
-    form
+    form,
+    next,
+    submit,
+    isSubmitting,
   } = useFormContext();
 
   const card = form.cards[currentCardIdx];
 
+  const allRequiredFilled = card.fields
+    ?.filter((f) => f.required)
+    .every((f) => values[f.id]?.toString().trim() !== "" || values[f.id] === undefined);
+
+  const handleNext = () => {
+    if (allRequiredFilled) {
+      next();
+    }
+  };
+
   return (
     <div className="relative w-full p-6 min-h-[400px] overflow-hidden">
+      {isSubmitting && <FormLoading message="Submitting..." />}
       <AnimatePresence mode="wait">
         <motion.div
           key={card.id}
@@ -44,8 +59,52 @@ export default function FormCard() {
               )}
             </div>
           ))}
+          <FormNavigationButton
+            isLastCard={currentCardIdx === form.cards.length - 1}
+            allRequiredFilled={allRequiredFilled}
+            onNext={handleNext}
+            onSubmit={submit}
+          />
         </motion.div>
       </AnimatePresence>
     </div>
+  );
+}
+
+interface FormNavigationButtonProps {
+  isLastCard: boolean;
+  allRequiredFilled: boolean;
+  onNext: () => void;
+  onSubmit: () => void;
+}
+
+function FormNavigationButton({
+  isLastCard,
+  allRequiredFilled,
+  onNext,
+  onSubmit,
+}: FormNavigationButtonProps) {
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && allRequiredFilled) {
+        isLastCard ? onSubmit() : onNext();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [allRequiredFilled, isLastCard, onNext, onSubmit]);
+
+  return (
+    <button
+      onClick={isLastCard ? onSubmit : onNext}
+      disabled={!allRequiredFilled}
+      className={`btn ${
+        !allRequiredFilled
+          ? "opacity-50 bg-neutral-500 cursor-not-allowed"
+          : "btn-primary"
+      }`}
+    >
+      {isLastCard ? "Submit" : "Press Enter to Continue"}
+    </button>
   );
 }
