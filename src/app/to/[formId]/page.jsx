@@ -1,6 +1,6 @@
 import React from "react";
 import { getForm } from "@/services/form";
-import FormClient from "./components/FormClient";
+import FormClient from "@app/components/form/FormClient";
 
 export default async function FormPage({ params }) {
   const { formId } = await params;
