@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { getSubmission } from "@/services/form";
-import FormLoading from "./components/FormLoading";
+import FormLoading from "./FormLoading";
 import { Form } from "@hzzhsoftware/types-form";
 
 const generateId = () => crypto.randomUUID?.() || Math.random().toString(36).substring(2, 10);

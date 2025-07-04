@@ -2,12 +2,12 @@
 
 import React, { Suspense, useEffect, useState } from "react";
 import { Form } from "@hzzhsoftware/types-form";
-import { FormProvider } from "./components/FormContext";
+import { FormProvider } from "./FormContext";
 import FormSubmissionWrapper from "./FormSubmissionWrapper";
-import FormCard from "./components/FormCard";
-import FormNavigation from "./components/FormNavigation";
-import FormProgressBar from "./components/FormProgressBar";
-import FormLoading from "./components/FormLoading";
+import FormCard from "./FormCard";
+import FormNavigation from "./FormNavigation";
+import FormProgressBar from "./FormProgressBar";
+import FormLoading from "./FormLoading";
 
 interface FormProps {
   form: Form;
