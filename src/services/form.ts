@@ -2,6 +2,8 @@ import fetchFormAPI from "./api";
 import { Form } from "@hzzhsoftware/types-form";
 
 /** Get a form by ID */
+// if custom is true, this is specific URL for custom forms
+// otherwise, it is the URL for the form
 export async function getForm(formId: string, custom: boolean = false) {
   return fetchFormAPI<Form>(`/${formId}?custom=${custom}`);
 }
