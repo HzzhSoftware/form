@@ -1,6 +1,6 @@
 import React from "react";
 import { listForms } from "@/services/form";
-import FormRecord from "../form/[formId]/components/FormRecord";
+import FormRecord from "./[formId]/components/FormRecord";
 
 export default async function FormPage() {
   let forms = null;

@@ -27,9 +27,9 @@ const FormRecord = ({ form }: { form: Form }) => {
         <p className="text-gray-600">{form.submissions} submissions</p>
       </div>
       <div className="flex space-x-6 text-sm">
-        <button className="text-blue-600 hover:underline">Edit</button>
-        <button className="text-red-600 hover:underline">Delete</button>
-        <button className="text-green-600 hover:underline">View Responses</button>
+        <Link href={`/form/${form.id}/edit`} className="text-blue-600 hover:underline">Edit</Link>
+        <Link href={`/form/${form.id}/delete`} className="text-red-600 hover:underline">Delete</Link>
+        <Link href={`/form/${form.id}/responses`} className="text-green-600 hover:underline">View Responses</Link>
       </div>
     </div>
   )
