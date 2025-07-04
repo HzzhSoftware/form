@@ -6,7 +6,7 @@ import CardCenter from "./components/CardCenter";
 import { FormContextProvider } from "./components/FormContext";
 
 export default async function FormPage({ params }) {
-  const { formId } = params;
+  const { formId } = await params;
 
   let form = null;
   try {
