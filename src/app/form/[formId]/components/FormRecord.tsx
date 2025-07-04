@@ -24,6 +24,7 @@ const FormRecord = ({ form }: { form: Form }) => {
         </h2>
         <p className="text-gray-600">{form.description}</p>
         <p className="text-gray-600">{formatDate(form.createdAt)}</p>
+        <p className="text-gray-600">{form.submissions} submissions</p>
       </div>
       <div className="flex space-x-6 text-sm">
         <button className="text-blue-600 hover:underline">Edit</button>
