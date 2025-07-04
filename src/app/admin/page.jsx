@@ -1,6 +1,6 @@
 import React from "react";
 import { listForms } from "@/services/form";
-import Link from "next/link";
+import FormRecord from "../form/[formId]/components/FormRecord";
 
 export default async function FormPage() {
   let forms = null;
@@ -12,20 +12,16 @@ export default async function FormPage() {
   console.log(forms);
 
   return (
-    <div>
-      <h1>Forms</h1>
-      <div>
-        {forms.map((form) => (
-          <div key={form.id}>
-            <Link href={`/form/${form.id}`}>{form.name}</Link>
-            <div>{form.description}</div>
-            <div>Edit</div>
-            <div>Delete</div>
-            <div>View Responses</div>
-
-          </div>
-        ))}
+    <div className="min-h-screen flex h-full flex-col items-center">
+      <div className="max-w-6xl w-full p-6">
+        <h1 className="text-3xl font-bold mb-8">Forms</h1>
+        <div className="space-y-4">
+          {forms.map((form) => (
+            <FormRecord key={form.id} form={form} />
+          ))}
+        </div>
       </div>
     </div>
+
   );
 }

@@ -1,9 +1,12 @@
 import React from "react";
 import { getForm } from "@/services/form";
-import FormClient from "../../to/[formId]/FormClient";
+import LeftSidebar from "./components/LeftSideBar";
+import RightSidebar from "./components/RightSideBar";
+import CardCenter from "./components/CardCenter";
+import { FormContextProvider } from "./components/FormContext";
 
 export default async function FormPage({ params }) {
-  const { formId } = await params;
+  const { formId } = params;
 
   let form = null;
   try {
@@ -17,6 +20,12 @@ export default async function FormPage({ params }) {
   }
 
   return (
-    <FormClient form={form} />
+    <div className="flex min-h-screen">
+      <FormContextProvider form={form}>
+        <LeftSidebar />
+        <CardCenter />
+        <RightSidebar />
+      </FormContextProvider>
+    </div>
   );
 }

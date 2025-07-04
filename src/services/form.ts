@@ -28,7 +28,7 @@ export async function listForms(page: number = 1, limit: number = 50) {
 }
 
 export async function createForm(form: Form) {
-  return fetchFormAPI(`/`, {
+  return fetchFormAPI(``, {
     method: "POST",
     body: JSON.stringify(form),
   });
