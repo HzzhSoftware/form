@@ -7,7 +7,7 @@ export default async function FormPage({ params }) {
 
   let form = null;
   try {
-    form = await getForm(formId);
+    form = await getForm(formId, false);
   } catch (err) {
     console.error("Failed to load form:", err);
   }
