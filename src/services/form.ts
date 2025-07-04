@@ -2,12 +2,8 @@ import fetchFormAPI from "./api";
 import { Form } from "@hzzhsoftware/types-form";
 
 /** Get a form by ID */
-export async function getCustomForm(customFormId: string) {
-  return fetchFormAPI<Form>(`/${customFormId}?custom=true`);
-}
-
-export async function getForm(formId: string) {
-  return fetchFormAPI<Form>(`/${formId}`);
+export async function getForm(formId: string, custom: boolean = false) {
+  return fetchFormAPI<Form>(`/${formId}?custom=${custom}`);
 }
 
 /** Submit a form response */
