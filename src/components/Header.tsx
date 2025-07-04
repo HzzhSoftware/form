@@ -13,7 +13,7 @@ export default function Header() {
           KyCombinator
         </Link>
         <nav className="space-x-6 ml-6">
-          <Link href="/admin" className="hover:text-gray-900">Forms</Link>
+          <Link href="/form" className="hover:text-gray-900">Forms</Link>
         </nav>
         <button className="btn btn-secondary" onClick={createForm}>
           Create Form    
