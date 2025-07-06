@@ -14,13 +14,13 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title: form?.metaData?.title || "KYX",
-    description: form?.metaData?.description || "KYX",
+    title: form?.metadata?.title || "KYX",
+    description: form?.metadata?.description || "KYX",
     openGraph: {
-      title: form?.metaData?.title || "KYX",
-      description: form?.metaData?.description || "KYX",
+      title: form?.metadata?.title || "KYX",
+      description: form?.metadata?.description || "KYX",
     },
-    images: [form?.metaData?.image || "https://cdn.kycombinator.com/logo.png"],
+    images: [form?.metadata?.image || "https://cdn.kycombinator.com/logo.png"],
     // you can add more: openGraph, twitter, etc
   };
 }
