@@ -19,9 +19,8 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: form?.metadata?.title || "KYX",
       description: form?.metadata?.description || "KYX",
+      images: [form?.metadata?.image || "https://cdn.kycombinator.com/favicon.ico"],
     },
-    images: [form?.metadata?.image || "https://cdn.kycombinator.com/logo.png"],
-    // you can add more: openGraph, twitter, etc
   };
 }
 
