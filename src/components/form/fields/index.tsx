@@ -3,6 +3,7 @@ import { FormField } from "@hzzhsoftware/types-form";
 import ShortTextInput from "./ShortTextInput";
 import LongTextInput from "./LongTextInput";
 import MultipleChoiceInput from "./MultipleChoiceInput";
+import MultipleSelectInput from "./MultipleSelectInput";
 import YesNoInput from "./YesNoInput";
 import EmailInput from "./EmailInput";
 import PhoneInput from "./PhoneInput";
@@ -15,6 +16,7 @@ export {
   ShortTextInput,
   LongTextInput,
   MultipleChoiceInput,
+  MultipleSelectInput,
   YesNoInput,
   EmailInput,
   PhoneInput,
@@ -39,6 +41,8 @@ export default function Field({
       return <LongTextInput field={field} value={value} onChange={onChange} />;
     case "multiple_choice":
       return <MultipleChoiceInput field={field} value={value} onChange={onChange} />;
+    case "multiple_select":
+      return <MultipleSelectInput field={field} value={value} onChange={onChange} />;
     case "yes_no":
       return <YesNoInput field={field} value={value} onChange={onChange} />;
     case "email":
