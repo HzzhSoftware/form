@@ -21,7 +21,6 @@ export default function RootLayout({
           rel="stylesheet"
           href={`${process.env.NEXT_PUBLIC_CDN_URL}/globals.css`}
         />
-
       </head>
       <body
         className={`antialiased`}
