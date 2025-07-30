@@ -1,9 +1,7 @@
 import React from "react";
 import { getForm } from "@/services/form";
-import LeftSidebar from "./components/LeftSideBar";
-import RightSidebar from "./components/RightSideBar";
-import CardCenter from "./components/CardCenter";
-import { FormContextProvider } from "./components/FormContext";
+import { FormContextProvider } from "../components/FormContext";
+import Content from "./content";
 
 export default async function FormPage({ params }) {
   const { formId } = await params;
@@ -22,9 +20,7 @@ export default async function FormPage({ params }) {
   return (
     <div className="flex min-h-screen">
       <FormContextProvider form={form}>
-        <LeftSidebar />
-        <CardCenter />
-        <RightSidebar />
+        <Content/>
       </FormContextProvider>
     </div>
   );

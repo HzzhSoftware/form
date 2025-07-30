@@ -1,5 +1,7 @@
+// /form/layout.tsx this is a protected route
+// to access all forms, you need to be logged in
+
 import React from "react";
-import Header from "@/components/Header";
 
 export default function FormLayout({
   children,
@@ -8,7 +10,6 @@ export default function FormLayout({
 }) {
   return (
     <div className="min-h-screen flex h-full flex-col">
-      <Header />
       {children}
     </div>
   );
