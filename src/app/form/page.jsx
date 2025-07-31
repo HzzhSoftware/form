@@ -17,7 +17,7 @@ export default async function FormPage() {
     <div className="min-h-screen bg-gray-50">
       <DashboardHeader />
       <div className="flex h-screen">
-        <DashboardSidebar />
+        <DashboardSidebar forms={forms} />
         <main className="flex-1 overflow-auto">
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">

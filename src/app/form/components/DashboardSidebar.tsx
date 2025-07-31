@@ -1,10 +1,8 @@
 "use client";
-
-import Link from "next/link";
 import { createForm } from "@/services/form";
 import { Form } from "@hzzhsoftware/types-form";
 
-export default function DashboardSidebar() {
+export default function DashboardSidebar({ forms }: { forms: Form[] }) {
   const handleCreateForm = async () => {
     try {
       const newForm: Form = {
@@ -85,7 +83,7 @@ export default function DashboardSidebar() {
         </div>
 
         {/* Private Workspaces */}
-        {/* <div className="mb-6">
+        <div className="mb-6">
           <div className="flex items-center justify-between mb-2">
             <h4 className="text-xs font-medium text-gray-500 uppercase tracking-wider">Private</h4>
             <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -93,16 +91,14 @@ export default function DashboardSidebar() {
             </svg>
           </div>
           <div className="space-y-1">
-            <div className="flex items-center justify-between py-1 px-2 rounded hover:bg-gray-50">
-              <span className="text-sm text-gray-700">KYCombinator - Angels</span>
-              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">2</span>
-            </div>
-            <div className="flex items-center justify-between py-1 px-2 rounded hover:bg-gray-50">
-              <span className="text-sm text-gray-700">My Workspace</span>
-              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">0</span>
-            </div>
+            {forms.map((form) => (
+              <div key={form.id} className="flex items-center justify-between py-1 px-2 rounded hover:bg-gray-50">
+                <span className="text-sm text-gray-700">{form.name}</span>
+                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">{form.submissions}</span>
+              </div>
+            ))}
           </div>
-        </div> */}
+        </div>
 
         {/* Shared Workspaces */}
         {/* <div>
