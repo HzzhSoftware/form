@@ -18,7 +18,7 @@ export default async function FormPage({ params }) {
   }
 
   return (
-    <div className="flex min-h-screen">
+    <div className="w-full h-screen">
       <FormContextProvider form={form}>
         <Content/>
       </FormContextProvider>

@@ -9,7 +9,7 @@ export default function FormLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex h-full flex-col">
+    <div className="min-h-screen">
       {children}
     </div>
   );
