@@ -33,8 +33,7 @@ export default function DashboardSidebar({ forms }: { forms: Form[] }) {
       window.location.href = `/form/${newForm.id}`;
     } catch (error) {
       console.error("Failed to create form:", error);
-      // Fallback to random UUID if creation fails
-      window.location.href = `/form/${crypto.randomUUID()}`;
+      alert("Failed to create form. Please try again later.");
     }
   };
 
