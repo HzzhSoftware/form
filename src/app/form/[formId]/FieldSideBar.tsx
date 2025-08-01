@@ -150,12 +150,12 @@ const FieldSideBar: React.FC<FieldSideBarProps> = ({ field, onFieldUpdate }) => 
             <button
               onClick={handleRequiredToggle}
               className={`w-10 h-6 rounded-full relative transition-colors duration-200 ${
-                field.required ? 'bg-primary-600' : 'bg-neutral-200'
+                field?.required ? 'bg-primary-600' : 'bg-neutral-200'
               }`}
             >
               <div 
                 className={`w-4 h-4 bg-white rounded-full absolute top-1 transition-transform duration-200 ${
-                  field.required ? 'right-1' : 'left-1'
+                  field?.required ? 'right-1' : 'left-1'
                 }`}
               />
             </button>
