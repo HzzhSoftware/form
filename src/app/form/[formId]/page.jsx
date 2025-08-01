@@ -2,6 +2,7 @@ import React from "react";
 import { getForm } from "@/services/form";
 import { FormContextProvider } from "../components/FormContext";
 import Content from "./content";
+import Avatar from "@/components/auth/Avatar";
 
 export default async function FormPage({ params }) {
   const { formId } = await params;
@@ -20,7 +21,9 @@ export default async function FormPage({ params }) {
   return (
     <div className="w-full h-screen">
       <FormContextProvider form={form}>
-        <Content/>
+        <Content>
+          <Avatar />
+        </Content>
       </FormContextProvider>
     </div>
   );
