@@ -5,7 +5,7 @@ import { Card } from '@hzzhsoftware/types-form'
 
 interface CardConstructorProps {
   card: Card;
-  setCurrentFieldId?: (fieldId: string) => void;
+  setCurrentFieldId: (fieldId: string) => void;
 } 
 
 const CardConstructor: React.FC<CardConstructorProps> = ({ card, setCurrentFieldId }) => {
