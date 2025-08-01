@@ -81,7 +81,7 @@ const Content = ({ children }: { children: React.ReactNode }) => {
       {/* Header Bar */}
       <header className="flex items-center justify-between px-6 py-4 bg-white border-b border-neutral-200">
         <div className="flex items-center space-x-2 text-sm text-neutral-600">
-          <span>{form.workspace || "My Workspace"}</span>
+          <span>{form.name || "My Workspace"}</span>
           <span>&gt;</span>
           <span>{form.name}</span>
         </div>
