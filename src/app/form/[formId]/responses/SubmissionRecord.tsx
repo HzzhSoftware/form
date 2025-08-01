@@ -4,7 +4,7 @@ import React from 'react'
 
 const SubmissionRecord = ({ submission }: { submission: Submission }) => {
   return (
-    <div className="flex justify-between items-center p-5 bg-white shadow hover:shadow-lg rounded-lg transition w-full">
+    <div key={submission.id} className="flex justify-between items-center p-5 bg-white shadow hover:shadow-lg rounded-lg transition w-full">
         <div>
             <h2 className="text-xl font-semibold">
                 {submission.id}

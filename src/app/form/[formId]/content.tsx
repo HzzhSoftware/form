@@ -7,8 +7,10 @@ import FieldSideBar from './FieldSideBar'
 import { updateForm } from '@/services/form'
 import { v4 as uuidv4 } from 'uuid';
 import { Card } from '@hzzhsoftware/types-form';
+import { useRouter } from 'next/navigation';
 
 const Content = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
   const { form, currentCard, setCurrentCard } = useFormContext();
   const currentCardData = form.cards.find(card => card.id === currentCard);
   const [currentFieldId, setCurrentFieldId] = useState<string | null>(currentCardData?.fields[0].id || null);
@@ -80,11 +82,16 @@ const Content = ({ children }: { children: React.ReactNode }) => {
     <div className="flex flex-col w-full h-full">
       {/* Header Bar */}
       <header className="flex items-center justify-between px-6 py-4 bg-white border-b border-neutral-200">
-        <div className="flex items-center space-x-2 text-sm text-neutral-600">
-          <span>{form.name || "My Workspace"}</span>
-          <span>&gt;</span>
-          <span>{form.name}</span>
-        </div>
+                 <div className="flex items-center space-x-2 text-sm text-neutral-600">
+           <button
+             onClick={() => router.push('/form')}
+             className="hover:text-neutral-900 transition-all duration-300 hover:cursor-pointer hover:underline"
+           >
+             My Workspace
+           </button>
+           <span>&gt;</span>
+           <span>{form.name}</span>
+         </div>
         
         <div className="flex items-center space-x-6">
           <div className="flex space-x-1">

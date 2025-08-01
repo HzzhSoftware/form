@@ -1,6 +1,6 @@
 import React from "react";
 import { listSubmissions } from "@/services/form";
-import SubmissionRecord from "./components/SubmissionRecord";
+import SubmissionRecord from "./SubmissionRecord";
 
 export default async function FormPage({ params }) {
   const { formId } = await params;
