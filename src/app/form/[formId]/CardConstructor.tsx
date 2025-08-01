@@ -18,12 +18,6 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card, setCurrentField
 
   const handleTitleChange = (newTitle: string) => {
     setTitle(newTitle);
-    if (onCardUpdate) {
-      onCardUpdate({
-        ...card,
-        title: newTitle
-      });
-    }
   };
 
   const handleDescriptionChange = (newDescription: string) => {
