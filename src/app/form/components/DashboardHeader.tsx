@@ -1,18 +1,24 @@
-"use client";
 import Link from "next/link";
+import Image from "next/image";
+import Avatar from "@/components/auth/Avatar";
 
-export default function DashboardHeader() {
+export default function DashboardHeader({children}: {children: React.ReactNode}) {
   return (
     <header className="border-b border-neutral-300 px-6 py-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-8">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-red-500 rounded flex items-center justify-center">
-              <span className="text-white font-bold text-sm">K</span>
-            </div>
+            <Image
+              src={`${process.env.NEXT_PUBLIC_CDN_URL}/assets/logo.svg`}
+              alt="KYX"
+              width={32}
+              height={32}
+              className="mx-auto w-auto h-[32px]"
+              priority
+            />
             <div className="flex items-center space-x-1">
-              <span className="font-semibold text-neutral-900">KyCombinator</span>
+              <span className="font-semibold text-neutral-900">KYCombinator</span>
               <svg className="w-4 h-4 text-neutral-400" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
@@ -29,9 +35,7 @@ export default function DashboardHeader() {
 
         {/* Right side icons */}
         <div className="flex items-center space-x-4">
-          <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-            <span className="text-gray-700 font-medium text-sm">DR</span>
-          </div>
+          <Avatar />
         </div>
       </div>
     </header>
