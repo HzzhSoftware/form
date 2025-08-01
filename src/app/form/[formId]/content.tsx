@@ -5,6 +5,8 @@ import { useFormContext } from '../components/FormContext'
 import CardConstructor from './CardConstructor'
 import FieldSideBar from './FieldSideBar'
 import { updateForm } from '@/services/form'
+import { v4 as uuidv4 } from 'uuid';
+import { Card } from '@hzzhsoftware/types-form';
 
 const Content = ({ children }: { children: React.ReactNode }) => {
   const { form, currentCard, setCurrentCard } = useFormContext();
@@ -13,23 +15,28 @@ const Content = ({ children }: { children: React.ReactNode }) => {
   const currentFieldData = currentCardData?.fields.find(field => field.id === currentFieldId);
   
   // Auto-save and save functionality
+  const [localForm, setLocalForm] = useState(form);
   const [autoSave, setAutoSave] = useState(true);
   const [hasChanges, setHasChanges] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Update local form state function
+  const updatelocalForm = (updatedForm: typeof form) => {
+    setLocalForm(updatedForm);
+  };
   
-  // Track changes to enable/disable save button
+  // Track changes by comparing current form with local state
   useEffect(() => {
-    // This would track actual changes to the form
-    // For now, we'll set it to true when form data changes
-    setHasChanges(true);
-  }, [form]);
+    const hasFormChanges = JSON.stringify(form) !== JSON.stringify(localForm);
+    setHasChanges(hasFormChanges);
+  }, [form, localForm]);
   
   // Auto-save functionality
   useEffect(() => {
     if (autoSave && hasChanges) {
       const timeoutId = setTimeout(() => {
         handleSave();
-      }, 2000); // Auto-save after 2 seconds of no changes
+      }, 5000); // Auto-save after 2 seconds of no changes
       
       return () => clearTimeout(timeoutId);
     }
@@ -40,14 +47,33 @@ const Content = ({ children }: { children: React.ReactNode }) => {
     
     setIsSaving(true);
     try {
-      await updateForm(form.id, form);
-      console.log('Saving form:', form);
+      await updateForm(form.id, localForm);
+      console.log('Saving form:', localForm);
+      // Update local state to match the saved form state
       setHasChanges(false);
     } catch (error) {
       console.error('Error saving form:', error);
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const addCard = () => {
+    const newCard: Card = {
+      id: uuidv4(),
+      title: "New Card",
+      fields: [],
+    };
+
+    setLocalForm({...localForm,
+      cards: [...localForm.cards, newCard]}
+    )
+  };
+
+  const deleteCard = (cardId: string) => {
+    setLocalForm({...localForm,
+      cards: localForm.cards.filter(card => card.id !== cardId)}
+    )
   };
   
   return (
@@ -137,7 +163,7 @@ const Content = ({ children }: { children: React.ReactNode }) => {
             
             <div className="bg-white border border-neutral-200 rounded-lg p-4 min-h-64">
               <div className="space-y-3">
-                {form.cards.map((card, index) => (
+                {localForm.cards.map((card, index) => (
                   <div 
                     key={card.id}
                     className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
@@ -158,15 +184,17 @@ const Content = ({ children }: { children: React.ReactNode }) => {
                       >
                         {card.title || `Card ${index + 1}`}
                     </span>
+                    <button onClick={() => deleteCard(card.id)} className="hover:cursor-pointer">
+                      <svg className="w-4 h-4 text-neutral-500 hover:text-red-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
                   </div>
                 ))}
                 
                 {/* Add Card Button */}
                 <div 
-                  onClick={() => {
-                    // TODO: Implement add card functionality
-                    console.log('Add card clicked');
-                  }}
+                  onClick={addCard}
                   className="flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors bg-neutral-100 hover:bg-neutral-200 border-2 border-dashed border-neutral-300 hover:border-primary-400"
                 >
                   <div className="w-6 h-6 rounded flex items-center justify-center text-white text-xs font-medium bg-neutral-400">
