@@ -127,9 +127,7 @@ const FieldSideBar: React.FC<FieldSideBarProps> = ({ field, onFieldUpdate }) => 
     <div>
       <h3 className="text-sm font-medium text-neutral-700 mb-3">Question</h3>
       <div className="flex space-x-1">
-        <div>{field?.id}</div>
-        <button className="px-3 py-1.5 bg-primary-600 text-white text-sm rounded">Text</button>
-        <button className="px-3 py-1.5 bg-neutral-200 text-neutral-700 text-sm rounded hover:bg-neutral-300">Video</button>
+        <div>{field.label}</div>
       </div>
     </div>
     

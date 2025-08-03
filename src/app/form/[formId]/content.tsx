@@ -13,8 +13,17 @@ const Content = () => {
   const router = useRouter();
   const { form, currentCard, setCurrentCard } = useFormContext();
   const currentCardData = form.cards.find(card => card.id === currentCard);
-  const [currentFieldId, setCurrentFieldId] = useState<string | null>(currentCardData?.fields[0].id || null);
+  const [currentFieldId, setCurrentFieldId] = useState<string | null>(null);
   const currentFieldData = currentCardData?.fields.find(field => field.id === currentFieldId);
+  
+  // Update current field when card changes
+  useEffect(() => {
+    if (currentCardData && currentCardData.fields.length > 0) {
+      setCurrentFieldId(currentCardData.fields[0].id);
+    } else {
+      setCurrentFieldId(null);
+    }
+  }, [currentCard, currentCardData]);
   
   // Auto-save and save functionality
   const [localForm, setLocalForm] = useState(form);
