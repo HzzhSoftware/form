@@ -219,12 +219,12 @@ const Content = () => {
 
         {/* Central Content Area (50-60% width) */}
         <main className="flex-1 bg-neutral-100 relative overflow-hidden p-6">
-          <div className="h-full bg-black rounded-lg shadow-lg">
+          <div className="h-full rounded-lg shadow-lg">
             <div className="h-full flex flex-col">
-              <div className="text-white text-2xl font-bold p-6">KYCombinator</div>
+              <div className=" text-2xl font-bold p-6">KYCombinator</div>
               
               <div className="flex-1 flex items-center justify-center p-8">
-                <div className="text-left max-w-md w-full">
+                <div className="max-w-6xl container w-full">
                   {currentCardData ? (
                     <CardConstructor card={currentCardData} setCurrentFieldId={setCurrentFieldId} />
                   ) : (
