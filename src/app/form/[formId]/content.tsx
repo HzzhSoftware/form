@@ -239,7 +239,7 @@ const Content = () => {
         </main>
 
         {/* Right Sidebar (20-25% width) */}
-        <aside className="w-80 bg-white border-l border-neutral-200 p-6 overflow-y-auto">
+        <aside className="w-80 border-l border-neutral-200 p-6 overflow-y-auto">
           {currentFieldData ? (
             <FieldSideBar field={currentFieldData} />
           ) : (

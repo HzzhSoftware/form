@@ -10,6 +10,7 @@ const HeaderBar = ({ form, children }: { form: Form, children: React.ReactNode }
   
   const isContentActive = pathname === `/form/${form.id}`;
   const isResponsesActive = pathname === `/form/${form.id}/responses`;
+  const isSettingsActive = pathname === `/form/${form.id}/settings`;
   
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-white border-b border-neutral-200">
@@ -45,6 +46,16 @@ const HeaderBar = ({ form, children }: { form: Form, children: React.ReactNode }
           }`}
         >
           Responses
+        </button>
+        <button 
+          onClick={() => router.push(`/form/${form.id}/settings`)}
+          className={`px-4 py-2 text-sm font-medium transition-colors ${
+            isSettingsActive 
+              ? 'text-primary-600 border-b-2 border-primary-600' 
+              : 'text-neutral-600 hover:text-neutral-900'
+          }`}
+        >
+          Settings
         </button>
       </div>
       

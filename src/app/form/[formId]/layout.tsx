@@ -2,7 +2,7 @@
 import React from "react";
 import { getForm } from "@/services/form";
 import { FormContextProvider } from "../components/FormContext";
-import HeaderBar from "./HeaderBar";
+import Header from "./Header";
 import Avatar from "@/components/auth/Avatar";
 
 export default async function FormLayout({
@@ -28,9 +28,9 @@ export default async function FormLayout({
   return (
     <div className="w-full h-screen">
       <FormContextProvider form={form}>
-        <HeaderBar form={form}>
+        <Header form={form}>
           <Avatar />
-        </HeaderBar>
+        </Header>
         {children}
       </FormContextProvider>
     </div>
