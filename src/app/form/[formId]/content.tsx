@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Card } from '@hzzhsoftware/types-form';
 import { useRouter } from 'next/navigation';
 
-const Content = ({ children }: { children: React.ReactNode }) => {
+const Content = () => {
   const router = useRouter();
   const { form, currentCard, setCurrentCard } = useFormContext();
   const currentCardData = form.cards.find(card => card.id === currentCard);
@@ -79,36 +79,7 @@ const Content = ({ children }: { children: React.ReactNode }) => {
   };
   
   return (
-    <div className="flex flex-col w-full h-full">
-      {/* Header Bar */}
-      <header className="flex items-center justify-between px-6 py-4 bg-white border-b border-neutral-200">
-                 <div className="flex items-center space-x-2 text-sm text-neutral-600">
-           <button
-             onClick={() => router.push('/form')}
-             className="hover:text-neutral-900 transition-all duration-300 hover:cursor-pointer hover:underline"
-           >
-             My Workspace
-           </button>
-           <span>&gt;</span>
-           <span>{form.name}</span>
-         </div>
-        
-        <div className="flex items-center space-x-6">
-          <div className="flex space-x-1">
-            <button className="px-4 py-2 text-sm font-medium text-neutral-700 hover:text-neutral-900 border-b-2 border-primary-600">
-              Content
-            </button>
-          </div>
-          
-          <div className="flex items-center space-x-3">
-            <button className="flex items-center btn btn-primary">
-              <span>Share</span>
-            </button>
-            {children}
-          </div>
-        </div>
-      </header>
-
+    <div className="flex flex-col w-full h-[calc(100vh-5rem)]">
       {/* Main Content Area */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar (15-20% width) */}
