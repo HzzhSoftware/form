@@ -29,8 +29,8 @@ export default function DashboardSidebar({ forms }: { forms: Form[] }) {
         updatedAt: new Date().toISOString()
       };
 
-      await createForm(newForm);
-      window.location.href = `/form/${newForm.id}`;
+      const data = await createForm(newForm) as { form: Form };
+      window.location.href = `/form/${data.form.id}`;
     } catch (error) {
       console.error("Failed to create form:", error);
       alert("Failed to create form. Please try again later.");
@@ -43,7 +43,7 @@ export default function DashboardSidebar({ forms }: { forms: Form[] }) {
       <div className="p-6 border-b border-gray-200">
         <button 
         onClick={handleCreateForm}
-        className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg flex items-center justify-center space-x-2 hover:bg-purple-700 transition-colors">
+        className="w-full bg-primary-500 text-primary-on-500 py-3 px-4 rounded-lg flex items-center justify-center space-x-2 hover:bg-primary-600 transition-colors">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
           </svg>
