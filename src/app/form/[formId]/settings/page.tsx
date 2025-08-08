@@ -11,7 +11,7 @@ export default function SettingsPage() {
   
   const [metadata, setMetadata] = useState({
     title: form.metadata?.title || "",
-    description: form.metadata?.description || "",
+    description: form.metadata?.description || "",  
     image: form.metadata?.image || ""
   });
   
