@@ -31,7 +31,7 @@ export default function SubmissionWrapper({
   useEffect(() => {
     async function load(submissionId: string) {
       try {
-        const data = await getSubmission(formId, submissionId);
+        const data = await getSubmission({ formId, submissionId });
         const mergedValues = { ...initialValues, ...(data as Record<string, string>) };
         console.log("mergedValues", mergedValues);
         setSavedValues(mergedValues);

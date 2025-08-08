@@ -54,7 +54,7 @@ const HeaderBar = ({ form, children }: { form: Form, children: React.ReactNode }
         name: formName.trim()
       };
       
-      await updateForm(form.id, updatedForm);
+      await updateForm({ formId: form.id }, updatedForm);
       setIsEditing(false);
     } catch (error) {
       console.error('Error updating form name:', error);

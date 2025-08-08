@@ -49,7 +49,7 @@ export function FormProvider({
 
     async function loadSavedState() {
       try {
-        const saved = await getSubmission(formId, submissionId);
+        const saved = await getSubmission({ formId, submissionId });
         if (saved && typeof saved === "object") {
           setValues(saved as Record<string, string>);
         } else {
@@ -97,7 +97,7 @@ export function FormProvider({
     if (Object.keys(newErrors).length === 0) {
       setDirection(1);
       setCurrentCardIdx((idx) => Math.min(idx + 1, initialForm.cards.length - 1));
-      await submitForm(formId, values, submissionId!);
+      await submitForm({ formId }, { values, submissionId: submissionId! });
     }
   };
 
@@ -122,7 +122,7 @@ export function FormProvider({
     if (Object.keys(allErrors).length === 0) {
       try {
         setIsSubmitting(true);
-        await submitForm(formId, values, submissionId!);
+        await submitForm({ formId }, { values, submissionId: submissionId! });
         router.push(`/to/${formId}/thankyou`);
       } catch (err) {
         console.error(err);

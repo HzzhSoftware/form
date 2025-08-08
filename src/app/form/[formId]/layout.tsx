@@ -16,7 +16,7 @@ export default async function FormLayout({
 
   let form = null;
   try {
-    form = await getForm(formId);
+    form = await getForm({ formId });
   } catch (err) {
     console.error("Failed to load form:", err);
   }

@@ -30,8 +30,9 @@ export default function DashboardSidebar({ forms }: { forms: Form[] }) {
         starts: 0
       };
 
-      const data = await createForm(newForm) as { form: Form };
-      window.location.href = `/form/${data.form.id}`;
+      const response = await createForm(newForm);
+      const formId = response.form.id;
+      window.location.href = `/form/${formId}`;
     } catch (error) {
       console.error("Failed to create form:", error);
       alert("Failed to create form. Please try again later.");

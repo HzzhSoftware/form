@@ -2,28 +2,50 @@
 
 import React, { useState, useEffect } from "react";
 import { useFormContext } from "../../components/FormContext";
-import { updateForm } from "@/services/form";
-import { OGMetadata } from "@hzzhsoftware/types-form";
+import { updateForm, getForm } from "@/services/form";
+import { OGMetadata, Form } from "@hzzhsoftware/types-form";
 
 export default function SettingsPage() {
   const { form } = useFormContext();
   
+  // Ensure form has proper ogMetadata structure from API response
+  const [formWithMetadata, setFormWithMetadata] = useState<Form>(form);
+  
   const [metadata, setMetadata] = useState<Partial<OGMetadata>>({
-    title: form.ogMetadata?.title || "",
-    description: form.ogMetadata?.description || "",  
+    title: form.ogMetadata?.title || form.name || "",
+    description: form.ogMetadata?.description || form.description || "",  
     image: form.ogMetadata?.image || ""
   });
   
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState("");
 
+  // Fetch the latest form data from API to ensure proper structure
   useEffect(() => {
-    setMetadata({
-      title: form.ogMetadata?.title || "",
-      description: form.ogMetadata?.description || "",
-      image: form.ogMetadata?.image || ""
-    });
-  }, [form.ogMetadata]);
+    const fetchFormData = async () => {
+      try {
+        const apiForm = await getForm({ formId: form.id });
+        if (apiForm) {
+          setFormWithMetadata(apiForm);
+          setMetadata({
+            title: apiForm.ogMetadata?.title || apiForm.name || "",
+            description: apiForm.ogMetadata?.description || apiForm.description || "",
+            image: apiForm.ogMetadata?.image || ""
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching form data:", error);
+        // Fallback to context form if API fails
+        setMetadata({
+          title: form.ogMetadata?.title || form.name || "",
+          description: form.ogMetadata?.description || form.description || "",
+          image: form.ogMetadata?.image || ""
+        });
+      }
+    };
+    
+    fetchFormData();
+  }, [form.id, form.ogMetadata, form.name, form.description]);
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -38,7 +60,7 @@ export default function SettingsPage() {
         }
       };
       
-      await updateForm(form.id, updatedForm);
+      await updateForm({ formId: form.id }, updatedForm);
       setSaveStatus("Saved successfully!");
       
       setTimeout(() => {

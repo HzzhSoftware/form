@@ -1,54 +1,85 @@
 import fetchFormAPI from "./api";
-import { Form } from "@hzzhsoftware/types-form";
+import {
+  GetFormParams,
+  GetFormResponse,
+  CreateFormBody,
+  CreateFormResponse,
+  UpdateFormParams,
+  UpdateFormBody,
+  UpdateFormResponse,
+  DeleteFormParams,
+  DeleteFormResponse,
+  ListFormsQuery,
+  ListFormsResponse,
+  SubmitFormParams,
+  SubmitFormBody,
+  SubmitFormResponse,
+  ListSubmissionsParams,
+  ListSubmissionsResponse,
+  GetSubmissionParams,
+  GetSubmissionResponse,
+} from "@hzzhsoftware/types-form";
 
 /** Get a form by ID */
 // if custom is true, this is specific URL for custom forms
 // otherwise, it is the URL for the form
-export async function getForm(formId: string, custom: boolean = false) {
-  return fetchFormAPI<Form>(`/${formId}?custom=${custom}`);
+export async function getForm(params: GetFormParams): Promise<GetFormResponse> {
+  const { formId, custom = false } = params;
+  return fetchFormAPI<GetFormResponse>(`/${formId}?custom=${custom}`);
 }
 
 /** Submit a form response */
-export async function submitForm(formId: string, values: Record<string, any>, submissionId: string) {
-  return fetchFormAPI(`/${formId}/submit`, {
+export async function submitForm(params: SubmitFormParams, body: SubmitFormBody): Promise<SubmitFormResponse> {
+  const { formId } = params;
+  return fetchFormAPI<SubmitFormResponse>(`/${formId}/submit`, {
     method: "POST",
-    body: JSON.stringify({ ...values, submissionId }),
+    body: JSON.stringify(body),
   });
 }
 
-/** Submit a form response */
-export async function getSubmission(formId: string, submissionId: string) {
-  return fetchFormAPI(`/${formId}/submit/${submissionId}`, {
+/** Get a form submission by ID */
+export async function getSubmission(params: GetSubmissionParams): Promise<GetSubmissionResponse> {
+  const { formId, submissionId } = params;
+  return fetchFormAPI<GetSubmissionResponse>(`/${formId}/submit/${submissionId}`, {
     method: "GET",
   });
 }
 
-export async function listForms(page: number = 1, limit: number = 50) {
-  return fetchFormAPI(`?page=${page}&limit=${limit}`, {
+/** List forms with pagination */
+export async function listForms(query: ListFormsQuery = {}): Promise<ListFormsResponse> {
+  const { page = 1, limit = 50 } = query;
+  return fetchFormAPI<ListFormsResponse>(`?page=${page}&limit=${limit}`, {
     method: "GET",
   });
 }
 
-export async function createForm(form: Form) {
-  return fetchFormAPI(``, {
+/** Create a new form */
+export async function createForm(body: CreateFormBody): Promise<CreateFormResponse> {
+  return fetchFormAPI<CreateFormResponse>(``, {
     method: "POST",
-    body: JSON.stringify(form),
+    body: JSON.stringify(body),
   });
 }
 
-export async function updateForm(formId: string, form: Form) {
-  return fetchFormAPI(`/${formId}`, {
+/** Update an existing form */
+export async function updateForm(params: UpdateFormParams, body: UpdateFormBody): Promise<UpdateFormResponse> {
+  const { formId } = params;
+  return fetchFormAPI<UpdateFormResponse>(`/${formId}`, {
     method: "PUT",
-    body: JSON.stringify(form),
+    body: JSON.stringify(body),
   });
 }
 
-export async function deleteForm(formId: string) {
-  return fetchFormAPI(`/${formId}`, {
+/** Delete a form */
+export async function deleteForm(params: DeleteFormParams): Promise<DeleteFormResponse> {
+  const { formId } = params;
+  return fetchFormAPI<DeleteFormResponse>(`/${formId}`, {
     method: "DELETE",
   });
 }
 
-export async function listSubmissions(formId: string, page: number, limit: number) {
-  return fetchFormAPI(`/${formId}/submit?page=${page}&limit=${limit}`);
+/** List submissions for a form */
+export async function listSubmissions(params: ListSubmissionsParams): Promise<ListSubmissionsResponse> {
+  const { formId, page = 1, limit = 50 } = params;
+  return fetchFormAPI<ListSubmissionsResponse>(`/${formId}/submit?page=${page}&limit=${limit}`);
 }

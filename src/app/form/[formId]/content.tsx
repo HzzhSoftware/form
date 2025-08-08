@@ -58,7 +58,7 @@ const Content = () => {
     
     setIsSaving(true);
     try {
-      await updateForm(form.id, localForm);
+              await updateForm({ formId: form.id }, localForm);
       console.log('Saving form:', localForm);
       // Update local state to match the saved form state
       setHasChanges(false);
