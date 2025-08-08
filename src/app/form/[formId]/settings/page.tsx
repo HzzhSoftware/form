@@ -3,16 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { useFormContext } from "../../components/FormContext";
 import { updateForm } from "@/services/form";
-import { useRouter } from "next/navigation";
 
 export default function SettingsPage() {
   const { form } = useFormContext();
-  const router = useRouter();
   
   const [metadata, setMetadata] = useState({
-    title: form.metadata?.title || "",
-    description: form.metadata?.description || "",  
-    image: form.metadata?.image || ""
+    title: form.ogMetadata?.title || "",
+    description: form.ogMetadata?.description || "",  
+    image: form.ogMetadata?.image || ""
   });
   
   const [isSaving, setIsSaving] = useState(false);
@@ -20,11 +18,11 @@ export default function SettingsPage() {
 
   useEffect(() => {
     setMetadata({
-      title: form.metadata?.title || "",
-      description: form.metadata?.description || "",
-      image: form.metadata?.image || ""
+      title: form.ogMetadata?.title || "",
+      description: form.ogMetadata?.description || "",
+      image: form.ogMetadata?.image || ""
     });
-  }, [form.metadata]);
+  }, [form.ogMetadata]);
 
   const handleSave = async () => {
     setIsSaving(true);

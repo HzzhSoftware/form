@@ -26,7 +26,8 @@ export default function DashboardSidebar({ forms }: { forms: Form[] }) {
         ],
         submissions: 0,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
+        starts: 0
       };
 
       const data = await createForm(newForm) as { form: Form };

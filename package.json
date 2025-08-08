@@ -23,7 +23,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
-    "@hzzhsoftware/types-form": "^0.0.10",
+    "@hzzhsoftware/types-form": "^0.0.11",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
