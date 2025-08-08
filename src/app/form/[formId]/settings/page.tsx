@@ -29,10 +29,10 @@ export default function SettingsPage() {
     setSaveStatus("Saving...");
     
     try {
-      const updatedForm = {
+      const updatedForm = { 
         ...form,
-        metadata: {
-          ...form.metadata,
+        ogMetadata: {
+          ...form.ogMetadata,
           ...metadata
         }
       };
