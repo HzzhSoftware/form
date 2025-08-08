@@ -3,11 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { useFormContext } from "../../components/FormContext";
 import { updateForm } from "@/services/form";
+import { OGMetadata } from "@hzzhsoftware/types-form";
 
 export default function SettingsPage() {
   const { form } = useFormContext();
   
-  const [metadata, setMetadata] = useState({
+  const [metadata, setMetadata] = useState<Partial<OGMetadata>>({
     title: form.ogMetadata?.title || "",
     description: form.ogMetadata?.description || "",  
     image: form.ogMetadata?.image || ""
