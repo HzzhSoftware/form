@@ -45,7 +45,7 @@ export default function DashboardSidebar({ forms }: { forms: Form[] }) {
       <div className="p-6 border-b border-gray-200">
         <button 
         onClick={handleCreateForm}
-        className="w-full bg-primary-500 text-primary-on-500 py-3 px-4 rounded-lg flex items-center justify-center space-x-2 hover:bg-primary-600 transition-colors">
+        className="w-full bg-primary-500 text-primary-on-500 py-3 px-4 rounded-lg flex items-center justify-center space-x-2 hover:bg-primary-600 transition-colors hover:cursor-pointer">
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
           </svg>
