@@ -57,7 +57,11 @@ export async function listForms(query: ListFormsQuery = {}): Promise<ListFormsRe
 export async function createForm(body: CreateFormBody): Promise<CreateFormResponse> {
   return fetchFormAPI<CreateFormResponse>(``, {
     method: "POST",
-    body: JSON.stringify(body),
+    body: JSON.stringify({
+      ...body,
+      orgId: "KYCOMBINATOR",
+      userEmail: "dan@kycombinator.com"
+    }),
   });
 }
 
