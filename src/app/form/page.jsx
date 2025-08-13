@@ -4,27 +4,6 @@ import FormRecord from "./components/FormRecord";
 import DashboardHeader from "./components/DashboardHeader";
 import DashboardSidebar from "./components/DashboardSidebar";
 
-export async function generateMetadata({ params }) {
-  const { customFormId } = params;
-
-  let form = null;
-  try {
-    form = await getForm(customFormId, true);
-  } catch (err) {
-    console.error("Failed to load form metadata:", err);
-  }
-
-  return {
-    title: form.ogMetadata?.title || "KYX",
-    description: form.ogMetadata?.description || "KYX",
-    openGraph: {
-      title: form.ogMetadata?.title || "KYX",
-      description: form.ogMetadata?.description || "KYX",
-      images: [form.ogMetadata?.image || "https://cdn.kycombinator.com/favicon.ico"],
-    },
-  };
-}
-
 export default async function FormPage() {
   let forms = null;
   forms = await listForms(1, 10);

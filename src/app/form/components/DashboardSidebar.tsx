@@ -33,7 +33,7 @@ export default function DashboardSidebar({ forms }: { forms: Form[] }) {
         updatedAt: new Date().toISOString(),
         starts: 0,
         orgId: "KYCOMBINATOR",
-        userEmail: "dan@kycombinator.com",
+        userEmail: "DAN@KYCOMBINATOR.COM",
         status: "draft"
       };
 
