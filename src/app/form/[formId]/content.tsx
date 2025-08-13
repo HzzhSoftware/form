@@ -7,12 +7,10 @@ import FieldSideBar from './FieldSideBar'
 import { updateForm } from '@/services/form'
 import { v4 as uuidv4 } from 'uuid';
 import { Card } from '@hzzhsoftware/types-form';
-import { useRouter } from 'next/navigation';
 
 const Content = () => {
-  const router = useRouter();
-  const { form, currentCard, setCurrentCard } = useFormContext();
-  const currentCardData = form.cards.find(card => card.id === currentCard);
+  const { form, currentCardId, setCurrentCardId, setForm } = useFormContext();
+  const currentCardData = form.cards.find(card => card.id === currentCardId);
   const [currentFieldId, setCurrentFieldId] = useState<string | null>(null);
   const currentFieldData = currentCardData?.fields.find(field => field.id === currentFieldId);
   
@@ -23,18 +21,12 @@ const Content = () => {
     } else {
       setCurrentFieldId(null);
     }
-  }, [currentCard, currentCardData]);
+  }, [currentCardId, currentCardData]);
   
   // Auto-save and save functionality
   const [localForm, setLocalForm] = useState(form);
-  const [autoSave, setAutoSave] = useState(true);
   const [hasChanges, setHasChanges] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-
-  // Update local form state function
-  const updatelocalForm = (updatedForm: typeof form) => {
-    setLocalForm(updatedForm);
-  };
   
   // Track changes by comparing current form with local state
   useEffect(() => {
@@ -44,22 +36,31 @@ const Content = () => {
   
   // Auto-save functionality
   useEffect(() => {
-    if (autoSave && hasChanges) {
-      const timeoutId = setTimeout(() => {
+    let timeoutId: NodeJS.Timeout;
+    
+    if (hasChanges) {
+      // Set a timer to save after 1 second of no changes
+      timeoutId = setTimeout(() => {
         handleSave();
-      }, 5000); // Auto-save after 2 seconds of no changes
-      
-      return () => clearTimeout(timeoutId);
+      }, 1000);
     }
-  }, [form, autoSave, hasChanges]);
+    
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [localForm]); // Watch localForm instead of form to detect when changes stop
   
   const handleSave = async () => {
     if (!hasChanges || isSaving) return;
     
     setIsSaving(true);
     try {
-              await updateForm({ formId: form.id }, localForm);
+      await updateForm({ formId: form.id }, localForm);
       console.log('Saving form:', localForm);
+      // Update context with the saved form data
+      setForm(localForm);
       // Update local state to match the saved form state
       setHasChanges(false);
     } catch (error) {
@@ -93,73 +94,74 @@ const Content = () => {
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar (15-20% width) */}
         <aside className="w-64 bg-neutral-50 border-r border-neutral-200 p-4 overflow-y-auto gap-6 flex flex-col">
-          <div className="flex items-center justify-between">
-            {/* Auto-save Toggle */}
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-neutral-600">Auto-save</span>
-              <button
-                onClick={() => setAutoSave(!autoSave)}
-                className={`w-10 h-6 rounded-full relative transition-colors duration-200 ${
-                  autoSave ? 'bg-primary-600' : 'bg-neutral-200'
-                }`}
-              >
-                <div 
-                  className={`w-4 h-4 bg-white rounded-full absolute top-1 transition-transform duration-200 ${
-                    autoSave ? 'right-1' : 'left-1'
-                  }`}
-                />
-              </button>
-            </div>
-            
-            {/* Save Button */}
-            <button
-              onClick={handleSave}
-              disabled={!hasChanges || isSaving}
-              className={`flex items-center px-4 py-2 rounded text-sm font-medium transition-colors ${
-                hasChanges && !isSaving
-                  ? 'bg-primary-600 text-white hover:bg-primary-700'
-                  : 'bg-neutral-200 text-neutral-500 cursor-not-allowed'
-              }`}
-            >
-              {isSaving ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                  </svg>
-                  Save
-                </>
-              )}
-            </button>
-            
-          </div>
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-medium text-neutral-700">Universal mode</span>
-              <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
+              <div className="flex items-center space-x-2">
+                {/* Save Status Indicator */}
+                {isSaving ? (
+                  <div className="flex items-center space-x-1 text-xs text-neutral-600">
+                    <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-primary-600"></div>
+                    <span>Saving...</span>
+                  </div>
+                ) : hasChanges ? (
+                  <div className="flex items-center space-x-1 text-xs text-amber-600">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                    <span>Unsaved</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center space-x-1 text-xs text-green-600">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span>Saved</span>
+                  </div>
+                )}
+                <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
             </div>
             
             <div className="bg-white border border-neutral-200 rounded-lg p-4 min-h-64">
+              {/* Publish/Archive Button */}
+              <div className="mb-4">
+                {localForm.status === 'published' ? (
+                  <button
+                    onClick={() => setLocalForm({...localForm, status: 'archived'})}
+                    className="w-full bg-neutral-600 hover:bg-neutral-700 text-white text-sm font-medium py-2 px-3 rounded-md transition-colors flex items-center justify-center space-x-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-14 0a2 2 0 012-2h2a2 2 0 012 2m0 0a2 2 0 002 2h2a2 2 0 002-2" />
+                    </svg>
+                    <span>Archive Form</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setLocalForm({...localForm, status: 'published'})}
+                    className="w-full bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium py-2 px-3 rounded-md transition-colors flex items-center justify-center space-x-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                    <span>Publish Form</span>
+                  </button>
+                )}
+              </div>
+              
               <div className="space-y-3">
                 {localForm.cards.map((card, index) => (
                   <div 
                     key={card.id}
                     className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
-                      currentCard === card.id ? 'bg-primary-100 border border-primary-300' : 'bg-neutral-100 hover:bg-neutral-200'
+                      currentCardId === card.id ? 'bg-primary-100 border border-primary-300' : 'bg-neutral-100 hover:bg-neutral-200'
                     }`}
-                    onClick={() => setCurrentCard(card.id)}
+                    onClick={() => setCurrentCardId(card.id)}
                   >
                     <div className={`w-6 h-6 rounded flex items-center justify-center text-white text-xs font-medium ${
-                      currentCard === card.id ? 'bg-primary-600' : 'bg-primary-500'
+                      currentCardId === card.id ? 'bg-primary-600' : 'bg-primary-500'
                     }`}>
                       {index + 1}
                     </div>
@@ -167,7 +169,7 @@ const Content = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     <span className={`  text-sm text-neutral-600 flex-1 truncate 
-                      ${currentCard === card.id ? 'text-primary-on-600' : 'text-primary-600'}`}
+                      ${currentCardId === card.id ? 'text-primary-on-600' : 'text-primary-600'}`}
                       >
                         {card.title || `Card ${index + 1}`}
                     </span>
@@ -226,7 +228,7 @@ const Content = () => {
               <div className="flex-1 flex items-center justify-center p-8">
                 <div className="max-w-6xl container w-full">
                   {currentCardData ? (
-                    <CardConstructor card={currentCardData} setCurrentFieldId={setCurrentFieldId} />
+                    <CardConstructor card={currentCardData} setCurrentFieldId={setCurrentFieldId} setLocalForm={setLocalForm} localForm={localForm}/>
                   ) : (
                     <div className="text-neutral-400 text-center">
                       <p>No card selected</p>

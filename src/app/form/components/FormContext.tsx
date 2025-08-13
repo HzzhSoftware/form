@@ -5,17 +5,24 @@ import { Form } from "@hzzhsoftware/types-form";
 
 type FormContextType = {
   form: Form;
-  currentCard: string;
-  setCurrentCard: (card: string) => void;
+  currentCardId: string;
+  setCurrentCardId: (cardId: string) => void;
+  setForm: (form: Form) => void;
 }
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
 
 export function FormContextProvider({ form, children }: { form: Form, children: React.ReactNode }) {
-  const [currentCard, setCurrentCard] = useState<string>(form.cards[0].id);
+  const [currentCardId, setCurrentCardId] = useState<string>(form.cards[0].id);
+  const [formState, setFormState] = useState<Form>(form);
 
   return (
-    <FormContext.Provider value={{ form, currentCard, setCurrentCard }}>
+    <FormContext.Provider value={{ 
+      form: formState, 
+      currentCardId, 
+      setCurrentCardId,
+      setForm: setFormState
+    }}>
       {children}
     </FormContext.Provider>
   )
