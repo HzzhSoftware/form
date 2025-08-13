@@ -27,7 +27,10 @@ export default function DashboardSidebar({ forms }: { forms: Form[] }) {
         submissions: 0,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        starts: 0
+        starts: 0,
+        orgId: "KYCOMBINATOR",
+        userEmail: "dan@kycombinator.com",
+        status: "draft"
       };
 
       const response = await createForm(newForm);
