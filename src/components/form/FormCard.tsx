@@ -22,7 +22,7 @@ export default function FormCard() {
   const card = form.cards[currentCardIdx];
 
   const allRequiredFilled = card.fields
-    ?.filter((f) => f.required)
+    ?.filter((f) => f.isRequired)
     .every((f) => values[f.id]?.toString().trim() !== "" || values[f.id] === undefined);
 
   const handleNext = () => {
@@ -47,7 +47,7 @@ export default function FormCard() {
             <div key={field.id}>
               <label className="block text-sm font-medium mb-1">
                 {field.label}
-                {field.required && <span className="text-red-500 ml-1">*</span>}
+                {field.isRequired && <span className="text-red-500 ml-1">*</span>}
               </label>
               <Field
                 field={field}

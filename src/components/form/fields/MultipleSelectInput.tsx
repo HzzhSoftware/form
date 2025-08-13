@@ -52,7 +52,7 @@ export default function MultipleSelectInput({
         type="hidden"
         name={field.id}
         value={value}
-        required={field.required}
+        required={field.isRequired}
       />
       
       {/* Show selected count */}

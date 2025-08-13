@@ -87,7 +87,7 @@ export function FormProvider({
     const newErrors: Record<string, string> = {};
 
     card.fields?.forEach((field) => {
-      if (!values[field.id] && field.required) {
+      if (!values[field.id] && field.isRequired) {
         newErrors[field.id] = "This field is required.";
       }
     });

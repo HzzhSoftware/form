@@ -15,7 +15,7 @@ export default function ShortTextInput({
       type="text"
       value={value ?? ""}
       onChange={(e) => onChange(e.target.value)}
-      required={field.required}
+      required={field.isRequired}
       className="w-full border-b p-3"
       placeholder={field.label}
     />

@@ -15,7 +15,7 @@ export default function DateInput({
       type="date"
       value={value ?? ""}
       onChange={(e) => onChange(e.target.value)}
-      required={field.required}
+      required={field.isRequired}
       className="w-full border-b p-3"
     />
   );

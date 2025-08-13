@@ -20,7 +20,7 @@ export default function MultipleChoiceInput({
             value={opt}
             checked={value === opt}
             onChange={() => onChange(opt)}
-            required={field.required}
+            required={field.isRequired}
             className="mr-2"
           />
           {opt}

@@ -14,7 +14,7 @@ export default function LongTextInput({
     <textarea
       value={value ?? ""}
       onChange={(e) => onChange(e.target.value)}
-      required={field.required}
+      required={field.isRequired}
       className="w-full border p-3"
       placeholder={field.label}
     />
