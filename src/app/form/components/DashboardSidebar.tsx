@@ -18,8 +18,12 @@ export default function DashboardSidebar({ forms }: { forms: Form[] }) {
                 id: crypto.randomUUID(),
                 label: "Your question here",
                 type: "multiple_choice",
-                required: false,
-                options: ["Choice 1", "Choice 2"]
+                isRequired: false,
+                options: ["Choice 1", "Choice 2"],
+                allowMultiple: false,
+                isRandomized: false,
+                allowOther: false,
+                isVerticalAlignment: false
               }
             ]
           }
