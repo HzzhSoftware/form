@@ -14,12 +14,12 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title: form?.metadata?.title || "KYX",
-    description: form?.metadata?.description || "KYX",
+    title: form.ogMetadata?.title || "KYX",
+    description: form.ogMetadata?.description || "KYX",
     openGraph: {
-      title: form?.metadata?.title || "KYX",
-      description: form?.metadata?.description || "KYX",
-      images: [form?.metadata?.image || "https://cdn.kycombinator.com/favicon.ico"],
+      title: form.ogMetadata?.title || "KYX",
+      description: form.ogMetadata?.description || "KYX",
+      images: [form.ogMetadata?.image || "https://cdn.kycombinator.com/favicon.ico"],
     },
   };
 }
