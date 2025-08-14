@@ -43,9 +43,17 @@ export default function FormCard() {
           transition={{ duration: 0.4 }}
           className="space-y-6"
         >
+          {/* Card Title and Description */}
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold text-primary-900">{card.title}</h2>
+            {card.description && (
+              <p className="text-gray-600 text-base">{card.description}</p>
+            )}
+          </div>
+
           {card.fields?.map((field) => (
             <div key={field.id}>
-              <label className="block text-sm font-medium mb-1">
+              <label className="block text-sm font-medium mb-1 text-primary-800">
                 {field.label}
                 {field.isRequired && <span className="text-red-500 ml-1">*</span>}
               </label>

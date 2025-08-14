@@ -2,24 +2,23 @@
 
 import React, { useState, useEffect } from "react";
 import { listSubmissions } from "@/services/form";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useFormContext } from "../../components/FormContext";
 
 export default function ResponsesPage() {
   const params = useParams();
-  const router = useRouter();
   const formId = params.formId;
   const { form } = useFormContext();
   
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [timeFilter, setTimeFilter] = useState("All time");
+
 
   useEffect(() => {
     const loadSubmissions = async () => {
       try {
-        const submissionsData = await listSubmissions(formId, 1, 20);
+        const submissionsData = await listSubmissions({formId, page: 1, limit: 20});
         setSubmissions(submissionsData);
       } catch (err) {
         console.error("Failed to load submissions:", err);
