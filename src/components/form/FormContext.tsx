@@ -148,7 +148,9 @@ export function FormProvider({
       form: initialForm,
       isSubmitting
     }}>
-      {children}
+      <div className="w-full min-h-screen py-16 md:py-32">
+        {children}
+      </div>
     </FormContext.Provider>
   );
 }
