@@ -14,7 +14,7 @@ export default function FormNavigation() {
     const isLast = currentCardIdx === totalCards - 1;
 
   return (
-    <div className="absolute bottom-4 left-0 right-0 flex justify-between items-center px-6">
+    <div className="fixed bottom-4 left-0 right-0 flex justify-between items-center px-6">
       <button
         onClick={back}
         disabled={isFirst}

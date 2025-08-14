@@ -29,7 +29,7 @@ export default async function FormPage({ params }) {
 
   let form = null;
   try {
-    form = await getForm(customFormId, true);
+    form = await getForm({formId: customFormId, custom: true});
   } catch (err) {
     console.error("Failed to load form:", err);
   }

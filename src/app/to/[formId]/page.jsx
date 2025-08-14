@@ -7,7 +7,7 @@ export async function generateMetadata({ params }) {
 
   let form = null;
   try {
-    form = await getForm({ formId });
+    form = await getForm( {formId: formId, custom: false} );
   } catch (err) {
     console.error("Failed to load form metadata:", err);
   }
@@ -27,7 +27,7 @@ export default async function FormPage({ params }) {
 
   let form = null;
   try {
-    form = await getForm(formId, false);
+    form = await getForm({formId: formId, custom: false});
   } catch (err) {
     console.error("Failed to load form:", err);
   }
@@ -37,6 +37,8 @@ export default async function FormPage({ params }) {
   }
 
   return (
-    <FormClient form={form} />
+    <div className="w-full h-screen my-48">
+      <FormClient form={form} />
+    </div>
   );
 }
