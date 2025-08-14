@@ -37,8 +37,6 @@ export default async function FormPage({ params }) {
   }
 
   return (
-    <div className="w-full h-screen my-48">
-      <FormClient form={form} />
-    </div>
+    <FormClient form={form} />
   );
 }
