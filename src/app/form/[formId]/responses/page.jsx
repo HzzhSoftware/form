@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { listSubmissions } from "@/services/form";
 import { useParams } from "next/navigation";
 import { useFormContext } from "../../components/FormContext";
+import { FieldDisplay } from "../fields";
 
 export default function ResponsesPage() {
   const params = useParams();
@@ -30,15 +31,22 @@ export default function ResponsesPage() {
     loadSubmissions();
   }, [formId]);
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  const formatDate = (isoDateString) => {
+    try {
+      const date = new Date(isoDateString);
+      if (isNaN(date.getTime())) {
+        return "-";
+      }
+      return date.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (err) {
+      return "-";
+    }
   };
 
   const filteredSubmissions = submissions.filter(submission => {
@@ -180,14 +188,12 @@ export default function ResponsesPage() {
                       <input type="checkbox" className="rounded border-neutral-300 text-primary-600 focus:ring-primary-500" />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-900">
-                      {formatDate(submission.updatedAt)}
+                      {formatDate(submission.submittedAt)}
                     </td>
                     {form.cards.map(card => (
                       card.fields.map(field => (
                         <td key={field.id + "&" + submission.id} className="px-6 py-4 whitespace-nowrap">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-neutral-100 text-neutral-800">
-                            {submission[field.id] || "-"}
-                          </span>
+                          <FieldDisplay field={field} value={submission[field.id]} />
                         </td>
                       ))
                     ))}

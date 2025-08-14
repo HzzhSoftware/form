@@ -1,12 +1,13 @@
 import React from 'react';
 
-interface LongTextFieldProps {
+// 1. Builder component - for building/editing the form structure
+interface LongTextFieldBuilderProps {
   field: any;
   setCurrentFieldId: (fieldId: string) => void;
   onChange?: (value: string) => void;
 }
 
-const LongTextField: React.FC<LongTextFieldProps> = ({ 
+export const LongTextFieldBuilder: React.FC<LongTextFieldBuilderProps> = ({ 
   field, 
   setCurrentFieldId, 
   onChange, 
@@ -22,4 +23,48 @@ const LongTextField: React.FC<LongTextFieldProps> = ({
   );
 };
 
-export default LongTextField;
+// 2. User Input component - for users filling out the form
+interface LongTextFieldInputProps {
+  field: any;
+  value: string;
+  onChange: (value: string) => void;
+}
+
+export const LongTextFieldInput: React.FC<LongTextFieldInputProps> = ({ 
+  field, 
+  value,
+  onChange,
+}) => {
+  return (
+    <textarea
+      value={value ?? ""}
+      onChange={(e) => onChange(e.target.value)}
+      required={field.isRequired}
+      className="w-full border p-3"
+      placeholder={field.label}
+      rows={4}
+    />
+  );
+};
+
+// 3. Display component - for showing submitted values in responses table
+interface LongTextFieldDisplayProps {
+  field: any;
+  value: string;
+}
+
+export const LongTextFieldDisplay: React.FC<LongTextFieldDisplayProps> = ({ 
+  field, 
+  value 
+}) => {
+  return (
+    <div className="text-sm text-neutral-800 max-w-xs">
+      <div className="break-words">
+        {value || "-"}
+      </div>
+    </div>
+  );
+};
+
+// Default export for backward compatibility (builder)
+export default LongTextFieldBuilder;

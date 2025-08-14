@@ -1,12 +1,13 @@
 import React from 'react';
 
-interface NumberFieldProps {
+// 1. Builder component - for building/editing the form structure
+interface NumberFieldBuilderProps {
   field: any;
   setCurrentFieldId: (fieldId: string) => void;
   onChange?: (value: string) => void;
 }
 
-const NumberField: React.FC<NumberFieldProps> = ({ 
+export const NumberFieldBuilder: React.FC<NumberFieldBuilderProps> = ({ 
   field, 
   setCurrentFieldId, 
   onChange, 
@@ -22,4 +23,46 @@ const NumberField: React.FC<NumberFieldProps> = ({
   );
 };
 
-export default NumberField;
+// 2. User Input component - for users filling out the form
+interface NumberFieldInputProps {
+  field: any;
+  value: string;
+  onChange: (value: string) => void;
+}
+
+export const NumberFieldInput: React.FC<NumberFieldInputProps> = ({ 
+  field, 
+  value,
+  onChange,
+}) => {
+  return (
+    <input
+      type="number"
+      value={value ?? ""}
+      onChange={(e) => onChange(e.target.value)}
+      required={field.isRequired}
+      className="w-full border-b p-3"
+      placeholder={field.label}
+    />
+  );
+};
+
+// 3. Display component - for showing submitted values in responses table
+interface NumberFieldDisplayProps {
+  field: any;
+  value: string;
+}
+
+export const NumberFieldDisplay: React.FC<NumberFieldDisplayProps> = ({ 
+  field, 
+  value 
+}) => {
+  return (
+    <div className="text-sm text-neutral-800 font-mono">
+      {value || "-"}
+    </div>
+  );
+};
+
+// Default export for backward compatibility (builder)
+export default NumberFieldBuilder;
