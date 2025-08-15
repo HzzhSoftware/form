@@ -1,5 +1,5 @@
 import React from "react";
-import { FieldDisplay } from "../fields";
+import { FieldDisplay } from "../../../../components/form/fields";
 
 export default function ResponsesTable({ form, filteredSubmissions, formatDate }) {
   return (

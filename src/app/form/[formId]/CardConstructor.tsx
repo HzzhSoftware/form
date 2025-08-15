@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { Card, Form } from '@hzzhsoftware/types-form'
-import FieldConstructor from './fields/FieldConstructor'
+import FieldConstructor from '../../../components/form/fields/FieldConstructor'
 import { useFormContext } from '../components/FormContext';
 
 interface CardConstructorProps {

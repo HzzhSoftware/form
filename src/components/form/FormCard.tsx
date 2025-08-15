@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { useFormContext } from "./FormContext";
 import { AnimatePresence, motion } from "framer-motion";
-import Field from "./fields";
+import FieldInput from "./fields/FieldInput";
 import FormLoading from "./FormLoading";
 
 export default function FormCard() {
@@ -57,7 +57,7 @@ export default function FormCard() {
                 {field.label}
                 {field.isRequired && <span className="text-red-500 ml-1">*</span>}
               </label>
-              <Field
+              <FieldInput
                 field={field}
                 value={values[field.id] ?? ""}
                 onChange={(val) => handleChange(field.id, val)}

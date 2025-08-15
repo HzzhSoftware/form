@@ -11,5 +11,6 @@ export { default as MultipleSelectField } from './MultipleSelectField';
 export { default as TimestampField } from './TimestampField';
 
 // Main field constructors
-export { default as FieldInput } from './FieldInput';
-export { default as FieldDisplay } from './FieldDisplay';
+export { default as FieldInput } from './FieldInput'; //For User Input
+export { default as FieldDisplay } from './FieldDisplay'; //For Displaying Submitted Values
+export { default as FieldConstructor } from './FieldConstructor'; //For Building/Editing the Form Structure
