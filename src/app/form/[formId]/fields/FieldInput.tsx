@@ -51,7 +51,6 @@ export default function FieldInput({
           value={value ?? ""}
           onChange={(e) => onChange(e.target.value)}
           className="w-full border-b p-3"
-          placeholder={field.label}
         />
       );
   }
