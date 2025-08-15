@@ -1,7 +1,8 @@
 import React from "react";
-import { FieldDisplay } from "../../../../components/form/fields";
+import { FieldDisplay } from "@/components/form/fields";
 
 export default function ResponsesTable({ form, filteredSubmissions, formatDate }) {
+
   return (
     <div className="flex-1 bg-white flex flex-col overflow-hidden">
       <div className="flex-1 overflow-auto">

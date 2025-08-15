@@ -37,11 +37,14 @@ const FormRecord = ({ form }: { form: Form }) => {
         {formatDate(form.updatedAt)}
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <button className="text-neutral-400 hover:text-neutral-600">
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
-          </svg>
-        </button>
+        <Link href={`/to/${form.id}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 hover:text-neutral-900 transition-colors duration-200">
+          Go to Form
+        </Link>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <Link href={`/form/${form.id}/settings`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 hover:text-neutral-900 transition-colors duration-200">
+          Edit
+        </Link>
       </td>
     </tr>
   )
