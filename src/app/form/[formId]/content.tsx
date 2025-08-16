@@ -51,11 +51,11 @@ const Content = () => {
   };
   
   return (
-    <div className="flex flex-col w-full h-[calc(100vh-5rem)]">
+    <div className="flex flex-col w-full min-h-screen">
       {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1">
         {/* Left Sidebar (15-20% width) */}
-        <aside className="w-64 bg-neutral-50 border-r border-neutral-200 p-4 overflow-y-auto gap-6 flex flex-col">
+        <aside className="w-64 bg-neutral-50 border-r border-neutral-200 p-4 gap-6 flex flex-col">
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-medium text-neutral-700">Universal mode</span>
@@ -171,39 +171,30 @@ const Content = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
             </div>
-            
-            <div className="flex items-center space-x-2 p-2 bg-neutral-100 rounded">
-              {/* <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <span className="text-sm text-neutral-600">A</span> */}
-            </div>
           </div>
         </aside>
 
         {/* Central Content Area (50-60% width) */}
-        <main className="flex-1 bg-neutral-100 relative overflow-hidden p-6">
-          <div className="h-full rounded-lg shadow-lg">
-            <div className="h-full flex flex-col">
-              <div className=" text-2xl font-bold p-6">KYCombinator</div>
+        <main className="flex-1 bg-neutral-100 p-6">
+          <div className="rounded-lg shadow-lg bg-white">
+            <div className="p-6">
+              <div className="text-2xl font-bold mb-8">KYCombinator</div>
               
-              <div className="flex-1 flex items-center justify-center p-8">
-                <div className="max-w-6xl container w-full">
-                  {currentCardData ? (
-                    <CardConstructor card={currentCardData} />
-                  ) : (
-                    <div className="text-neutral-400 text-center">
-                      <p>No card selected</p>
-                    </div>
-                  )}
-                </div>
+              <div className="max-w-6xl container w-full">
+                {currentCardData ? (
+                  <CardConstructor card={currentCardData} />
+                ) : (
+                  <div className="text-neutral-400 text-center">
+                    <p>No card selected</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </main>
 
         {/* Right Sidebar (20-25% width) */}
-        <aside className="w-80 border-l border-neutral-200 p-6 overflow-y-auto">
+        <aside className="w-80 border-l border-neutral-200 p-6">
           {currentFieldData ? (
             <FieldSideBar field={currentFieldData} />
           ) : (

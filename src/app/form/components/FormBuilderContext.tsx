@@ -74,13 +74,14 @@ export function FormBuilderContextProvider({ form, children }: { form: Form, chi
     
     setIsSaving(true);
     try {
-      
-      await updateForm({ formId: localForm.id }, localForm);
-      console.log('Saving form:', localForm);
+      const formToSave = {
+        ...localForm
+      }
+      await updateForm({ formId: localForm.id }, formToSave);
+      console.log('Saving form:', formToSave);
       
       // Update both context and local state with the saved form data
-      setSavedFormState(localForm);
-      setLocalForm(localForm);
+      setSavedFormState(formToSave);
       setHasChanges(false);
     } catch (error) {
       console.error('Error saving form:', error);

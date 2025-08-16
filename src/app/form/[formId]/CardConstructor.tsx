@@ -1,10 +1,11 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { Card } from '@hzzhsoftware/types-form'
+import { Card, FormFieldType } from '@hzzhsoftware/types-form'
 import FieldConstructor from '../../../components/form/fields/FieldConstructor'
 import { useFormBuilderContext } from '../components/FormBuilderContext';
 import { v4 as uuidv4 } from 'uuid';
+import FieldTypeSelector from './FieldTypeSelector';
 
 interface CardConstructorProps {
   card: Card;
@@ -59,21 +60,45 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
     }));
   };
 
-  const handleAddField = () => {
-    // This would typically open a field type selector
-    // For now, we'll add a placeholder field
-    const newField = {
-      id: uuidv4(),
-      type: 'short_text' as const,
-      label: 'New Field',
-      isRequired: false,
+  const handleAddField = (fieldType: FormFieldType) => {
+    // Create a new field with the selected type and required properties
+    const createField = (type: FormFieldType) => {
+      const baseField = {
+        id: uuidv4(),
+        type,
+        label: `New ${type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}`,
+        isRequired: false,
+      };
+
+      // Add type-specific required properties
+      switch (type) {
+        case 'multiple_choice':
+        case 'multiple_select':
+          return {
+            ...baseField,
+            allowMultiple: false,
+            isRandomized: false,
+            allowOther: false,
+            isVerticalAlignment: false,
+          };
+        case 'uploader':
+          return {
+            ...baseField,
+            allowMultiple: false,
+            uploadService: 'local' as const,
+          };
+        default:
+          return baseField;
+      }
     };
+
+    const newField = createField(fieldType);
     
     updateLocalForm(form => ({
       ...form,
       cards: form.cards.map(c =>
         c.id === currentCardId
-          ? {...c, fields: [...c.fields, newField]}
+          ? {...c, fields: [...c.fields, newField as any]}
           : c
       )
     }));
@@ -137,22 +162,10 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
         )}
 
         {/* Add Field Button */}
-        <div 
-          onClick={handleAddField}
-          className="flex items-center space-x-2 p-4 rounded cursor-pointer transition-colors bg-neutral-100 hover:bg-neutral-200 border-2 border-dashed border-neutral-300 hover:border-primary-400"
-        >
-          <div className="w-6 h-6 rounded flex items-center justify-center text-white text-xs font-medium bg-neutral-400">
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-          </div>
-          <span className="text-sm text-neutral-600">
-            Add Field
-          </span>
-        </div>
+        <FieldTypeSelector onAddField={handleAddField} />
       </div>
     </div>
-  )
+  );
 }
 
 export default CardConstructor
