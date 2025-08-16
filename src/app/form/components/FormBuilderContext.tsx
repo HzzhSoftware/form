@@ -89,6 +89,24 @@ export function FormBuilderContextProvider({ form, children }: { form: Form, chi
     }
   };
 
+  // Auto-save functionality
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    
+    if (hasChanges) {
+      // Set a timer to save after 1 second of no changes
+      timeoutId = setTimeout(() => {
+        saveForm();
+      }, 1000);
+    }
+    
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [localForm, hasChanges, saveForm]);
+
   return (
     <FormBuilderContext.Provider value={{ 
       form: savedFormState, 

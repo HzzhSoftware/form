@@ -9,15 +9,12 @@ import { Card } from '@hzzhsoftware/types-form';
 
 const Content = () => {
   const { 
-    form, 
     localForm, 
     currentCardId, 
     hasChanges, 
     isSaving,
     setCurrentCardId, 
-    setForm,
     updateLocalForm,
-    saveForm
   } = useFormBuilderContext();
   
   const currentCardData = localForm.cards.find(card => card.id === currentCardId);
@@ -32,24 +29,6 @@ const Content = () => {
       setCurrentFieldId(null);
     }
   }, [currentCardId, currentCardData]);
-  
-  // Auto-save functionality
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    
-    if (hasChanges) {
-      // Set a timer to save after 1 second of no changes
-      timeoutId = setTimeout(() => {
-        saveForm();
-      }, 1000);
-    }
-    
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [localForm, hasChanges, saveForm]);
 
   const addCard = () => {
     const newCard: Card = {
