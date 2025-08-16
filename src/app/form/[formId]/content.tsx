@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { useFormContext } from '../components/FormContext'
+import { useFormBuilderContext } from '../components/FormBuilderContext'
 import CardConstructor from './CardConstructor'
 import FieldSideBar from './FieldSideBar'
 import { updateForm } from '@/services/form'
@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Card } from '@hzzhsoftware/types-form';
 
 const Content = () => {
-  const { form, currentCardId, setCurrentCardId, setForm } = useFormContext();
+  const { form, currentCardId, setCurrentCardId, setForm } = useFormBuilderContext();
   const currentCardData = form.cards.find(card => card.id === currentCardId);
   const [currentFieldId, setCurrentFieldId] = useState<string | null>(null);
   const currentFieldData = currentCardData?.fields.find(field => field.id === currentFieldId);
@@ -30,8 +30,47 @@ const Content = () => {
   
   // Track changes by comparing current form with local state
   useEffect(() => {
-    const hasFormChanges = JSON.stringify(form) !== JSON.stringify(localForm);
+    // More reliable change detection using reference comparison and specific property checks
+    const hasFormChanges = 
+      form.cards.length !== localForm.cards.length ||
+      form.status !== localForm.status ||
+      form.name !== localForm.name ||
+      form.description !== localForm.description ||
+      form.cards.some((card, index) => {
+        const localCard = localForm.cards[index];
+        if (!localCard) return true;
+        
+        return (
+          card.id !== localCard.id ||
+          card.title !== localCard.title ||
+          card.description !== localCard.description ||
+          card.fields.length !== localCard.fields.length ||
+          card.fields.some((field, fieldIndex) => {
+            const localField = localCard.fields[fieldIndex];
+            if (!localField) return true;
+            
+            return (
+              field.id !== localField.id ||
+              field.label !== localField.label ||
+              field.type !== localField.type ||
+              field.isRequired !== localField.isRequired ||
+              field.description !== localField.description
+            );
+          })
+        );
+      });
+    
     setHasChanges(hasFormChanges);
+    
+    // Debug logging to help identify state issues
+    if (hasFormChanges) {
+      console.log('Form changes detected:', {
+        formCards: form.cards.length,
+        localCards: localForm.cards.length,
+        formFields: form.cards.reduce((acc, card) => acc + card.fields.length, 0),
+        localFields: localForm.cards.reduce((acc, card) => acc + card.fields.length, 0)
+      });
+    }
   }, [form, localForm]);
   
   // Auto-save functionality

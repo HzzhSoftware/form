@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { Form } from "@hzzhsoftware/types-form";
 
-type FormContextType = {
+type FormBuilderContextType = {
   form: Form;
   currentCardId: string;
   currentFieldId: string | null;
@@ -12,15 +12,15 @@ type FormContextType = {
   setForm: (form: Form) => void;
 }
 
-const FormContext = createContext<FormContextType | undefined>(undefined);
+const FormBuilderContext = createContext<FormBuilderContextType | undefined>(undefined);
 
-export function FormContextProvider({ form, children }: { form: Form, children: React.ReactNode }) {
+export function FormBuilderContextProvider({ form, children }: { form: Form, children: React.ReactNode }) {
   const [currentCardId, setCurrentCardId] = useState<string>(form.cards[0].id);
   const [currentFieldId, setCurrentFieldId] = useState<string | null>(null);
   const [formState, setFormState] = useState<Form>(form);
 
   return (
-    <FormContext.Provider value={{ 
+    <FormBuilderContext.Provider value={{ 
       form: formState, 
       currentCardId, 
       currentFieldId,
@@ -29,14 +29,14 @@ export function FormContextProvider({ form, children }: { form: Form, children: 
       setForm: setFormState
     }}>
       {children}
-    </FormContext.Provider>
+    </FormBuilderContext.Provider>
   )
 }
 
-export function useFormContext() {
-  const context = useContext(FormContext);
+export function useFormBuilderContext() {
+  const context = useContext(FormBuilderContext);
   if (!context) {
-    throw new Error("useFormContext must be used within a FormContextProvider");
+    throw new Error("useFormBuilderContext must be used within a FormBuilderContextProvider");
   }
   return context;
 }

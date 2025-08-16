@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react'
 import { Card, Form } from '@hzzhsoftware/types-form'
 import FieldConstructor from '../../../components/form/fields/FieldConstructor'
-import { useFormContext } from '../components/FormContext';
+import { useFormBuilderContext } from '../components/FormBuilderContext';
+import { v4 as uuidv4 } from 'uuid';
 
 interface CardConstructorProps {
   card: Card;
@@ -13,7 +14,7 @@ interface CardConstructorProps {
 
 // Renders the current card in the form
 const CardConstructor: React.FC<CardConstructorProps> = ({ card, setLocalForm, localForm }) => {
-  const { currentCardId, currentFieldId, setCurrentFieldId } = useFormContext();
+  const { currentCardId, currentFieldId, setCurrentFieldId } = useFormBuilderContext();
   const [title, setTitle] = useState(card.title || "Your question here.");
   const [description, setDescription] = useState((card as any).description || "Description (optional)");
 
@@ -52,7 +53,7 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card, setLocalForm, l
     // This would typically open a field type selector
     // For now, we'll add a placeholder field
     const newField = {
-      id: crypto.randomUUID(),
+      id: uuidv4(),
       type: 'short_text' as const,
       label: 'New Field',
       isRequired: false,

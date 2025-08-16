@@ -1,12 +1,12 @@
 "use client"
 
 import React, { useState, useEffect } from "react";
-import { useFormContext } from "../../components/FormContext";
+import { useFormBuilderContext } from "../../components/FormBuilderContext";
 import { updateForm, getForm } from "@/services/form";
 import { OGMetadata, Form } from "@hzzhsoftware/types-form";
 
 export default function SettingsPage() {
-  const { form } = useFormContext();
+  const { form } = useFormBuilderContext();
   
   // Ensure form has proper ogMetadata structure from API response
   const [formWithMetadata, setFormWithMetadata] = useState<Form>(form);

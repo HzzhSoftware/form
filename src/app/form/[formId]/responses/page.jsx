@@ -3,13 +3,13 @@
 import React, { useState, useEffect } from "react";
 import { listSubmissions } from "@/services/form";
 import { useParams } from "next/navigation";
-import { useFormContext } from "../../components/FormContext";
+import { useFormBuilderContext } from "../../components/FormBuilderContext";
 import ResponsesTable from "./ResponsesTable";
 
 export default function ResponsesPage() {
   const params = useParams();
   const formId = params.formId;
-  const { form } = useFormContext();
+  const { form } = useFormBuilderContext();
   
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
