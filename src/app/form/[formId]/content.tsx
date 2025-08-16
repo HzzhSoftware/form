@@ -4,13 +4,23 @@ import React, { useState, useEffect } from 'react'
 import { useFormBuilderContext } from '../components/FormBuilderContext'
 import CardConstructor from './CardConstructor'
 import FieldSideBar from './FieldSideBar'
-import { updateForm } from '@/services/form'
 import { v4 as uuidv4 } from 'uuid';
 import { Card } from '@hzzhsoftware/types-form';
 
 const Content = () => {
-  const { form, currentCardId, setCurrentCardId, setForm } = useFormBuilderContext();
-  const currentCardData = form.cards.find(card => card.id === currentCardId);
+  const { 
+    form, 
+    localForm, 
+    currentCardId, 
+    hasChanges, 
+    isSaving,
+    setCurrentCardId, 
+    setForm,
+    updateLocalForm,
+    saveForm
+  } = useFormBuilderContext();
+  
+  const currentCardData = localForm.cards.find(card => card.id === currentCardId);
   const [currentFieldId, setCurrentFieldId] = useState<string | null>(null);
   const currentFieldData = currentCardData?.fields.find(field => field.id === currentFieldId);
   
@@ -23,56 +33,6 @@ const Content = () => {
     }
   }, [currentCardId, currentCardData]);
   
-  // Auto-save and save functionality
-  const [localForm, setLocalForm] = useState(form);
-  const [hasChanges, setHasChanges] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  
-  // Track changes by comparing current form with local state
-  useEffect(() => {
-    // More reliable change detection using reference comparison and specific property checks
-    const hasFormChanges = 
-      form.cards.length !== localForm.cards.length ||
-      form.status !== localForm.status ||
-      form.name !== localForm.name ||
-      form.description !== localForm.description ||
-      form.cards.some((card, index) => {
-        const localCard = localForm.cards[index];
-        if (!localCard) return true;
-        
-        return (
-          card.id !== localCard.id ||
-          card.title !== localCard.title ||
-          card.description !== localCard.description ||
-          card.fields.length !== localCard.fields.length ||
-          card.fields.some((field, fieldIndex) => {
-            const localField = localCard.fields[fieldIndex];
-            if (!localField) return true;
-            
-            return (
-              field.id !== localField.id ||
-              field.label !== localField.label ||
-              field.type !== localField.type ||
-              field.isRequired !== localField.isRequired ||
-              field.description !== localField.description
-            );
-          })
-        );
-      });
-    
-    setHasChanges(hasFormChanges);
-    
-    // Debug logging to help identify state issues
-    if (hasFormChanges) {
-      console.log('Form changes detected:', {
-        formCards: form.cards.length,
-        localCards: localForm.cards.length,
-        formFields: form.cards.reduce((acc, card) => acc + card.fields.length, 0),
-        localFields: localForm.cards.reduce((acc, card) => acc + card.fields.length, 0)
-      });
-    }
-  }, [form, localForm]);
-  
   // Auto-save functionality
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -80,7 +40,7 @@ const Content = () => {
     if (hasChanges) {
       // Set a timer to save after 1 second of no changes
       timeoutId = setTimeout(() => {
-        handleSave();
+        saveForm();
       }, 1000);
     }
     
@@ -89,25 +49,7 @@ const Content = () => {
         clearTimeout(timeoutId);
       }
     };
-  }, [localForm]); // Watch localForm instead of form to detect when changes stop
-  
-  const handleSave = async () => {
-    if (!hasChanges || isSaving) return;
-    
-    setIsSaving(true);
-    try {
-      await updateForm({ formId: form.id }, localForm);
-      console.log('Saving form:', localForm);
-      // Update context with the saved form data
-      setForm(localForm);
-      // Update local state to match the saved form state
-      setHasChanges(false);
-    } catch (error) {
-      console.error('Error saving form:', error);
-    } finally {
-      setIsSaving(false);
-    }
-  };
+  }, [localForm, hasChanges, saveForm]);
 
   const addCard = () => {
     const newCard: Card = {
@@ -116,15 +58,17 @@ const Content = () => {
       fields: [],
     };
 
-    setLocalForm({...localForm,
-      cards: [...localForm.cards, newCard]}
-    )
+    updateLocalForm(form => ({
+      ...form,
+      cards: [...form.cards, newCard]
+    }));
   };
 
   const deleteCard = (cardId: string) => {
-    setLocalForm({...localForm,
-      cards: localForm.cards.filter(card => card.id !== cardId)}
-    )
+    updateLocalForm(form => ({
+      ...form,
+      cards: form.cards.filter(card => card.id !== cardId)
+    }));
   };
   
   return (
@@ -169,7 +113,7 @@ const Content = () => {
               <div className="mb-4">
                 {localForm.status === 'published' ? (
                   <button
-                    onClick={() => setLocalForm({...localForm, status: 'archived'})}
+                    onClick={() => updateLocalForm(form => ({ ...form, status: 'archived' }))}
                     className="w-full bg-neutral-600 hover:bg-neutral-700 text-white text-sm font-medium py-2 px-3 rounded-md transition-colors flex items-center justify-center space-x-2"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,10 +123,10 @@ const Content = () => {
                   </button>
                 ) : (
                   <button
-                    onClick={() => setLocalForm({...localForm, status: 'published'})}
+                    onClick={() => updateLocalForm(form => ({ ...form, status: 'published' }))}
                     className="w-full bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium py-2 px-3 rounded-md transition-colors flex items-center justify-center space-x-2"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                     </svg>
                     <span>Publish Form</span>
@@ -267,7 +211,7 @@ const Content = () => {
               <div className="flex-1 flex items-center justify-center p-8">
                 <div className="max-w-6xl container w-full">
                   {currentCardData ? (
-                    <CardConstructor card={currentCardData} setLocalForm={setLocalForm} localForm={localForm}/>
+                    <CardConstructor card={currentCardData} />
                   ) : (
                     <div className="text-neutral-400 text-center">
                       <p>No card selected</p>
@@ -287,7 +231,7 @@ const Content = () => {
             <div className="text-neutral-400 text-center">
               <p>No field selected</p>
             </div>
-          )}
+            )}
         </aside>
       </div>
     </div>

@@ -1,20 +1,18 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { Card, Form } from '@hzzhsoftware/types-form'
+import { Card } from '@hzzhsoftware/types-form'
 import FieldConstructor from '../../../components/form/fields/FieldConstructor'
 import { useFormBuilderContext } from '../components/FormBuilderContext';
 import { v4 as uuidv4 } from 'uuid';
 
 interface CardConstructorProps {
   card: Card;
-  setLocalForm: (form: Form) => void;
-  localForm: Form;
 } 
 
 // Renders the current card in the form
-const CardConstructor: React.FC<CardConstructorProps> = ({ card, setLocalForm, localForm }) => {
-  const { currentCardId, currentFieldId, setCurrentFieldId } = useFormBuilderContext();
+const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
+  const { currentCardId, currentFieldId, setCurrentFieldId, localForm, updateLocalForm } = useFormBuilderContext();
   const [title, setTitle] = useState(card.title || "Your question here.");
   const [description, setDescription] = useState((card as any).description || "Description (optional)");
 
@@ -26,27 +24,39 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card, setLocalForm, l
 
   const handleTitleChange = (newTitle: string) => {
     setTitle(newTitle);
-    setLocalForm({...localForm, cards: localForm.cards.map(card => card.id === currentCardId ? {...card, title: newTitle} : card)});
+    updateLocalForm(form => ({
+      ...form, 
+      cards: form.cards.map(c => c.id === currentCardId ? {...c, title: newTitle} : c)
+    }));
   };
 
   const handleDescriptionChange = (newDescription: string) => {
     setDescription(newDescription);
-    setLocalForm({...localForm, cards: localForm.cards.map(card => card.id === currentCardId ? {...card, description: newDescription} : card)});
+    updateLocalForm(form => ({
+      ...form, 
+      cards: form.cards.map(c => c.id === currentCardId ? {...c, description: newDescription} : c)
+    }));
   };
 
   const handleFieldChange = (fieldId: string, value: string) => {
-    setLocalForm({...localForm, cards: localForm.cards.map(card => card.id === currentCardId ? {...card, fields: card.fields.map(field => field.id === fieldId ? {...field, value: value} : field)} : card)});
+    updateLocalForm(form => ({
+      ...form, 
+      cards: form.cards.map(c => c.id === currentCardId ? {
+        ...c, 
+        fields: c.fields.map(field => field.id === fieldId ? {...field, value: value} : field)
+      } : c)
+    }));
   };
 
   const handleDeleteField = (fieldId: string) => {
-    setLocalForm({
-      ...localForm, 
-      cards: localForm.cards.map(card => 
-        card.id === currentCardId 
-          ? {...card, fields: card.fields.filter(field => field.id !== fieldId)} 
-          : card
+    updateLocalForm(form => ({
+      ...form, 
+      cards: form.cards.map(c => 
+        c.id === currentCardId 
+          ? {...c, fields: c.fields.filter(field => field.id !== fieldId)} 
+          : c
       )
-    });
+    }));
   };
 
   const handleAddField = () => {
@@ -59,14 +69,14 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card, setLocalForm, l
       isRequired: false,
     };
     
-    setLocalForm({
-      ...localForm,
-      cards: localForm.cards.map(card =>
-        card.id === currentCardId
-          ? {...card, fields: [...card.fields, newField]}
-          : card
+    updateLocalForm(form => ({
+      ...form,
+      cards: form.cards.map(c =>
+        c.id === currentCardId
+          ? {...c, fields: [...c.fields, newField]}
+          : c
       )
-    });
+    }));
   };
 
   return (
