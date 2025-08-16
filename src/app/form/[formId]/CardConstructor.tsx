@@ -7,14 +7,13 @@ import { useFormContext } from '../components/FormContext';
 
 interface CardConstructorProps {
   card: Card;
-  setCurrentFieldId: (fieldId: string) => void;
   setLocalForm: (form: Form) => void;
   localForm: Form;
 } 
 
 // Renders the current card in the form
-const CardConstructor: React.FC<CardConstructorProps> = ({ card, setCurrentFieldId, setLocalForm, localForm }) => {
-  const { currentCardId } = useFormContext();
+const CardConstructor: React.FC<CardConstructorProps> = ({ card, setLocalForm, localForm }) => {
+  const { currentCardId, currentFieldId, setCurrentFieldId } = useFormContext();
   const [title, setTitle] = useState(card.title || "Your question here.");
   const [description, setDescription] = useState((card as any).description || "Description (optional)");
 
@@ -95,13 +94,18 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card, setCurrentField
       <div className="space-y-6">
         {card.fields.map((field) => (
           <div key={field.id} className="relative group">
-            <div className="border-2 border-dashed border-neutral-200 hover:border-primary-300 transition-colors duration-200 rounded-lg p-4 hover:bg-neutral-50 cursor-pointer">
-              <div onClick={() => setCurrentFieldId(field.id)}>
+            <div 
+              className={`border-2 rounded-lg p-4 transition-all duration-200 ${
+                field.id === currentFieldId 
+                  ? 'border-primary-500 bg-primary-50' 
+                  : 'border-dashed border-neutral-200 hover:border-primary-300 hover:bg-neutral-50 cursor-pointer'
+              }`}
+              onClick={() => setCurrentFieldId(field.id)}
+            >
               <FieldConstructor
                 field={field}
                 onChange={(val) => handleFieldChange(field.id, val)} 
               />
-              </div>
             </div>
             <button
               onClick={() => handleDeleteField(field.id)}

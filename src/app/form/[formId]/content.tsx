@@ -228,7 +228,7 @@ const Content = () => {
               <div className="flex-1 flex items-center justify-center p-8">
                 <div className="max-w-6xl container w-full">
                   {currentCardData ? (
-                    <CardConstructor card={currentCardData} setCurrentFieldId={setCurrentFieldId} setLocalForm={setLocalForm} localForm={localForm}/>
+                    <CardConstructor card={currentCardData} setLocalForm={setLocalForm} localForm={localForm}/>
                   ) : (
                     <div className="text-neutral-400 text-center">
                       <p>No card selected</p>
