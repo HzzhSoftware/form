@@ -3,21 +3,21 @@ import React from 'react';
 // 1. Builder component - for building/editing the form structure
 interface DateFieldBuilderProps {
   field: any;
-  setCurrentFieldId: (fieldId: string) => void;
   onChange?: (value: string) => void;
+  disabled?: boolean;
 }
 
 export const DateFieldBuilder: React.FC<DateFieldBuilderProps> = ({ 
   field, 
-  setCurrentFieldId,
   onChange,
+  disabled = false,
 }) => {
   return (
     <input
       type="date"
-      onClick={() => setCurrentFieldId(field.id)}
       onChange={(e) => onChange?.(e.target.value)}
-      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+      disabled={disabled}
+      className="w-full px-3 py-2 border border-primary-on-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
     />
   );
 };

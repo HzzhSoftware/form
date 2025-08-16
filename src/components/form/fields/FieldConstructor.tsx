@@ -15,46 +15,44 @@ import {
 
 interface FieldConstructorProps {
   field: FormField;
-  setCurrentFieldId: (fieldId: string) => void;
   onChange?: (value: string) => void;
 }
 
 const FieldConstructor: React.FC<FieldConstructorProps> = ({ 
   field, 
-  setCurrentFieldId,
   onChange, 
 }) => {
   const renderField = () => {
     switch (field.type) {
       case 'short_text':
-        return <ShortTextField field={field} setCurrentFieldId={setCurrentFieldId} onChange={onChange} />;
+        return <ShortTextField field={field} onChange={onChange} />;
       
       case 'long_text':
-        return <LongTextField field={field} setCurrentFieldId={setCurrentFieldId} onChange={onChange} />;
+        return <LongTextField field={field} onChange={onChange} />;
       
       case 'email':
-        return <EmailField field={field} setCurrentFieldId={setCurrentFieldId} onChange={onChange} />;
+        return <EmailField field={field} onChange={onChange} />;
       
       case 'phone':
-        return <PhoneField field={field} setCurrentFieldId={setCurrentFieldId} onChange={onChange} />;
+        return <PhoneField field={field} onChange={onChange} />;
       
       case 'number':
-        return <NumberField field={field} setCurrentFieldId={setCurrentFieldId} onChange={onChange} />;
+        return <NumberField field={field} onChange={onChange} />;
       
       case 'url':
-        return <UrlField field={field} setCurrentFieldId={setCurrentFieldId} onChange={onChange} />;
+        return <UrlField field={field} onChange={onChange} />;
       
       case 'date':
-        return <DateField field={field} setCurrentFieldId={setCurrentFieldId} onChange={onChange} />;
+        return <DateField field={field} onChange={onChange} />;
       
       case 'yes_no':
-        return <YesNoField field={field} setCurrentFieldId={setCurrentFieldId} onChange={onChange} />;
+        return <YesNoField field={field} onChange={onChange} />;
       
       case 'multiple_choice':
-        return <MultipleChoiceField field={field} setCurrentFieldId={setCurrentFieldId} onChange={onChange} />;
+        return <MultipleChoiceField field={field} onChange={onChange} />;
       
       case 'multiple_select':
-        return <MultipleSelectField field={field} setCurrentFieldId={setCurrentFieldId} onChange={onChange} />;
+        return <MultipleSelectField field={field} onChange={onChange} />;
       
       default:
         return (

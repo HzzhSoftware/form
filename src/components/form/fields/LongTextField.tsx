@@ -3,18 +3,15 @@ import React from 'react';
 // 1. Builder component - for building/editing the form structure
 interface LongTextFieldBuilderProps {
   field: any;
-  setCurrentFieldId: (fieldId: string) => void;
   onChange?: (value: string) => void;
 }
 
 export const LongTextFieldBuilder: React.FC<LongTextFieldBuilderProps> = ({ 
   field, 
-  setCurrentFieldId, 
   onChange, 
 }) => {
   return (
     <textarea
-      onClick={() => setCurrentFieldId(field.id)}
       onChange={(e) => onChange?.(e.target.value)}
       placeholder={`Enter ${field.label?.toLowerCase() || 'text'}`}
       rows={4}

@@ -3,17 +3,15 @@ import React from 'react';
 // 1. Builder component - for building/editing the form structure
 interface MultipleSelectFieldBuilderProps {
   field: any;
-  setCurrentFieldId: (fieldId: string) => void;
   onChange?: (value: string) => void;
 }
 
 export const MultipleSelectFieldBuilder: React.FC<MultipleSelectFieldBuilderProps> = ({ 
   field, 
-  setCurrentFieldId,
   onChange,
 }) => {
   return (
-    <div className="space-y-2" onClick={() => setCurrentFieldId(field.id)}>
+    <div className="space-y-2">
       {'options' in field && field.options?.map((option: string, index: number) => (
         <label key={index} className="flex items-center">
           <input

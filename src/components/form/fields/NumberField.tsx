@@ -3,19 +3,16 @@ import React from 'react';
 // 1. Builder component - for building/editing the form structure
 interface NumberFieldBuilderProps {
   field: any;
-  setCurrentFieldId: (fieldId: string) => void;
   onChange?: (value: string) => void;
 }
 
 export const NumberFieldBuilder: React.FC<NumberFieldBuilderProps> = ({ 
   field, 
-  setCurrentFieldId, 
   onChange, 
 }) => {
   return (
     <input
       type="number"     
-      onClick={() => setCurrentFieldId(field.id)}
       onChange={(e) => onChange?.(e.target.value)}
       placeholder={`Enter ${field.label?.toLowerCase() || 'number'}`}
       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"

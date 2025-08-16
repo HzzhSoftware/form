@@ -3,17 +3,15 @@ import React from 'react';
 // 1. Builder component - for building/editing the form structure
 interface YesNoFieldBuilderProps {
   field: any;
-  setCurrentFieldId: (fieldId: string) => void;
   onChange?: (value: string) => void;
 }
 
 export const YesNoFieldBuilder: React.FC<YesNoFieldBuilderProps> = ({ 
   field, 
-  setCurrentFieldId,
   onChange,
 }) => {
   return (
-    <div className="flex space-x-4" onClick={() => setCurrentFieldId(field.id)}>
+    <div className="flex space-x-4">
       <label className="flex items-center">
         <input
           type="radio"
