@@ -17,7 +17,6 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card, setLocalForm, l
   const [title, setTitle] = useState(card.title || "Your question here.");
   const [description, setDescription] = useState((card as any).description || "Description (optional)");
 
-  console.log(currentCardId);
   // Update local state when card changes
   useEffect(() => {
     setTitle(card.title || "Your question here.");
@@ -53,11 +52,10 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card, setLocalForm, l
     // This would typically open a field type selector
     // For now, we'll add a placeholder field
     const newField = {
-      id: `field_${Date.now()}`,
+      id: crypto.randomUUID(),
       type: 'short_text' as const,
       label: 'New Field',
       isRequired: false,
-      value: ''
     };
     
     setLocalForm({
@@ -97,7 +95,7 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card, setLocalForm, l
             <div 
               className={`border-2 rounded-lg p-4 transition-all duration-200 ${
                 field.id === currentFieldId 
-                  ? 'border-primary-500 bg-primary-50' 
+                  ? 'border-primary-500 bg-neutral-200' 
                   : 'border-dashed border-neutral-200 hover:border-primary-300 hover:bg-neutral-50 cursor-pointer'
               }`}
               onClick={() => setCurrentFieldId(field.id)}
