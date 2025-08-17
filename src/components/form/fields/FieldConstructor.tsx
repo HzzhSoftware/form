@@ -16,11 +16,13 @@ import {
 interface FieldConstructorProps {
   field: FormField;
   onChange?: (value: string) => void;
+  onOptionsChange?: (options: string[]) => void;
 }
 
 const FieldConstructor: React.FC<FieldConstructorProps> = ({ 
   field, 
   onChange, 
+  onOptionsChange,
 }) => {
   const renderField = () => {
     switch (field.type) {
@@ -49,10 +51,10 @@ const FieldConstructor: React.FC<FieldConstructorProps> = ({
         return <YesNoField field={field} onChange={onChange} />;
       
       case 'multiple_choice':
-        return <MultipleChoiceField field={field} onChange={onChange} />;
+        return <MultipleChoiceField field={field} onChange={onChange} onOptionsChange={onOptionsChange} />;
       
       case 'multiple_select':
-        return <MultipleSelectField field={field} onChange={onChange} />;
+        return <MultipleSelectField field={field} onChange={onChange} onOptionsChange={onOptionsChange} />;
       
       default:
         return (

@@ -49,6 +49,16 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
     }));
   };
 
+  const handleFieldOptionsChange = (fieldId: string, options: string[]) => {
+    updateLocalForm(form => ({
+      ...form, 
+      cards: form.cards.map(c => c.id === currentCardId ? {
+        ...c, 
+        fields: c.fields.map(field => field.id === fieldId ? {...field, options: options} : field)
+      } : c)
+    }));
+  };
+
   const handleDeleteField = (fieldId: string) => {
     updateLocalForm(form => ({
       ...form, 
@@ -76,6 +86,7 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
         case 'multiple_select':
           return {
             ...baseField,
+            options: ['Option 1', 'Option 2', 'Option 3'],
             allowMultiple: false,
             isRandomized: false,
             allowOther: false,
@@ -138,7 +149,8 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
             >
               <FieldConstructor
                 field={field}
-                onChange={(val) => handleFieldChange(field.id, val)} 
+                onChange={(val) => handleFieldChange(field.id, val)}
+                onOptionsChange={(options) => handleFieldOptionsChange(field.id, options)}
               />
             </div>
             <button
