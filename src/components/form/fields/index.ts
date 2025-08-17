@@ -8,6 +8,7 @@ export { default as DateField } from './DateField';
 export { default as YesNoField } from './YesNoField';
 export { default as MultipleChoiceField } from './MultipleChoiceField';
 export { default as MultipleSelectField } from './MultipleSelectField';
+export { default as StaticField } from './StaticField';
 export { default as TimestampField } from './TimestampField';
 
 // Main field constructors

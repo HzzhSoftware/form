@@ -59,6 +59,16 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
     }));
   };
 
+  const handleFieldUpdate = (fieldId: string, updates: Partial<any>) => {
+    updateLocalForm(form => ({
+      ...form, 
+      cards: form.cards.map(c => c.id === currentCardId ? {
+        ...c, 
+        fields: c.fields.map(field => field.id === fieldId ? {...field, ...updates} : field)
+      } : c)
+    }));
+  };
+
   const handleDeleteField = (fieldId: string) => {
     updateLocalForm(form => ({
       ...form, 
@@ -97,6 +107,13 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
             ...baseField,
             allowMultiple: false,
             uploadService: 'local' as const,
+          };
+        case 'static':
+          return {
+            ...baseField,
+            title: 'Static Content Title',
+            description: 'Optional description text',
+            image: '',
           };
         default:
           return baseField;
@@ -151,6 +168,7 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
                 field={field}
                 onChange={(val) => handleFieldChange(field.id, val)}
                 onOptionsChange={(options) => handleFieldOptionsChange(field.id, options)}
+                onFieldUpdate={(updates) => handleFieldUpdate(field.id, updates)}
               />
             </div>
             <button

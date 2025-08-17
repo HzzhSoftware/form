@@ -16,7 +16,8 @@ const FieldTypeSelector: React.FC<FieldTypeSelectorProps> = ({ onAddField }) => 
     { type: 'date' as FormFieldType, label: 'Date', icon: '📅', description: 'Date picker' },
     { type: 'yes_no' as FormFieldType, label: 'Yes/No', icon: '✓', description: 'Boolean choice' },
     { type: 'multiple_choice' as FormFieldType, label: 'Multiple Choice', icon: '○', description: 'Single selection from options', options: ['Yes', 'No'] },
-    { type: 'multiple_select' as FormFieldType, label: 'Multiple Select', icon: '☑', description: 'Multiple selections from options', options: ['Option 1', 'Option 2', 'Option 3'] }
+    { type: 'multiple_select' as FormFieldType, label: 'Multiple Select', icon: '☑', description: 'Multiple selections from options' },
+    { type: 'static' as FormFieldType, label: 'Static Content', icon: '📄', description: 'Display text, images, or other content' }
   ];
 
   return (

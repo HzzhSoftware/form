@@ -10,19 +10,22 @@ import {
   DateField,
   YesNoField,
   MultipleChoiceField,
-  MultipleSelectField
+  MultipleSelectField,
+  StaticField
 } from './index';
 
 interface FieldConstructorProps {
   field: FormField;
   onChange?: (value: string) => void;
   onOptionsChange?: (options: string[]) => void;
+  onFieldUpdate?: (updates: Partial<any>) => void;
 }
 
 const FieldConstructor: React.FC<FieldConstructorProps> = ({ 
   field, 
   onChange, 
   onOptionsChange,
+  onFieldUpdate,
 }) => {
   const renderField = () => {
     switch (field.type) {
@@ -55,6 +58,9 @@ const FieldConstructor: React.FC<FieldConstructorProps> = ({
       
       case 'multiple_select':
         return <MultipleSelectField field={field} onChange={onChange} onOptionsChange={onOptionsChange} />;
+      
+      case 'static':
+        return <StaticField field={field} onChange={onChange} onFieldUpdate={onFieldUpdate} />;
       
       default:
         return (
