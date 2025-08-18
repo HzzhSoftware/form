@@ -17,6 +17,7 @@ export default function SettingsPage() {
     image: form.ogMetadata?.image || ""
   });
   
+  const [shortUrl, setShortUrl] = useState<string>("");
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState("");
 
@@ -69,6 +70,43 @@ export default function SettingsPage() {
     } catch (error) {
       console.error("Error saving metadata:", error);
       setSaveStatus("Error saving changes");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleShortUrlUpdate = async () => {
+    if (!shortUrl.trim()) {
+      setSaveStatus("Short URL cannot be empty");
+      return;
+    }
+    
+    setIsSaving(true);
+    setSaveStatus("Updating short URL...");
+    
+    try {
+      const response = await fetch(`/form/shorturlPOST`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          formId: form.id,
+          shortUrl: shortUrl.trim()
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      setSaveStatus("Short URL updated successfully!");
+      setTimeout(() => {
+        setSaveStatus("");
+      }, 2000);
+    } catch (error) {
+      console.error("Error updating short URL:", error);
+      setSaveStatus("Error updating short URL");
     } finally {
       setIsSaving(false);
     }
@@ -143,7 +181,6 @@ export default function SettingsPage() {
                   This image will be used in social media previews. Recommended size: 1200x630 pixels
                 </p>
               </div>
-
               {/* Image Preview */}
               {metadata.image && (
                 <div>
@@ -162,6 +199,31 @@ export default function SettingsPage() {
                   </div>
                 </div>
               )}
+              {/* Short URL */}
+              <div>
+                <label className="block text-sm font-medium text-neutral-700 mb-2">
+                  Short URL
+                </label>
+                <div className="flex space-x-2">
+                  <input
+                    type="text"
+                    value={shortUrl}
+                    onChange={(e) => setShortUrl(e.target.value)}
+                    className="flex-1 px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    placeholder="Enter short URL (e.g., myform)"
+                  />
+                  <button
+                    onClick={handleShortUrlUpdate}
+                    disabled={isSaving || !shortUrl.trim()}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Update
+                  </button>
+                </div>
+                <p className="text-xs text-neutral-500 mt-1">
+                  This will create a shorter, more memorable URL for your form
+                </p>
+              </div>
             </div>
           </div>
 

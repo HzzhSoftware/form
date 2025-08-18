@@ -69,6 +69,16 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
     }));
   };
 
+  const handleFieldLabelChange = (fieldId: string, newLabel: string) => {
+    updateLocalForm(form => ({
+      ...form, 
+      cards: form.cards.map(c => c.id === currentCardId ? {
+        ...c, 
+        fields: c.fields.map(field => field.id === fieldId ? {...field, label: newLabel} : field)
+      } : c)
+    }));
+  };
+
   const handleDeleteField = (fieldId: string) => {
     updateLocalForm(form => ({
       ...form, 
@@ -86,7 +96,7 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
       const baseField = {
         id: uuidv4(),
         type,
-        label: `New ${type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}`,
+        label: `New ${type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} Field`,
         isRequired: false,
       };
 
@@ -169,6 +179,7 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
                 onChange={(val) => handleFieldChange(field.id, val)}
                 onOptionsChange={(options) => handleFieldOptionsChange(field.id, options)}
                 onFieldUpdate={(updates) => handleFieldUpdate(field.id, updates)}
+                onLabelChange={(label) => handleFieldLabelChange(field.id, label)}
               />
             </div>
             <button
