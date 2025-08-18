@@ -111,7 +111,7 @@ export function FormProvider({
 
     initialForm.cards.forEach((card) => {
       card.fields?.forEach((field) => {
-        if (!values[field.id]) {
+        if (field.isRequired && !values[field.id]) {
           allErrors[field.id] = "This field is required.";
         }
       });
