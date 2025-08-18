@@ -11,7 +11,6 @@ export default async function FormPage() {
   if (!forms) {
     return <div className="text-center text-red-600 text-xl">No forms found</div>;
   }
-  console.log(forms);
 
   return (
     <div className="min-h-screen bg-gray-50">
