@@ -6,6 +6,7 @@ import CardConstructor from './CardConstructor'
 import FieldSideBar from './FieldSideBar'
 import { v4 as uuidv4 } from 'uuid';
 import { Card } from '@hzzhsoftware/types-form';
+import DraggableList from './DraggableList';
 
 const Content = () => {
   const { 
@@ -112,55 +113,9 @@ const Content = () => {
                   </button>
                 )}
               </div>
-              
-              <div className="space-y-3">
-                {localForm.cards.map((card, index) => (
-                  <div 
-                    key={card.id}
-                    className={`flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors ${
-                      currentCardId === card.id ? 'bg-primary-100 border border-primary-300' : 'bg-neutral-100 hover:bg-neutral-200'
-                    }`}
-                    onClick={() => setCurrentCardId(card.id)}
-                  >
-                    <div className={`w-6 h-6 rounded flex items-center justify-center text-white text-xs font-medium ${
-                      currentCardId === card.id ? 'bg-primary-600' : 'bg-primary-500'
-                    }`}>
-                      {index + 1}
-                    </div>
-                    <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <span className={`  text-sm text-neutral-600 flex-1 truncate 
-                      ${currentCardId === card.id ? 'text-primary-on-600' : 'text-primary-600'}`}
-                      >
-                        {card.title || `Card ${index + 1}`}
-                    </span>
-                    <button onClick={() => deleteCard(card.id)} className="hover:cursor-pointer">
-                      <svg className="w-4 h-4 text-neutral-500 hover:text-red-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
-                ))}
-                
-                {/* Add Card Button */}
-                <div 
-                  onClick={addCard}
-                  className="flex items-center space-x-2 p-2 rounded cursor-pointer transition-colors bg-neutral-100 hover:bg-neutral-200 border-2 border-dashed border-neutral-300 hover:border-primary-400"
-                >
-                  <div className="w-6 h-6 rounded flex items-center justify-center text-white text-xs font-medium bg-neutral-400">
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                  </div>
-                  <svg className="w-4 h-4 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  <span className="text-sm text-neutral-600 flex-1 truncate">
-                    Add Card
-                  </span>
-                </div>
-              </div>
+              <DraggableList cards={localForm.cards} currentCardId={currentCardId} onSelect={setCurrentCardId} onDelete={deleteCard} onReorder={(nextCards) =>
+      updateLocalForm((form) => ({ ...form, cards: nextCards }))
+    } />
             </div>
           </div>
           
