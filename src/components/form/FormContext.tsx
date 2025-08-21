@@ -151,6 +151,16 @@ export function FormProvider({
       <div className="w-full min-h-screen py-16 md:py-32">
         {children}
       </div>
+      
+              {/* Semi-transparent loading overlay */}
+        {isSubmitting && (
+          <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50 backdrop-blur-sm transition-all duration-300">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+              <p className="text-lg font-medium text-primary">Saving...</p>
+            </div>
+          </div>
+        )}
     </FormContext.Provider>
   );
 }

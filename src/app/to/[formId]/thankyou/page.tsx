@@ -12,7 +12,7 @@ export default function ThankYouPage() {
         </p>
         <Link
           href="/"
-          className="inline-block bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
+          className="inline-block bg-primary-500 text-primary-on-500 btn rounded hover:bg-primary-700 hover:text-primary-on-700 transition"
         >
           Go back home
         </Link>
