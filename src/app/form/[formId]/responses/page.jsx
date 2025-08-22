@@ -61,6 +61,62 @@ export default function ResponsesPage() {
     return searchableText.includes(searchTerm.toLowerCase());
   });
 
+  const exportToCSV = () => {
+    if (!form || !filteredSubmissions.length) return;
+
+    // Create CSV headers
+    const headers = ['Response Time'];
+    form.cards.forEach(card => {
+      card.fields.forEach(field => {
+        headers.push(field.label);
+      });
+    });
+
+    // Create CSV rows
+    const csvRows = [headers.join(',')];
+    
+    filteredSubmissions.forEach(submission => {
+      const row = [formatDate(submission.submittedAt)];
+      
+      form.cards.forEach(card => {
+        card.fields.forEach(field => {
+          let value = submission[field.id] || '';
+          
+          // Handle different field types for CSV
+          if (Array.isArray(value)) {
+            value = value.join('; ');
+          } else if (typeof value === 'object' && value !== null) {
+            value = JSON.stringify(value);
+          }
+          
+          // Escape commas and quotes in CSV
+          if (typeof value === 'string' && (value.includes(',') || value.includes('"'))) {
+            value = `"${value.replace(/"/g, '""')}"`;
+          }
+          
+          row.push(value);
+        });
+      });
+      
+      csvRows.push(row.join(','));
+    });
+
+    // Create and download CSV file
+    const csvContent = csvRows.join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `${form.title || 'form'}_responses_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -91,6 +147,25 @@ export default function ResponsesPage() {
             </svg>
             <span className="text-sm font-medium">Responses [{submissions.length}]</span>
           </div>
+        </div>
+
+        {/* Export Button */}
+        <div className="mb-6">
+          <button
+            onClick={exportToCSV}
+            disabled={!filteredSubmissions.length}
+            className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-neutral-300 disabled:cursor-not-allowed transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span>Export to CSV</span>
+          </button>
+          {filteredSubmissions.length > 0 && (
+            <p className="text-xs text-neutral-500 text-center mt-2">
+              Export {filteredSubmissions.length} response{filteredSubmissions.length !== 1 ? 's' : ''}
+            </p>
+          )}
         </div>
 
         {/* Search and Filters */}
