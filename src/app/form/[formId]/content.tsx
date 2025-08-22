@@ -113,9 +113,25 @@ const Content = () => {
                   </button>
                 )}
               </div>
+              
               <DraggableList cards={localForm.cards} currentCardId={currentCardId} onSelect={setCurrentCardId} onDelete={deleteCard} onReorder={(nextCards) =>
-      updateLocalForm((form) => ({ ...form, cards: nextCards }))
-    } />
+                updateLocalForm((form) => ({ ...form, cards: nextCards }))
+              } />
+              
+              {/* Add Card Button */}
+              <div className="mt-4 pt-4 border-t border-neutral-200">
+                <button
+                  onClick={addCard}
+                  className="w-full flex items-center justify-center space-x-2 px-3 py-2 rounded-md border border-neutral-300 hover:border-primary-400 hover:bg-primary-50 transition-all duration-200 group"
+                >
+                  <div className="w-5 h-5 rounded-full bg-primary-100 text-primary-700 text-xs font-bold flex items-center justify-center group-hover:bg-primary-200 transition-colors">
+                    +
+                  </div>
+                  <span className="text-xs text-neutral-600 group-hover:text-primary-700 transition-colors">
+                    Add New Card
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
           
