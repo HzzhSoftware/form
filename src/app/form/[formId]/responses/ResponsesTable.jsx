@@ -4,7 +4,7 @@ import { FieldDisplay } from "@/components/form/fields";
 export default function ResponsesTable({ form, filteredSubmissions, formatDate }) {
 
   return (
-    <div className="flex-1 bg-white flex flex-col overflow-hidden">
+    <div className="flex-1 bg-white flex flex-col overflow-hidden pb-2">
       <div className="flex-1 overflow-auto">
         <div className="w-full">
           <table className="w-full divide-y divide-neutral-200 border border-neutral-200">
