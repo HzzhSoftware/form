@@ -18,6 +18,8 @@ import {
   ListSubmissionsResponse,
   GetSubmissionParams,
   GetSubmissionResponse,
+  DeleteSubmissionParams,
+  DeleteSubmissionResponse,
 } from "@hzzhsoftware/types-form";
 
 /** Get a form by ID */
@@ -82,4 +84,12 @@ export async function deleteForm(params: DeleteFormParams): Promise<DeleteFormRe
 export async function listSubmissions(params: ListSubmissionsParams): Promise<ListSubmissionsResponse> {
   const { formId, page = 1, limit = 50 } = params;
   return fetchFormAPI<ListSubmissionsResponse>(`/${formId}/submit?page=${page}&limit=${limit}`);
+}
+
+/** Delete a form submission */
+export async function deleteSubmission(params: DeleteSubmissionParams): Promise<DeleteSubmissionResponse> {
+  const { formId, submissionId } = params;
+  return fetchFormAPI<DeleteSubmissionResponse>(`/${formId}/submit/${submissionId}`, {
+    method: "DELETE",
+  });
 }

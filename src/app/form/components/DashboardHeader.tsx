@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Avatar from "@/components/auth/Avatar";
 
-export default function DashboardHeader({children}: {children: React.ReactNode}) {
+export default function DashboardHeader() {
   return (
     <header className="border-b border-neutral-300 px-6 py-4">
       <div className="flex items-center justify-between">
