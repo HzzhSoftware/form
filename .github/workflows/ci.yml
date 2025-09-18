@@ -2,17 +2,74 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [main, dev, stg]
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Stage to deploy (prod|staging|dev)"
+        required: false
+        default: ""
 
 jobs:
-  build-and-deploy:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      stage: ${{ steps.map.outputs.stage }}
+      subdomain: ${{ steps.map.outputs.subdomain }}
+    steps:
+      - id: map
+        run: |
+          set -e
+
+          # Branch → default STAGE / ENVIRONMENT
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            STAGE="prod"; ENVIRONMENT="prod"
+          elif [ "${{ github.ref }}" = "refs/heads/stg" ]; then
+            STAGE="stg"; ENVIRONMENT="stg"
+          elif [ "${{ github.ref }}" = "refs/heads/dev" ]; then
+            STAGE="dev"; ENVIRONMENT="dev"
+          else
+            echo "Unsupported branch: ${{ github.ref }}"; exit 1
+          fi
+
+          # Optional manual override (workflow_dispatch)
+          if [ -n "${{ github.event.inputs.stage }}" ]; then
+            case "${{ github.event.inputs.stage }}" in
+              prod|stg|dev)
+                STAGE="${{ github.event.inputs.stage }}"
+                ENVIRONMENT="${{ github.event.inputs.stage }}"
+                ;;
+              *)
+                echo "Invalid manual stage '${{ github.event.inputs.stage }}'"; exit 1
+                ;;
+            esac
+          fi
+
+          case "$STAGE" in
+            prod|production) SUBDOMAIN="";;
+            stg)         SUBDOMAIN="stg";;
+            dev)             SUBDOMAIN="dev";;
+            *)               SUBDOMAIN="$STAGE";;  # fallback: <stage>.api
+          esac
+
+          if [ -z "$SUBDOMAIN" ]; then
+            SUBDOMAIN="form"
+          else
+            SUBDOMAIN="${SUBDOMAIN}-form"
+          fi
+
+          echo "stage=$STAGE" >> $GITHUB_OUTPUT
+          echo "subdomain=$SUBDOMAIN" >> $GITHUB_OUTPUT
+
+  deploy:
+    needs: setup
     runs-on: ubuntu-latest
     env:
       NEXT_PUBLIC_CDN_URL: ${{ secrets.NEXT_PUBLIC_CDN_URL }}
       HOSTED_ZONE_ID: ${{ secrets.HOSTED_ZONE_ID }}
       CERTIFICATE_ARN: ${{ secrets.CERTIFICATE_ARN }}
+      STAGE: ${{ needs.setup.outputs.stage }}
+      SUBDOMAIN: ${{ needs.setup.outputs.subdomain }}
     steps:
     - uses: actions/checkout@v4
 
@@ -33,5 +90,5 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-    - name: Deploy with SST
-      run: npx sst deploy --stage prod 
+    - name: SST deploy (${{ env.STAGE }})
+      run: npx sst deploy --stage "$STAGE"
