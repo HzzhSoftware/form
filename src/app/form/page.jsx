@@ -1,7 +1,7 @@
 import React from "react";
 import { listForms } from "@/services/form";
 import FormRecord from "./components/FormRecord";
-import DashboardHeader from "./components/DashboardHeader";
+import DashboardHeader from "../../components/Header";
 import DashboardSidebar from "./components/DashboardSidebar";
 
 export default async function FormPage() {
