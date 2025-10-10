@@ -12,12 +12,27 @@ const FormRecord = ({ form }: { form: Form }) => {
     })
   }
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'draft':
+        return 'bg-neutral-500'
+      case 'published':
+        return 'bg-primary-500'
+      case 'unpublished':
+        return 'bg-secondary-500'
+      case 'archived':
+        return 'bg-neutral-900'
+      default:
+        return 'bg-neutral-500'
+    }
+  }
+
   // Mock data for demonstration - replace with actual data when available
   return (
     <tr className="hover:bg-neutral-50">
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="flex items-center">
-          <div className="w-4 h-4 bg-red-500 rounded mr-3"></div>
+          <div className={`w-4 h-4 ${getStatusColor(form.status)} rounded mr-3`}></div>
           <div>
             <Link href={`/form/${form.id}`} className="text-sm font-medium text-neutral-900 hover:text-purple-600">
               {form.name}
@@ -26,12 +41,15 @@ const FormRecord = ({ form }: { form: Form }) => {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-900">
-        <Link href={`/form/${form.id}/responses`} className="hover:cursor-pointer hover:underline transition-all duration-300">
+        {form.starts}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-900">
+        <Link href={`/form/${form.id}/responses`} className="font-bold text-primary-500 hover:cursor-pointer underline transition-all duration-300">
           {form.submissions}
         </Link>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-900">
-        {form.submissions}%
+        {form.starts === 0 ? '0%' : `${Math.round((form.submissions / form.starts) * 100)}%`}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-900">
         {formatDate(form.updatedAt)}
