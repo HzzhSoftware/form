@@ -99,8 +99,8 @@ const FormRecord = ({ form }: { form: Form }) => {
     {/* Confirmation Dialog */}
     {showConfirmDialog && (
       <tr>
-        <td colSpan={7} className="px-6 py-4 bg-red-50 border-t border-red-200">
-          <div className="flex items-center justify-between">
+        <td colSpan={8} className="px-6 py-4 bg-red-50 border-t border-red-200">
+          <div className="flex items-center justify-between px-8">
             <div className="text-sm text-red-800">
               Are you sure you want to delete "{form.name}"? This action cannot be undone and will delete all submissions.
             </div>
