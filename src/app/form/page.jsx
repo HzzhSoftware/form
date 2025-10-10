@@ -35,6 +35,7 @@ export default async function FormPage() {
                       <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Updated</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Go to Form</th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Edit Form</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">Delete Form</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-neutral-200">

@@ -27,6 +27,9 @@ export default async function Home() {
     console.error('Failed to list forms:', err);
   }
 
+  // Filter forms to only show published ones
+  forms = forms.filter((form: any) => form.status === 'published');
+
   // Sort forms by updatedAt date (most recent first)
   forms.sort((a, b) => {
     const dateA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
