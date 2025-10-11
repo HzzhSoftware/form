@@ -6,7 +6,7 @@ import { Form } from '@hzzhsoftware/types-form'
 import { updateForm } from '@/services/form'
 import Link from 'next/link'
 
-const HeaderBar = ({ form, children }: { form: Form, children: React.ReactNode }) => {
+const HeaderBar = ({ form }: { form: Form }) => {
   const router = useRouter();
   const pathname = usePathname();
   
@@ -167,7 +167,6 @@ const HeaderBar = ({ form, children }: { form: Form, children: React.ReactNode }
         <button className="flex items-center btn btn-primary">
           <span>Share</span>
         </button>
-        {children}
       </div>
     </div>
   )
