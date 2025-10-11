@@ -1,6 +1,6 @@
 import Link from 'next/link';
-// Reuse the existing dashboard header to provide login/avatar and navigation.
-import DashboardHeader from '@/components/Header';
+import Header from '@/components/Header';
+import { listForms } from '@/services/form';
 
 /**
  * The homepage for HZZH Forms. This page is designed to be inviting and informative,
@@ -10,10 +10,34 @@ import DashboardHeader from '@/components/Header';
  * relies on utility classes (such as Tailwind CSS) and existing button styles
  * (e.g. `btn btn-primary`) provided by the project’s global styles.
  */
-export default function Home() {
-  // A list of feature descriptions to display on the homepage. Keeping these in
-  // an array makes it trivial to add or remove items without touching the
-  // surrounding layout code.
+export default async function Home() {
+  // Fetch the current forms to display in the first section. The API may return
+  // different shapes, so extract an array of forms in a resilient way.
+  let forms: any[] = [];
+  try {
+    const formsData: any = await listForms({ page: 1, limit: 10 });
+    if (Array.isArray(formsData)) {
+      forms = formsData;
+    } else if (formsData && Array.isArray(formsData.forms)) {
+      forms = formsData.forms;
+    } else if (formsData && Array.isArray(formsData.data)) {
+      forms = formsData.data;
+    }
+  } catch (err) {
+    console.error('Failed to list forms:', err);
+  }
+
+  // Filter forms to only show published ones
+  forms = forms.filter((form: any) => form.status === 'published');
+
+  // Sort forms by updatedAt date (most recent first)
+  forms.sort((a, b) => {
+    const dateA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+    const dateB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+    return dateB - dateA; // Descending order (newest first)
+  });
+
+  // A list of feature descriptions to display on the sales/marketing section.
   const features = [
     {
       title: 'Drag & Drop Builder',
@@ -49,33 +73,53 @@ export default function Home() {
 
   return (
     <div className="min-h-screen p-8 bg-gray-50">
-      {/* Header with login/avatar and navigation. This pulls from the existing
-         dashboard components to ensure a consistent user experience across
-         internal pages. */}
-      <DashboardHeader />
-
+      <Header/>
       <main className="max-w-6xl mx-auto">
-        {/* Hero Section */}
-        <section className="text-center mb-16">
-          <h1 className="text-5xl font-extrabold mb-6">Welcome to HZZH Forms</h1>
-          <p className="text-xl text-gray-700 mb-8">
-            Design, share, and analyze forms with ease. Collect the information
-            you need, when you need it.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            {/* Primary call to action: create a new form */}
-            <Link href="/forms/new" className="btn btn-primary px-6 py-3 rounded-md">
-              Create Your First Form
-            </Link>
-            {/* Secondary call to action: view the documentation */}
-            <Link href="/docs" className="btn btn-primary px-6 py-3 rounded-md">
-              Read Documentation
+        {/* Current Forms Section */}
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold text-center mb-8">Forms</h2>
+          {forms && forms.length > 0 ? (
+            <ul className="space-y-4">
+              {forms.map((form: any) => (
+                <li
+                  key={form.id}
+                  className="bg-white px-4 py-3 rounded shadow-sm flex justify-between items-center"
+                >
+                  <Link
+                    href={`/to/${form.id}`}
+                    className="text-lg font-medium text-neutral-900 hover:text-purple-600"
+                  >
+                    {form.name || form.title || 'Untitled Form'}
+                  </Link>
+                  {form.updatedAt ? (
+                    <span className="text-sm text-neutral-500">
+                      {new Date(form.updatedAt).toLocaleDateString('en-US', {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
+                      })}
+                    </span>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-center text-neutral-600">No forms found.</p>
+          )}
+          
+          {/* Create Form Call-to-Action */}
+          <div className="text-center mt-8">
+            <Link href="/form" className="btn btn-primary px-6 py-3 rounded-md">
+              Create Form
             </Link>
           </div>
         </section>
 
-        {/* Features Section */}
+        {/* Sales & Marketing Section */}
         <section className="mb-16">
+          <div className="text-center mb-8 text-2xl font-bold">
+            HZZH Forms
+          </div>
           <h2 className="text-3xl font-bold text-center mb-8">
             Everything you need to build better forms
           </h2>
@@ -90,49 +134,50 @@ export default function Home() {
               </div>
             ))}
           </div>
+            <div className="text-center mt-8">
+              <a
+                href="https://www.hzzhsoftware.com/form/product"        
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary px-6 py-3 rounded-md"
+              >
+                Product Usage Docs
+              </a>
+            </div>
         </section>
 
-        {/* Resources Section */}
+        {/* Engineering Section */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8">Documentation & Resources</h2>
-          <div className="flex flex-col sm:flex-row justify-center gap-8">
-            <a
-              href="www.hzzhsoftware/form/engineering"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary px-6 py-3 rounded-md"
-            >
-              Engineering Docs
-            </a>
-            <a
-              href="www.hzzhsoftware/form/product"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary px-6 py-3 rounded-md"
-            >
-              Product Usage Docs
-            </a>
-          </div>
+          <h2 className="text-3xl font-bold text-center mb-8">For Engineers</h2>
+          <p className="text-center text-gray-700 mb-6">
+            Explore our engineering documentation for deeper technical insights, API references,
+            and best practices when building with HZZH Forms.
+          </p>
+            <div className="text-center">
+              <a
+                href="https://www.hzzhsoftware.com/form/engineering"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary px-6 py-3 rounded-md"
+              >
+                Engineering Docs
+              </a>
+            </div>
         </section>
 
         {/* Final Call‑to‑Action */}
         <section className="text-center text-gray-700">
           <p className="mb-4">
-            Start building your first form today using our simple and powerful tools.
+            Ready to build? Start using HZZH Forms today with our simple and powerful tools.
           </p>
-          <Link href="/form" className="btn btn-primary px-8 py-4 rounded-md">
-            Get Started
-          </Link>
-          <p className="mt-6 text-sm">
-            Need help? Check out our{' '}
-            <Link
-              href="/docs"
-              className="underline text-blue-600 hover:text-blue-800"
-            >
-              documentation
-            </Link>
-            .
-          </p>
+          <a
+            href="https://hzzhsoftware.com/hzzh"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary px-8 py-4 rounded-md"
+          >
+            Get HZZH Forms
+          </a>
         </section>
       </main>
     </div>

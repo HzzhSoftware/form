@@ -2,7 +2,8 @@ import React from "react";
 import { FieldDisplay } from "@/components/form/fields";
 
 export default function ResponsesTable({ form, filteredSubmissions, formatDate }) {
-
+  console.log(form);
+  console.log(filteredSubmissions);
   return (
     <div className="flex-1 bg-white flex flex-col overflow-hidden pb-2">
       <div className="flex-1 overflow-auto">
@@ -24,16 +25,16 @@ export default function ResponsesTable({ form, filteredSubmissions, formatDate }
                     </svg>
                   </div>
                 </th>
-                {form.cards.map(card => (
+                {form.cards.map(card => 
                   card.fields.map(field => (
-                    <th key={field.id} className="px-4 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider border-r border-neutral-200 min-w-[250px]">
+                    <th key={`${card.id}-${field.id}`} className="px-4 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider border-r border-neutral-200 min-w-[250px]">
                       <div className="flex items-start space-x-1">
                         <div className="w-3 h-3 bg-primary-500 rounded flex-shrink-0 mt-0.5"></div>
                         <span className="leading-tight break-words">{field.label}</span>
                       </div>
                     </th>
                   ))
-                ))}
+                )}
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-neutral-200">
@@ -45,15 +46,15 @@ export default function ResponsesTable({ form, filteredSubmissions, formatDate }
                   <td className="w-40 px-4 py-4 text-sm text-neutral-900 border-r border-neutral-200">
                     {formatDate(submission.submittedAt)}
                   </td>
-                  {form.cards.map(card => (
+                  {form.cards.map(card => 
                     card.fields.map(field => (
-                      <td key={field.id + "&" + submission.id} className="px-4 py-4 border-r border-neutral-200 min-w-[250px]">
+                      <td key={`${submission.id}-${card.id}-${field.id}`} className="px-4 py-4 border-r border-neutral-200 min-w-[250px]">
                         <div className="max-w-none">
                           <FieldDisplay field={field} value={submission[field.id]} />
                         </div>
                       </td>
                     ))
-                  ))}
+                  )}
                 </tr>
               ))}
             </tbody>
