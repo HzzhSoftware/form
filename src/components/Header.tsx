@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Avatar from "@/components/auth/Avatar";
 
-export default function Header() {
+export default function Header({ children }: { children?: React.ReactNode }) {
   return (
     <header className="border-b border-neutral-300 px-6 py-4">
       <div className="flex items-center justify-between">
@@ -18,14 +18,8 @@ export default function Header() {
               priority
             />
           </Link>
-
-          {/* Navigation Tabs */}
-          <nav className="flex space-x-8">
-            <Link href="/form" className="text-primary-500 border-b-2 border-primary-500 pb-2 px-1 text-sm font-medium">
-              Forms
-            </Link>
-          </nav>
         </div>
+        {children}
 
         {/* Right side icons */}
         <div className="flex items-center space-x-4">

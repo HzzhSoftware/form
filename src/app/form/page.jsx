@@ -2,7 +2,7 @@ import React from "react";
 import { listForms } from "@/services/form";
 import FormRecord from "./components/FormRecord";
 import DashboardSidebar from "./components/DashboardSidebar";
-
+import Header from '@/components/Header';
 export default async function FormPage() {
   let forms = null;
   forms = await listForms(1, 10);
@@ -13,6 +13,7 @@ export default async function FormPage() {
 
   return (
     <div className="min-h-screen bg-neutral-50">
+      <Header/>
       <div className="flex h-screen">
         <DashboardSidebar forms={forms} />
         <main className="flex-1 overflow-auto">

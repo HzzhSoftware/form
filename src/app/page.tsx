@@ -1,5 +1,5 @@
 import Link from 'next/link';
-
+import Header from '@/components/Header';
 import { listForms } from '@/services/form';
 
 /**
@@ -73,6 +73,7 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen p-8 bg-gray-50">
+      <Header/>
       <main className="max-w-6xl mx-auto">
         {/* Current Forms Section */}
         <section className="mb-16">
