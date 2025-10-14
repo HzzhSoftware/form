@@ -25,7 +25,7 @@ export default function SettingsPage() {
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const apiForm = await getForm({ formId: form.id });
+        const apiForm = await getForm({ formId: form.formId });
         if (apiForm) {
           setFormWithMetadata(apiForm);
           setMetadata({
@@ -46,7 +46,7 @@ export default function SettingsPage() {
     };
     
     fetchFormData();
-  }, [form.id, form.ogMetadata, form.name, form.description]);
+  }, [form.formId, form.ogMetadata, form.name, form.description]);
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -61,7 +61,7 @@ export default function SettingsPage() {
         }
       };
       
-      await updateForm({ formId: form.id }, updatedForm);
+      await updateForm({ formId: form.formId }, updatedForm);
       setSaveStatus("Saved successfully!");
       
       setTimeout(() => {
@@ -91,7 +91,7 @@ export default function SettingsPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          formId: form.id,
+          formId: form.formId,
           shortUrl: shortUrl.trim()
         })
       });

@@ -41,7 +41,7 @@ export default async function FormPage() {
                   </thead>
                   <tbody className="bg-white divide-y divide-neutral-200">
                     {forms.map((form) => (
-                      <FormRecord key={form.id} form={form} />
+                      <FormRecord key={form.formId} form={form} />
                     ))}
                   </tbody>
                 </table>

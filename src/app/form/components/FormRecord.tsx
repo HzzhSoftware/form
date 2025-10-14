@@ -35,7 +35,7 @@ const FormRecord = ({ form }: { form: Form }) => {
   const handleDelete = async () => {
     setIsDeleting(true)
     try {
-      await deleteForm({ formId: form.id })
+      await deleteForm({ formId: form.formId })
       // Refresh the page to update the list
       window.location.reload()
     } catch (error) {
@@ -55,7 +55,7 @@ const FormRecord = ({ form }: { form: Form }) => {
         <div className="flex items-center">
           <div className={`w-4 h-4 ${getStatusColor(form.status)} rounded mr-3`}></div>
           <div>
-            <Link href={`/form/${form.id}`} className="text-sm font-medium text-neutral-900 hover:text-purple-600">
+            <Link href={`/form/${form.formId}`} className="text-sm font-medium text-neutral-900 hover:text-purple-600">
               {form.name}
             </Link>
           </div>
@@ -65,7 +65,7 @@ const FormRecord = ({ form }: { form: Form }) => {
         {form.starts}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-900">
-        <Link href={`/form/${form.id}/responses`} className="font-bold text-primary-500 hover:cursor-pointer underline transition-all duration-300">
+        <Link href={`/form/${form.formId}/responses`} className="font-bold text-primary-500 hover:cursor-pointer underline transition-all duration-300">
           {form.submissions}
         </Link>
       </td>
@@ -76,12 +76,12 @@ const FormRecord = ({ form }: { form: Form }) => {
         {formatDate(form.updatedAt)}
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <Link href={`/to/${form.id}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 hover:text-neutral-900 transition-colors duration-200">
+        <Link href={`/to/${form.formId}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 hover:text-neutral-900 transition-colors duration-200">
           Go to Form
         </Link>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <Link href={`/form/${form.id}/settings`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 hover:text-neutral-900 transition-colors duration-200">
+        <Link href={`/form/${form.formId}/settings`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-2 text-sm font-medium text-neutral-700 bg-white border border-neutral-300 rounded-md hover:bg-neutral-50 hover:text-neutral-900 transition-colors duration-200">
           Edit
         </Link>
       </td>
