@@ -15,9 +15,9 @@ const HeaderBar = ({ form }: { form: Form }) => {
   const [isSaving, setIsSaving] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   
-  const isContentActive = pathname === `/form/${form.id}`;
-  const isResponsesActive = pathname === `/form/${form.id}/responses`;
-  const isSettingsActive = pathname === `/form/${form.id}/settings`;
+  const isContentActive = pathname === `/form/${form.formId}`;
+  const isResponsesActive = pathname === `/form/${form.formId}/responses`;
+  const isSettingsActive = pathname === `/form/${form.formId}/settings`;
   
   // Update form name when form prop changes
   useEffect(() => {
@@ -55,7 +55,7 @@ const HeaderBar = ({ form }: { form: Form }) => {
         name: formName.trim()
       };
       
-      await updateForm({ formId: form.id }, updatedForm);
+      await updateForm({ formId: form.formId }, updatedForm);
       setIsEditing(false);
     } catch (error) {
       console.error('Error updating form name:', error);
@@ -118,7 +118,7 @@ const HeaderBar = ({ form }: { form: Form }) => {
           </button>
         )}
         <Link 
-          href={`/to/${form.id}`} 
+          href={`/to/${form.formId}`} 
           target="_blank" 
           rel="noopener noreferrer"
           className="inline-flex items-center text-neutral-700 hover:text-neutral-900 transition-colors duration-200"
@@ -132,7 +132,7 @@ const HeaderBar = ({ form }: { form: Form }) => {
       {/* Center Navigation */}
       <div className="flex items-center space-x-8">
         <button 
-          onClick={() => router.push(`/form/${form.id}`)}
+          onClick={() => router.push(`/form/${form.formId}`)}
           className={`px-4 py-2 text-sm font-medium transition-colors ${
             isContentActive 
               ? 'text-primary-600 border-b-2 border-primary-600' 
@@ -142,7 +142,7 @@ const HeaderBar = ({ form }: { form: Form }) => {
           Content
         </button>
         <button 
-          onClick={() => router.push(`/form/${form.id}/responses`)}
+          onClick={() => router.push(`/form/${form.formId}/responses`)}
           className={`px-4 py-2 text-sm font-medium transition-colors ${
             isResponsesActive 
               ? 'text-primary-600 border-b-2 border-primary-600' 
@@ -152,7 +152,7 @@ const HeaderBar = ({ form }: { form: Form }) => {
           Responses
         </button>
         <button 
-          onClick={() => router.push(`/form/${form.id}/settings`)}
+          onClick={() => router.push(`/form/${form.formId}/settings`)}
           className={`px-4 py-2 text-sm font-medium transition-colors ${
             isSettingsActive 
               ? 'text-primary-600 border-b-2 border-primary-600' 

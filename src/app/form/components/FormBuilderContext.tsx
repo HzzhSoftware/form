@@ -21,7 +21,7 @@ type FormBuilderContextType = {
 const FormBuilderContext = createContext<FormBuilderContextType | undefined>(undefined);
 
 export function FormBuilderContextProvider({ form, children }: { form: Form, children: React.ReactNode }) {
-  const [currentCardId, setCurrentCardId] = useState<string>(form.cards[0].id);
+  const [currentCardId, setCurrentCardId] = useState<string>(form.cards[0].cardId);
   const [currentFieldId, setCurrentFieldId] = useState<string | null>(null);
   const [savedFormState, setSavedFormState] = useState<Form>(form);
   const [localForm, setLocalForm] = useState<Form>(form);
@@ -41,7 +41,7 @@ export function FormBuilderContextProvider({ form, children }: { form: Form, chi
         if (!localCard) return true;
         
         return (
-          card.id !== localCard.id ||
+          card.cardId !== localCard.cardId ||
           card.title !== localCard.title ||
           card.description !== localCard.description ||
           card.fields.length !== localCard.fields.length ||
@@ -50,7 +50,7 @@ export function FormBuilderContextProvider({ form, children }: { form: Form, chi
             if (!localField) return true;
             
             return (
-              field.id !== localField.id ||
+              field.fieldId !== localField.fieldId ||
               field.label !== localField.label ||
               field.type !== localField.type ||
               field.isRequired !== localField.isRequired ||
@@ -77,7 +77,7 @@ export function FormBuilderContextProvider({ form, children }: { form: Form, chi
       const formToSave = {
         ...localForm
       }
-      await updateForm({ formId: localForm.id }, formToSave);
+      await updateForm({ formId: localForm.formId }, formToSave);
       console.log('Saving form:', formToSave);
       
       // Update both context and local state with the saved form data

@@ -14,13 +14,13 @@ export default function SubmissionWrapper({
   form: Form;
   children: (submissionId: string, savedValues: Record<string, string> | null) => React.ReactNode;
 }) {
-  const formId = form.id;
+  const formId = form.formId;
 
   // Build a fully unpacked initial object
   const initialValues: Record<string, string> = {};
   for (let card of form.cards) {
     for (let field of card.fields) {
-      initialValues[field.id] = "";
+      initialValues[field.fieldId] = "";
     }
   }
 

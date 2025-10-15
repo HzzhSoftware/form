@@ -6,16 +6,16 @@ export default function DashboardSidebar({ forms }: { forms: Form[] }) {
   const handleCreateForm = async () => {
     try {
       const newForm: Form = {
-        id: crypto.randomUUID(),
+        formId: crypto.randomUUID(),
         name: "My new form",
         description: "",
         cards: [
           {
-            id: crypto.randomUUID(),
+            cardId: crypto.randomUUID(),
             title: "Question 1",
             fields: [
               {
-                id: crypto.randomUUID(),
+                fieldId: crypto.randomUUID(),
                 label: "Your question here",
                 type: "multiple_choice",
                 isRequired: false,
@@ -38,7 +38,7 @@ export default function DashboardSidebar({ forms }: { forms: Form[] }) {
       };
 
       const response = await createForm(newForm);
-      const formId = response.form.id;
+      const formId = response.form.formId;
       window.location.href = `/form/${formId}`;
     } catch (error) {
       console.error("Failed to create form:", error);
@@ -72,7 +72,7 @@ export default function DashboardSidebar({ forms }: { forms: Form[] }) {
           </div>
           <div className="space-y-1">
             {forms.map((form) => (
-              <div key={form.id} className="flex items-center justify-between py-1 px-2 rounded hover:bg-neutral-50">
+              <div key={form.formId} className="flex items-center justify-between py-1 px-2 rounded hover:bg-neutral-50">
                 <span className="text-sm text-neutral-700">{form.name}</span>
                 <span className="text-xs text-neutral-500 bg-neutral-100 px-2 py-1 rounded">{form.submissions}</span>
               </div>

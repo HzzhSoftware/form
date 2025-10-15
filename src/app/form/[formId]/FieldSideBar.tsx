@@ -56,11 +56,11 @@ const FieldSideBar: React.FC<FieldSideBarProps> = ({ field }) => {
     updateLocalForm(form => ({
       ...form,
       cards: form.cards.map(card =>
-        card.id === currentCardId
+        card.cardId === currentCardId
           ? {
               ...card,
               fields: card.fields.map(f =>
-                f.id === field.id ? updatedField : f
+                f.fieldId === field.fieldId ? updatedField : f
               )
             }
           : card

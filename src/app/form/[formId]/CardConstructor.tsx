@@ -160,13 +160,13 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
     useSensor(SafeKeyboardSensor)
   );
 
-  const fieldIds = useMemo(() => card.fields.map(f => f.id), [card.fields]);
+  const fieldIds = useMemo(() => card.fields.map(f => f.fieldId), [card.fields]);
 
   const handleTitleChange = (newTitle: string) => {
     setTitle(newTitle);
     updateLocalForm(form => ({
       ...form,
-      cards: form.cards.map(c => c.id === currentCardId ? { ...c, title: newTitle } : c)
+      cards: form.cards.map(c => c.cardId === currentCardId ? { ...c, title: newTitle } : c)
     }));
   };
 
@@ -174,16 +174,16 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
     setDescription(newDescription);
     updateLocalForm(form => ({
       ...form,
-      cards: form.cards.map(c => c.id === currentCardId ? { ...c, description: newDescription } : c)
+      cards: form.cards.map(c => c.cardId === currentCardId ? { ...c, description: newDescription } : c)
     }));
   };
 
   const handleFieldChange = (fieldId: string, value: string) => {
     updateLocalForm(form => ({
       ...form,
-      cards: form.cards.map(c => c.id === currentCardId ? {
+      cards: form.cards.map(c => c.cardId === currentCardId ? {
         ...c,
-        fields: c.fields.map(field => field.id === fieldId ? { ...field, value } : field)
+        fields: c.fields.map(field => field.fieldId === fieldId ? { ...field, value } : field)
       } : c)
     }));
   };
@@ -191,9 +191,9 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
   const handleFieldOptionsChange = (fieldId: string, options: string[]) => {
     updateLocalForm(form => ({
       ...form,
-      cards: form.cards.map(c => c.id === currentCardId ? {
+      cards: form.cards.map(c => c.cardId === currentCardId ? {
         ...c,
-        fields: c.fields.map(field => field.id === fieldId ? { ...field, options } : field)
+        fields: c.fields.map(field => field.fieldId === fieldId ? { ...field, options } : field)
       } : c)
     }));
   };
@@ -201,9 +201,9 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
   const handleFieldUpdate = (fieldId: string, updates: Partial<any>) => {
     updateLocalForm(form => ({
       ...form,
-      cards: form.cards.map(c => c.id === currentCardId ? {
+      cards: form.cards.map(c => c.cardId === currentCardId ? {
         ...c,
-        fields: c.fields.map(field => field.id === fieldId ? { ...field, ...updates } : field)
+        fields: c.fields.map(field => field.fieldId === fieldId ? { ...field, ...updates } : field)
       } : c)
     }));
   };
@@ -211,9 +211,9 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
   const handleFieldLabelChange = (fieldId: string, newLabel: string) => {
     updateLocalForm(form => ({
       ...form,
-      cards: form.cards.map(c => c.id === currentCardId ? {
+      cards: form.cards.map(c => c.cardId === currentCardId ? {
         ...c,
-        fields: c.fields.map(field => field.id === fieldId ? { ...field, label: newLabel } : field)
+        fields: c.fields.map(field => field.fieldId === fieldId ? { ...field, label: newLabel } : field)
       } : c)
     }));
   };
@@ -222,8 +222,8 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
     updateLocalForm(form => ({
       ...form,
       cards: form.cards.map(c =>
-        c.id === currentCardId
-          ? { ...c, fields: c.fields.filter(field => field.id !== fieldId) }
+        c.cardId === currentCardId
+          ? { ...c, fields: c.fields.filter(field => field.fieldId !== fieldId) }
           : c
       )
     }));
@@ -232,7 +232,7 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
   const handleAddField = (fieldType: FormFieldType) => {
     const createField = (type: FormFieldType) => {
       const baseField = {
-        id: uuidv4(),
+        fieldId: uuidv4(),
         type,
         label: `New ${type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())} Field`,
         isRequired: false,
@@ -262,7 +262,7 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
     updateLocalForm(form => ({
       ...form,
       cards: form.cards.map(c =>
-        c.id === currentCardId ? { ...c, fields: [...c.fields, newField as any] } : c
+        c.cardId === currentCardId ? { ...c, fields: [...c.fields, newField as any] } : c
       )
     }));
   };
@@ -272,8 +272,8 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
     const overId = event.over?.id as string | undefined;
     if (!overId || activeId === overId) return;
 
-    const startIndex = card.fields.findIndex(f => f.id === activeId);
-    const endIndex = card.fields.findIndex(f => f.id === overId);
+    const startIndex = card.fields.findIndex(f => f.fieldId === activeId);
+    const endIndex = card.fields.findIndex(f => f.fieldId === overId);
     if (startIndex === -1 || endIndex === -1) return;
 
     const reordered = arrayMove(card.fields, startIndex, endIndex);
@@ -281,7 +281,7 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
     updateLocalForm(form => ({
       ...form,
       cards: form.cards.map(c =>
-        c.id === currentCardId ? { ...c, fields: reordered } : c
+        c.cardId === currentCardId ? { ...c, fields: reordered } : c
       )
     }));
 
@@ -314,18 +314,18 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
           <div className="space-y-6 relative">
             {card.fields.map((field) => (
               <SortableField
-                key={field.id}
-                id={field.id}
-                isActive={field.id === currentFieldId}
-                onSelect={() => setCurrentFieldId(field.id)}
-                onDelete={() => handleDeleteField(field.id)}
+                key={field.fieldId}
+                id={field.fieldId}
+                isActive={field.fieldId === currentFieldId}
+                onSelect={() => setCurrentFieldId(field.fieldId)}
+                onDelete={() => handleDeleteField(field.fieldId)}
               >
                 <FieldConstructor
                   field={field}
-                  onChange={(val) => handleFieldChange(field.id, val)}
-                  onOptionsChange={(options) => handleFieldOptionsChange(field.id, options)}
-                  onFieldUpdate={(updates) => handleFieldUpdate(field.id, updates)}
-                  onLabelChange={(label) => handleFieldLabelChange(field.id, label)}
+                  onChange={(val) => handleFieldChange(field.fieldId, val)}
+                  onOptionsChange={(options) => handleFieldOptionsChange(field.fieldId, options)}
+                  onFieldUpdate={(updates) => handleFieldUpdate(field.fieldId, updates)}
+                  onLabelChange={(label) => handleFieldLabelChange(field.fieldId, label)}
                 />
               </SortableField>
             ))}

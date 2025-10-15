@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@hzzhsoftware/types-auth": "^0.0.17",
-    "@hzzhsoftware/types-form": "^0.0.26",
+    "@hzzhsoftware/types-form": "^0.1.0",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",

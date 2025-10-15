@@ -39,7 +39,7 @@ export function FormProvider({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-  const formId = initialForm.id;
+  const formId = initialForm.formId;
   
 
 
@@ -58,7 +58,7 @@ export function FormProvider({
             .flatMap((card: Card) => card.fields || [])
             .reduce((acc: Record<string, string>, field: FormField) => ({
               ...acc,
-              [field.id]: ""
+              [field.fieldId]: ""
             }), {});
           setValues(initialValues);
         }
@@ -87,8 +87,8 @@ export function FormProvider({
     const newErrors: Record<string, string> = {};
 
     card.fields?.forEach((field) => {
-      if (!values[field.id] && field.isRequired) {
-        newErrors[field.id] = "This field is required.";
+      if (!values[field.fieldId] && field.isRequired) {
+        newErrors[field.fieldId] = "This field is required.";
       }
     });
 
@@ -111,8 +111,8 @@ export function FormProvider({
 
     initialForm.cards.forEach((card) => {
       card.fields?.forEach((field) => {
-        if (field.isRequired && !values[field.id]) {
-          allErrors[field.id] = "This field is required.";
+        if (field.isRequired && !values[field.fieldId]) {
+          allErrors[field.fieldId] = "This field is required.";
         }
       });
     });
