@@ -322,10 +322,10 @@ const CardConstructor: React.FC<CardConstructorProps> = ({ card }) => {
               >
                 <FieldConstructor
                   field={field}
-                  onChange={(val) => handleFieldChange(field.id, val)}
-                  onOptionsChange={(options) => handleFieldOptionsChange(field.id, options)}
-                  onFieldUpdate={(updates) => handleFieldUpdate(field.id, updates)}
-                  onLabelChange={(label) => handleFieldLabelChange(field.id, label)}
+                  onChange={(val) => handleFieldChange(field.fieldId, val)}
+                  onOptionsChange={(options) => handleFieldOptionsChange(field.fieldId, options)}
+                  onFieldUpdate={(updates) => handleFieldUpdate(field.fieldId, updates)}
+                  onLabelChange={(label) => handleFieldLabelChange(field.fieldId, label)}
                 />
               </SortableField>
             ))}

@@ -73,7 +73,7 @@ export default function DraggableCardList({
     useSensor(KeyboardSensor)
   );
 
-  const ids = useMemo(() => cards.map((c) => c.id), [cards]);
+  const ids = useMemo(() => cards.map((c) => c.cardId), [cards]);
 
   const onDragStart = (_e: DragStartEvent) => setIsDragging(true);
 
@@ -83,8 +83,8 @@ export default function DraggableCardList({
     const overId = e.over?.id as string | undefined;
     if (!overId || activeId === overId) return;
 
-    const from = cards.findIndex((c) => c.id === activeId);
-    const to = cards.findIndex((c) => c.id === overId);
+    const from = cards.findIndex((c) => c.cardId === activeId);
+    const to = cards.findIndex((c) => c.cardId === overId);
     if (from < 0 || to < 0) return;
 
     const next = arrayMove(cards, from, to);
@@ -102,16 +102,16 @@ export default function DraggableCardList({
         <div className="space-y-3">
           {cards.map((card, index) => (
             <SortableCardRow
-              key={card.id}
-              id={card.id}
+              key={card.cardId}
+              id={card.cardId}
               index={index}
               title={card.title || `Card ${index + 1}`}
-              isActive={currentCardId === card.id}
+              isActive={currentCardId === card.cardId}
               onClick={() => {
                 // Avoid selecting during a drag
-                if (!isDragging) onSelect(card.id);
+                if (!isDragging) onSelect(card.cardId);
               }}
-              onDelete={() => onDelete(card.id)}
+              onDelete={() => onDelete(card.cardId)}
             />
           ))}
         </div>

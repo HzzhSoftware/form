@@ -18,14 +18,14 @@ const Content = () => {
     updateLocalForm,
   } = useFormBuilderContext();
   
-  const currentCardData = localForm.cards.find(card => card.id === currentCardId);
+  const currentCardData = localForm.cards.find(card => card.cardId === currentCardId);
   const [currentFieldId, setCurrentFieldId] = useState<string | null>(null);
-  const currentFieldData = currentCardData?.fields.find(field => field.id === currentFieldId);
+  const currentFieldData = currentCardData?.fields.find(field => field.fieldId === currentFieldId);
   
   // Update current field when card changes
   useEffect(() => {
     if (currentCardData && currentCardData.fields.length > 0) {
-      setCurrentFieldId(currentCardData.fields[0].id);
+      setCurrentFieldId(currentCardData.fields[0].fieldId);
     } else {
       setCurrentFieldId(null);
     }
@@ -33,7 +33,7 @@ const Content = () => {
 
   const addCard = () => {
     const newCard: Card = {
-      id: uuidv4(),
+      cardId: uuidv4(),
       title: "New Card",
       fields: [],
     };
@@ -47,7 +47,7 @@ const Content = () => {
   const deleteCard = (cardId: string) => {
     updateLocalForm(form => ({
       ...form,
-      cards: form.cards.filter(card => card.id !== cardId)
+      cards: form.cards.filter(card => card.cardId !== cardId)
     }));
   };
   
