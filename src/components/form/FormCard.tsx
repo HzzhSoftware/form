@@ -23,7 +23,7 @@ export default function FormCard() {
 
   const allRequiredFilled = card.fields
     ?.filter((f) => f.isRequired)
-    .every((f) => values[f.id]?.toString().trim() !== "" || values[f.id] === undefined);
+    .every((f) => values[f.fieldId]?.toString().trim() !== "" || values[f.fieldId] === undefined);
 
   const handleNext = () => {
     if (allRequiredFilled) {
@@ -36,7 +36,7 @@ export default function FormCard() {
       {isSubmitting && <FormLoading message="Submitting..." />}
       <AnimatePresence mode="wait">
         <motion.div
-          key={card.id}
+          key={card.cardId}
           initial={{ y: direction > 0 ? 100 : -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: direction > 0 ? -100 : 100, opacity: 0 }}
@@ -52,18 +52,18 @@ export default function FormCard() {
           </div>
 
           {card.fields?.map((field) => (
-            <div key={field.id}>
+            <div key={field.fieldId}>
               <label className="block text-sm font-medium mb-1 text-primary-800">
                 {field.label}
                 {field.isRequired && <span className="text-red-500 ml-1">*</span>}
               </label>
               <FieldInput
                 field={field}
-                value={values[field.id] ?? ""}
-                onChange={(val) => handleChange(field.id, val)}
+                value={values[field.fieldId] ?? ""}
+                onChange={(val) => handleChange(field.fieldId, val)}
               />
-              {errors[field.id] && (
-                <p className="text-red-500 text-sm">{errors[field.id]}</p>
+              {errors[field.fieldId] && (
+                <p className="text-red-500 text-sm">{errors[field.fieldId]}</p>
               )}
             </div>
           ))}
