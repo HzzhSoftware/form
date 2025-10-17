@@ -11,6 +11,7 @@ import { TimestampFieldInput } from "./TimestampField";
 import { YesNoFieldInput } from "./YesNoField";
 import { MultipleChoiceFieldInput } from "./MultipleChoiceField";
 import { MultipleSelectFieldInput } from "./MultipleSelectField";
+import { StaticFieldInput } from "./StaticField";
 
 export default function FieldInput({
   field,
@@ -44,6 +45,8 @@ export default function FieldInput({
       return <MultipleChoiceFieldInput field={field} value={value} onChange={onChange} />;
     case "multiple_select":
       return <MultipleSelectFieldInput field={field} value={value} onChange={onChange} />;
+    case "static":
+      return <StaticFieldInput field={field}/>;
     default:
       return (
         <input
