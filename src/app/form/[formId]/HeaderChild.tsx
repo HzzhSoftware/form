@@ -80,7 +80,7 @@ const HeaderBar = ({ form }: { form: Form }) => {
   };
   
   return (
-    <div className="flex items-center justify-between px-6 py-4 bg-white border-b border-neutral-200 w-full">
+    <div className="flex items-center justify-between px-6 py-4 w-full">
       <div className="flex items-center space-x-1 text-sm text-neutral-600">
         <button
           onClick={() => router.push('/form')}

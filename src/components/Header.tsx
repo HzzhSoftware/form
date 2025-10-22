@@ -4,7 +4,7 @@ import Avatar from "@/components/auth/Avatar";
 
 export default function Header({ children }: { children?: React.ReactNode }) {
   return (
-    <header className="border-b border-neutral-300 px-6 py-4">
+    <header className="px-6 py-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-8">
           {/* Logo */}

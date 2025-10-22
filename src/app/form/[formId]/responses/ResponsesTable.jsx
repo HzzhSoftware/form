@@ -2,8 +2,6 @@ import React from "react";
 import { FieldDisplay } from "@/components/form/fields";
 
 export default function ResponsesTable({ form, filteredSubmissions, formatDate }) {
-  console.log(form);
-  console.log(filteredSubmissions);
   return (
     <div className="flex-1 bg-white flex flex-col overflow-hidden pb-2">
       <div className="flex-1 overflow-auto">
@@ -26,8 +24,8 @@ export default function ResponsesTable({ form, filteredSubmissions, formatDate }
                   </div>
                 </th>
                 {form.cards.map(card => 
-                  card.fields.map(field => (
-                    <th key={`${card.id}-${field.id}`} className="px-4 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider border-r border-neutral-200 min-w-[250px]">
+                  card.fields.filter(field => field.type !== 'static').map(field => (
+                    <th key={`${card.cardId}-${field.fieldId}`} className="px-4 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider border-r border-neutral-200 min-w-[250px]">
                       <div className="flex items-start space-x-1">
                         <div className="w-3 h-3 bg-primary-500 rounded flex-shrink-0 mt-0.5"></div>
                         <span className="leading-tight break-words">{field.label}</span>
@@ -39,7 +37,7 @@ export default function ResponsesTable({ form, filteredSubmissions, formatDate }
             </thead>
             <tbody className="bg-white divide-y divide-neutral-200">
               {filteredSubmissions.map((submission, index) => (
-                <tr key={submission.id} className={`hover:bg-neutral-50 ${index % 2 === 0 ? 'bg-white' : 'bg-neutral-50'}`}>
+                <tr key={submission.submissionId} className={`hover:bg-neutral-50 ${index % 2 === 0 ? 'bg-white' : 'bg-neutral-50'}`}>
                   <td className="w-20 px-4 py-4 border-r border-neutral-200">
                     <input type="checkbox" className="rounded border-neutral-300 text-primary-600 focus:ring-primary-500" />
                   </td>
@@ -47,10 +45,10 @@ export default function ResponsesTable({ form, filteredSubmissions, formatDate }
                     {formatDate(submission.submittedAt)}
                   </td>
                   {form.cards.map(card => 
-                    card.fields.map(field => (
-                      <td key={`${submission.id}-${card.id}-${field.id}`} className="px-4 py-4 border-r border-neutral-200 min-w-[250px]">
+                    card.fields.filter(field => field.type !== 'static').map(field => (
+                      <td key={`${submission.submissionId}-${card.cardId}-${field.fieldId}`} className="px-4 py-4 border-r border-neutral-200 min-w-[250px]">
                         <div className="max-w-none">
-                          <FieldDisplay field={field} value={submission[field.id]} />
+                          <FieldDisplay field={field} value={submission[field.fieldId]} />
                         </div>
                       </td>
                     ))
