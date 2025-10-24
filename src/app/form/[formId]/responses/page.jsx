@@ -5,6 +5,7 @@ import { listSubmissions } from "@/services/form";
 import { useParams } from "next/navigation";
 import { useFormBuilderContext } from "../../components/FormBuilderContext";
 import ResponsesTable from "./ResponsesTable";
+import formatDate from "@/utils/formatDate";
 
 export default function ResponsesPage() {
   const params = useParams();
@@ -30,24 +31,6 @@ export default function ResponsesPage() {
     
     loadSubmissions();
   }, [formId]);
-
-  const formatDate = (isoDateString) => {
-    try {
-      const date = new Date(isoDateString);
-      if (isNaN(date.getTime())) {
-        return "-";
-      }
-      return date.toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    } catch (err) {
-      return "-";
-    }
-  };
 
   const filteredSubmissions = submissions.filter(submission => {
     if (!searchTerm) return true;
@@ -167,58 +150,6 @@ export default function ResponsesPage() {
             </p>
           )}
         </div>
-
-        {/* Search and Filters */}
-        {/* <div className="space-y-4">
-          <div className="relative">
-            <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              type="text"
-              placeholder="Search responses"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-            />
-          </div>
-          
-          <div className="flex space-x-2">
-            <select
-              value={timeFilter}
-              onChange={(e) => setTimeFilter(e.target.value)}
-              className="flex-1 px-3 py-2 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-            >
-              <option>All time</option>
-              <option>Last 7 days</option>
-              <option>Last 30 days</option>
-              <option>Last 90 days</option>
-            </select>
-            <button className="px-3 py-2 border border-neutral-200 rounded-lg text-sm hover:bg-neutral-50">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
-              </svg>
-            </button>
-          </div>
- 
-          <div className="flex space-x-2 pt-2">
-            <button className="p-2 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-50 rounded">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </button>
-            <button className="p-2 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-50 rounded">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-              </svg>
-            </button>
-            <button className="p-2 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-50 rounded">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3" />
-              </svg>
-            </button>
-          </div>
-        </div> */}
       </aside>
 
       {/* Main Content */}
@@ -228,7 +159,6 @@ export default function ResponsesPage() {
         <ResponsesTable 
           form={form}
           filteredSubmissions={filteredSubmissions}
-          formatDate={formatDate}
         />
       </div>
     </div>
