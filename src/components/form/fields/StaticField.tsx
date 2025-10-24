@@ -12,15 +12,6 @@ export const StaticFieldBuilder: React.FC<StaticFieldBuilderProps> = ({
   onChange, 
   onFieldUpdate,
 }) => {
-  const handleTitleChange = (newTitle: string) => {
-    if (onFieldUpdate) {
-      onFieldUpdate({ title: newTitle });
-    } else if (onChange) {
-      // Fallback to onChange if onFieldUpdate is not available
-      onChange(newTitle);
-    }
-  };
-
   const handleDescriptionChange = (newDescription: string) => {
     if (onFieldUpdate) {
       onFieldUpdate({ description: newDescription });
@@ -41,29 +32,19 @@ export const StaticFieldBuilder: React.FC<StaticFieldBuilderProps> = ({
 
   return (
     <div className="space-y-3">
-      <div className="text-sm font-medium text-neutral-700 mb-2">Static Content:</div>
-      
       <div className="space-y-3">
-        <div>
-          <label className="block text-sm font-medium text-neutral-600 mb-1">Title</label>
-          <input
-            type="text"
-            value={field.title || ''}
-            onChange={(e) => handleTitleChange(e.target.value)}
-            className="w-full px-3 py-2 text-sm border border-neutral-300 rounded-md focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter title"
-          />
-        </div>
-        
         <div>
           <label className="block text-sm font-medium text-neutral-600 mb-1">Description (optional)</label>
           <textarea
             value={field.description || ''}
             onChange={(e) => handleDescriptionChange(e.target.value)}
             className="w-full px-3 py-2 text-sm border border-neutral-300 rounded-md focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Enter description"
-            rows={3}
+            placeholder="Enter description (supports line breaks)"
+            rows={4}
           />
+          <div className="text-xs text-neutral-500 mt-1">
+            Tip: Press Enter to create line breaks
+          </div>
         </div>
         
         <div>
@@ -90,14 +71,23 @@ interface StaticFieldInputProps {
 export const StaticFieldInput: React.FC<StaticFieldInputProps> = ({ 
   field, 
 }) => {
+  // Helper function to render text with line breaks
+  const renderTextWithLineBreaks = (text: string) => {
+    return text.split('\n').map((line, index) => (
+      <React.Fragment key={index}>
+        {line}
+        {index < text.split('\n').length - 1 && <br />}
+      </React.Fragment>
+    ));
+  };
+
   // Static fields don't have user input - they just display content
   return (
     <div className="space-y-2">
-      {field.title && (
-        <div className="text-lg font-medium text-neutral-900">{field.title}</div>
-      )}
       {field.description && (
-        <div className="text-sm text-neutral-600">{field.description}</div>
+        <div className="text-sm text-neutral-600 whitespace-pre-line">
+          {renderTextWithLineBreaks(field.description)}
+        </div>
       )}
       {field.image && (
         <div className="mt-2">
@@ -125,9 +115,45 @@ export const StaticFieldDisplay: React.FC<StaticFieldDisplayProps> = ({
   field, 
   value 
 }) => {
+  // Helper function to render text with line breaks
+  const renderTextWithLineBreaks = (text: string) => {
+    return text.split('\n').map((line, index) => (
+      <React.Fragment key={index}>
+        {line}
+        {index < text.split('\n').length - 1 && <br />}
+      </React.Fragment>
+    ));
+  };
+
   return (
     <div className="text-sm text-neutral-800">
-      <span className="text-neutral-500 italic">Static content - no response needed</span>
+      <div className="space-y-1">
+        {field.title && (
+          <div className="font-medium text-neutral-900">
+            {renderTextWithLineBreaks(field.title)}
+          </div>
+        )}
+        {field.description && (
+          <div className="text-neutral-600 whitespace-pre-line">
+            {renderTextWithLineBreaks(field.description)}
+          </div>
+        )}
+        {field.image && (
+          <div className="mt-1">
+            <img 
+              src={field.image} 
+              alt={field.title || 'Static content image'} 
+              className="max-w-full h-auto rounded-md max-h-20 object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          </div>
+        )}
+        {!field.title && !field.description && !field.image && (
+          <span className="text-neutral-500 italic">Static content - no response needed</span>
+        )}
+      </div>
     </div>
   );
 };
