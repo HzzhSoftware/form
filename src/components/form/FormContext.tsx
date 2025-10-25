@@ -82,6 +82,7 @@ export function FormProvider({
     setErrors((prev) => ({ ...prev, [id]: "" }));
   };
 
+  // go to next card, save the current card values
   const next = async () => {
     const card = initialForm.cards[currentCardIdx];
     const newErrors: Record<string, string> = {};
@@ -97,7 +98,7 @@ export function FormProvider({
     if (Object.keys(newErrors).length === 0) {
       setDirection(1);
       setCurrentCardIdx((idx) => Math.min(idx + 1, initialForm.cards.length - 1));
-      await submitForm({ formId }, { values, submissionId: submissionId! });
+      await submitForm({ formId }, { values, submissionId: submissionId!, isFinal: false });
     }
   };
 
@@ -122,7 +123,7 @@ export function FormProvider({
     if (Object.keys(allErrors).length === 0) {
       try {
         setIsSubmitting(true);
-        await submitForm({ formId }, { values, submissionId: submissionId! });
+        await submitForm({ formId }, { values, submissionId: submissionId!, isFinal: true });
         router.push(`/to/${formId}/thankyou`);
       } catch (err) {
         console.error(err);
