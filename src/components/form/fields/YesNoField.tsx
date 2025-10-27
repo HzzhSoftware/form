@@ -15,7 +15,7 @@ export const YesNoFieldBuilder: React.FC<YesNoFieldBuilderProps> = ({
       <label className="flex items-center">
         <input
           type="radio"
-          name={`field-${field.id}`}
+          name={`field-${field.fieldId}`}
           value="yes"
           onChange={(e) => onChange?.(e.target.value)}
           className="mr-2 text-blue-600 focus:ring-blue-500 disabled:cursor-not-allowed"
@@ -25,7 +25,7 @@ export const YesNoFieldBuilder: React.FC<YesNoFieldBuilderProps> = ({
       <label className="flex items-center">
         <input
           type="radio"
-          name={`field-${field.id}`}
+          name={`field-${field.fieldId}`}
           value="no"
           onChange={(e) => onChange?.(e.target.value)}
           className="mr-2 text-blue-600 focus:ring-blue-500 disabled:cursor-not-allowed"
@@ -53,7 +53,7 @@ export const YesNoFieldInput: React.FC<YesNoFieldInputProps> = ({
       <label className="flex items-center">
         <input
           type="radio"
-          name={`field-${field.id}`}
+          name={`field-${field.fieldId}`}
           value="yes"
           checked={value === "yes"}
           onChange={(e) => onChange(e.target.value)}
@@ -65,7 +65,7 @@ export const YesNoFieldInput: React.FC<YesNoFieldInputProps> = ({
       <label className="flex items-center">
         <input
           type="radio"
-          name={`field-${field.id}`}
+          name={`field-${field.fieldId}`}
           value="no"
           checked={value === "no"}
           onChange={(e) => onChange(e.target.value)}
