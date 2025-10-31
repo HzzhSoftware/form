@@ -2,13 +2,14 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import { Form } from '@hzzhsoftware/types-form'
 import { updateForm } from '@/services/form'
 import Link from 'next/link'
+import { useFormBuilderContext } from '../components/FormBuilderContext'
 
-const HeaderBar = ({ form }: { form: Form }) => {
+const HeaderBar = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const { form, setForm, updateLocalForm } = useFormBuilderContext();
   
   const [isEditing, setIsEditing] = useState(false);
   const [formName, setFormName] = useState(form.name);
@@ -19,7 +20,7 @@ const HeaderBar = ({ form }: { form: Form }) => {
   const isResponsesActive = pathname === `/form/${form.formId}/responses`;
   const isSettingsActive = pathname === `/form/${form.formId}/settings`;
   
-  // Update form name when form prop changes
+  // Update form name when form from context changes
   useEffect(() => {
     setFormName(form.name);
   }, [form.name]);
@@ -56,6 +57,11 @@ const HeaderBar = ({ form }: { form: Form }) => {
         name: trimmedName
       };
       await updateForm({ formId: form.formId }, updatedForm);
+      
+      // Update context with the saved form
+      setForm(updatedForm);
+      updateLocalForm(() => updatedForm);
+      
       setFormName(trimmedName); // Update form name state to the saved value
       setIsEditing(false);
     } catch (error) {

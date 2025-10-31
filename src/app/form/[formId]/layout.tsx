@@ -29,7 +29,7 @@ export default async function FormLayout({
     <div className="w-full h-screen">
       <FormBuilderContextProvider form={form}>
         <Header>
-          <HeaderChild form={form} />
+          <HeaderChild />
         </Header>
         {children}
       </FormBuilderContextProvider>
