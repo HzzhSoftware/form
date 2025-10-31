@@ -50,12 +50,13 @@ const HeaderBar = ({ form }: { form: Form }) => {
     
     setIsSaving(true);
     try {
+      const trimmedName = formName.trim();
       const updatedForm = {
         ...form,
-        name: formName.trim()
+        name: trimmedName
       };
-      
       await updateForm({ formId: form.formId }, updatedForm);
+      setFormName(trimmedName); // Update form name state to the saved value
       setIsEditing(false);
     } catch (error) {
       console.error('Error updating form name:', error);
