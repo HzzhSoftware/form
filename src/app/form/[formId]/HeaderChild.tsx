@@ -115,7 +115,7 @@ const HeaderBar = ({ form }: { form: Form }) => {
             className="hover:text-neutral-900 transition-colors hover:underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 rounded px-1"
             title="Click to edit form name"
           >
-            {form.name}
+            {formName}
           </button>
         )}
         <Link 
