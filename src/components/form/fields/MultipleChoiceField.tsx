@@ -36,6 +36,8 @@ export const MultipleChoiceFieldBuilder: React.FC<MultipleChoiceFieldBuilderProp
     }
   };
 
+  const allowMultiple = field.allowMultiple || false;
+
   return (
     <div className="space-y-3">
       <div className="text-sm font-medium text-neutral-700 mb-2">Options:</div>
@@ -43,8 +45,8 @@ export const MultipleChoiceFieldBuilder: React.FC<MultipleChoiceFieldBuilderProp
       {'options' in field && field.options?.map((option: string, index: number) => (
         <div key={index} className="flex items-center space-x-2">
           <input
-            type="radio"
-            name={`field-${field.id}`}
+            type={allowMultiple ? "checkbox" : "radio"}
+            name={`field-${field.fieldId}`}
             value={option}
             onChange={(e) => onChange?.(e.target.value)}
             className="text-primary-600 focus:ring-primary-500 disabled:cursor-not-allowed"
@@ -100,13 +102,56 @@ export const MultipleChoiceFieldInput: React.FC<MultipleChoiceFieldInputProps> =
   value,
   onChange,
 }) => {
+  const allowMultiple = field.allowMultiple || false;
+  
+  // For multiple selections, parse value as comma-separated string
+  const values = allowMultiple && value ? value.split(',').map(v => v.trim()) : [];
+
+  const handleOptionChange = (option: string, checked: boolean) => {
+    if (allowMultiple) {
+      // Handle multiple selection with checkboxes
+      if (checked) {
+        const newValues = [...values, option];
+        onChange(newValues.join(', '));
+      } else {
+        const newValues = values.filter(v => v !== option);
+        onChange(newValues.join(', '));
+      }
+    } else {
+      // Handle single selection with radio buttons
+      onChange(option);
+    }
+  };
+
+  if (allowMultiple) {
+    // Render checkboxes for multiple selection
+    return (
+      <div className="space-y-2">
+        {'options' in field && field.options?.map((option: string, index: number) => (
+          <label key={index} className="flex items-center">
+            <input
+              type="checkbox"
+              value={option}
+              checked={values.includes(option)}
+              onChange={(e) => handleOptionChange(option, e.target.checked)}
+              required={field.isRequired && values.length === 0}
+              className="mr-2 text-primary-600 focus:ring-primary-500"
+            />
+            {option}
+          </label>
+        ))}
+      </div>
+    );
+  }
+
+  // Render radio buttons for single selection
   return (
     <div className="space-y-2">
       {'options' in field && field.options?.map((option: string, index: number) => (
         <label key={index} className="flex items-center">
           <input
             type="radio"
-            name={`field-${field.id}`}
+            name={`field-${field.fieldId}`}
             value={option}
             checked={value === option}
             onChange={(e) => onChange(e.target.value)}
@@ -130,9 +175,33 @@ export const MultipleChoiceFieldDisplay: React.FC<MultipleChoiceFieldDisplayProp
   field, 
   value 
 }) => {
+  const allowMultiple = field.allowMultiple || false;
+  
+  if (allowMultiple && value) {
+    // Handle multiple values (comma-separated)
+    const values = value.split(',').map(v => v.trim()).filter(v => v);
+    
+    return (
+      <div className="text-sm text-neutral-800">
+        {values.length > 0 ? (
+          <div className="flex flex-wrap gap-1">
+            {values.map((val, index) => (
+              <span key={index} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                {val}
+              </span>
+            ))}
+          </div>
+        ) : (
+          "-"
+        )}
+      </div>
+    );
+  }
+  
+  // Handle single value
   return (
     <div className="text-sm text-neutral-800">
-      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
         {value || "-"}
       </span>
     </div>
