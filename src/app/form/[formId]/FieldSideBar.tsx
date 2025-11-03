@@ -41,13 +41,24 @@ const coerceFieldForType = (prev: FormField, newType: FormFieldType): FormField 
 };
 
 const FieldSideBar: React.FC<FieldSideBarProps> = ({ field }) => {
-  const { updateLocalForm, currentCardId } = useFormBuilderContext();
+  const { updateLocalForm, currentCardId, currentFieldId, localForm } = useFormBuilderContext();
   const [localField, setLocalField] = useState<FormField>(field);
 
   // Update local field when prop changes
   useEffect(() => {
     setLocalField(field);
   }, [field]);
+
+  // Also update local field when currentFieldId matches and field data changes in context
+  useEffect(() => {
+    if (currentFieldId === field.fieldId) {
+      const currentCard = localForm.cards.find(card => card.cardId === currentCardId);
+      const currentField = currentCard?.fields.find(f => f.fieldId === currentFieldId);
+      if (currentField) {
+        setLocalField(currentField);
+      }
+    }
+  }, [currentFieldId, localForm, currentCardId, field.fieldId]);
 
   const updateField = (updates: Partial<FormField>) => {
     const updatedField = { ...localField, ...updates };

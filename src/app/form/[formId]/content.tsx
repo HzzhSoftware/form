@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useFormBuilderContext } from '../components/FormBuilderContext'
 import CardConstructor from './CardConstructor'
 import FieldSideBar from './FieldSideBar'
@@ -12,24 +12,30 @@ const Content = () => {
   const { 
     localForm, 
     currentCardId, 
+    currentFieldId,
     hasChanges, 
     isSaving,
-    setCurrentCardId, 
+    setCurrentCardId,
+    setCurrentFieldId,
     updateLocalForm,
   } = useFormBuilderContext();
   
   const currentCardData = localForm.cards.find(card => card.cardId === currentCardId);
-  const [currentFieldId, setCurrentFieldId] = useState<string | null>(null);
   const currentFieldData = currentCardData?.fields.find(field => field.fieldId === currentFieldId);
   
-  // Update current field when card changes
+  // Update current field when card changes (only if no field is selected or selected field doesn't exist in new card)
   useEffect(() => {
-    if (currentCardData && currentCardData.fields.length > 0) {
-      setCurrentFieldId(currentCardData.fields[0].fieldId);
-    } else {
-      setCurrentFieldId(null);
+    if (currentCardData) {
+      if (currentCardData.fields.length > 0) {
+        // If no field selected or selected field doesn't exist in current card, select first field
+        if (!currentFieldId || !currentCardData.fields.find(f => f.fieldId === currentFieldId)) {
+          setCurrentFieldId(currentCardData.fields[0].fieldId);
+        }
+      } else {
+        setCurrentFieldId(null);
+      }
     }
-  }, [currentCardId, currentCardData]);
+  }, [currentCardId, currentCardData, currentFieldId, setCurrentFieldId]);
 
   const addCard = () => {
     const newCard: Card = {
