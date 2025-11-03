@@ -36,6 +36,17 @@ export const MultipleChoiceFieldBuilder: React.FC<MultipleChoiceFieldBuilderProp
     }
   };
 
+  const handleOptionBlur = (index: number) => {
+    if (onOptionsChange && 'options' in field && field.options[index]) {
+      const trimmedValue = field.options[index].trim();
+      if (trimmedValue !== field.options[index]) {
+        const newOptions = [...field.options];
+        newOptions[index] = trimmedValue;
+        onOptionsChange(newOptions);
+      }
+    }
+  };
+
   const allowMultiple = field.allowMultiple || false;
 
   return (
@@ -56,6 +67,7 @@ export const MultipleChoiceFieldBuilder: React.FC<MultipleChoiceFieldBuilderProp
             type="text"
             value={option}
             onChange={(e) => handleOptionChange(index, e.target.value)}
+            onBlur={() => handleOptionBlur(index)}
             className="flex-1 px-2 py-1 text-sm border border-neutral-300 rounded focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
             placeholder="Option text"
           />
