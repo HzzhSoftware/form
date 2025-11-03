@@ -6,7 +6,7 @@ import CardConstructor from './CardConstructor'
 import FieldSideBar from './FieldSideBar'
 import { v4 as uuidv4 } from 'uuid';
 import { Card } from '@hzzhsoftware/types-form';
-import DraggableList from './DraggableList';
+import DraggableCardList from './DraggableCardList';
 
 const Content = () => {
   const { 
@@ -114,7 +114,7 @@ const Content = () => {
                 )}
               </div>
               
-              <DraggableList cards={localForm.cards} currentCardId={currentCardId} onSelect={setCurrentCardId} onDelete={deleteCard} onReorder={(nextCards) =>
+              <DraggableCardList cards={localForm.cards} currentCardId={currentCardId} onSelect={setCurrentCardId} onDelete={deleteCard} onReorder={(nextCards) =>
                 updateLocalForm((form) => ({ ...form, cards: nextCards }))
               } />
               
