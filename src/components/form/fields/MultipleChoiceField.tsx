@@ -1,5 +1,55 @@
 import React from 'react';
 
+// Simple markdown parser for **bold** and *italic*
+const parseMarkdown = (text: string): string => {
+  if (!text) return '';
+  
+  // Escape HTML to prevent XSS
+  const escapeHtml = (str: string) => {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  };
+  
+  let html = escapeHtml(text);
+  const placeholders: { [key: string]: string } = {};
+  let placeholderIndex = 0;
+  
+  // Handle ***bold italic*** first (must come before individual bold/italic)
+  html = html.replace(/\*\*\*(.+?)\*\*\*/g, (match, content) => {
+    const key = `__PLACEHOLDER_${placeholderIndex++}__`;
+    placeholders[key] = `<strong><em>${content}</em></strong>`;
+    return key;
+  });
+  
+  // Handle **bold**
+  html = html.replace(/\*\*(.+?)\*\*/g, (match, content) => {
+    const key = `__PLACEHOLDER_${placeholderIndex++}__`;
+    placeholders[key] = `<strong>${content}</strong>`;
+    return key;
+  });
+  
+  // Handle *italic* (now safe since ** and *** are already replaced)
+  html = html.replace(/\*(.+?)\*/g, (match, content) => {
+    const key = `__PLACEHOLDER_${placeholderIndex++}__`;
+    placeholders[key] = `<em>${content}</em>`;
+    return key;
+  });
+  
+  // Replace placeholders back
+  Object.keys(placeholders).forEach(key => {
+    html = html.replace(key, placeholders[key]);
+  });
+  
+  return html;
+};
+
+// Component to render formatted text
+const FormattedText: React.FC<{ text: string; className?: string }> = ({ text, className = '' }) => {
+  const html = parseMarkdown(text);
+  return <span className={className} dangerouslySetInnerHTML={{ __html: html }} />;
+};
+
 // 1. Builder component - for building/editing the form structure
 interface MultipleChoiceFieldBuilderProps {
   field: any;
@@ -47,6 +97,46 @@ export const MultipleChoiceFieldBuilder: React.FC<MultipleChoiceFieldBuilderProp
     }
   };
 
+  const insertFormatting = (index: number, format: 'bold' | 'italic') => {
+    const input = document.getElementById(`option-input-${index}`) as HTMLInputElement;
+    if (!input) return;
+    
+    const start = input.selectionStart || 0;
+    const end = input.selectionEnd || 0;
+    const selectedText = field.options[index].substring(start, end);
+    const before = field.options[index].substring(0, start);
+    const after = field.options[index].substring(end);
+    
+    let formattedText = '';
+    if (format === 'bold') {
+      formattedText = selectedText ? `**${selectedText}**` : '****';
+    } else {
+      formattedText = selectedText ? `*${selectedText}*` : '**';
+    }
+    
+    const newValue = before + formattedText + after;
+    handleOptionChange(index, newValue);
+    
+    // Restore cursor position
+    setTimeout(() => {
+      input.focus();
+      const newPosition = start + (selectedText ? formattedText.length : 2);
+      input.setSelectionRange(newPosition, newPosition);
+    }, 0);
+  };
+
+  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === 'b') {
+        e.preventDefault();
+        insertFormatting(index, 'bold');
+      } else if (e.key === 'i') {
+        e.preventDefault();
+        insertFormatting(index, 'italic');
+      }
+    }
+  };
+
   const allowMultiple = field.allowMultiple || false;
 
   return (
@@ -63,14 +153,39 @@ export const MultipleChoiceFieldBuilder: React.FC<MultipleChoiceFieldBuilderProp
             className="text-primary-600 focus:ring-primary-500 disabled:cursor-not-allowed"
             disabled
           />
-          <input
-            type="text"
-            value={option}
-            onChange={(e) => handleOptionChange(index, e.target.value)}
-            onBlur={() => handleOptionBlur(index)}
-            className="flex-1 px-2 py-1 text-sm border border-neutral-300 rounded focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
-            placeholder="Option text"
-          />
+          <div className="flex-1 flex items-center space-x-1 border border-neutral-300 rounded">
+            <button
+              type="button"
+              onClick={() => insertFormatting(index, 'bold')}
+              className="p-1.5 hover:bg-neutral-100 transition-colors"
+              title="Bold (Ctrl+B)"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => insertFormatting(index, 'italic')}
+              className="p-1.5 hover:bg-neutral-100 transition-colors italic font-semibold"
+              title="Italic (Ctrl+I)"
+            >
+              I
+            </button>
+            <div className="flex-1 border-l border-neutral-300">
+              <input
+                id={`option-input-${index}`}
+                type="text"
+                value={option}
+                onChange={(e) => handleOptionChange(index, e.target.value)}
+                onBlur={() => handleOptionBlur(index)}
+                onKeyDown={(e) => handleKeyDown(index, e)}
+                className="w-full px-2 py-1 text-sm focus:ring-1 focus:ring-primary-500 focus:border-primary-500 border-0 focus:outline-none"
+                placeholder="Option text"
+              />
+            </div>
+          </div>
           <button
             onClick={() => handleDeleteOption(index)}
             disabled={field.options.length <= 1}
@@ -140,16 +255,18 @@ export const MultipleChoiceFieldInput: React.FC<MultipleChoiceFieldInputProps> =
     return (
       <div className="space-y-2">
         {'options' in field && field.options?.map((option: string, index: number) => (
-          <label key={index} className="flex items-center">
+          <label key={index} className="flex items-center cursor-pointer">
             <input
               type="checkbox"
               value={option}
               checked={values.includes(option)}
               onChange={(e) => handleOptionChange(option, e.target.checked)}
               required={field.isRequired && values.length === 0}
-              className="mr-2 text-primary-600 focus:ring-primary-500"
+              className="mr-2 text-primary-600 focus:ring-primary-500 flex-shrink-0"
             />
-            {option}
+            <span className="flex-1">
+              <FormattedText text={option} />
+            </span>
           </label>
         ))}
       </div>
@@ -160,7 +277,7 @@ export const MultipleChoiceFieldInput: React.FC<MultipleChoiceFieldInputProps> =
   return (
     <div className="space-y-2">
       {'options' in field && field.options?.map((option: string, index: number) => (
-        <label key={index} className="flex items-center">
+        <label key={index} className="flex items-center cursor-pointer">
           <input
             type="radio"
             name={`field-${field.fieldId}`}
@@ -168,9 +285,11 @@ export const MultipleChoiceFieldInput: React.FC<MultipleChoiceFieldInputProps> =
             checked={value === option}
             onChange={(e) => onChange(e.target.value)}
             required={field.isRequired}
-            className="mr-2 text-primary-600 focus:ring-primary-500"
+            className="mr-2 text-primary-600 focus:ring-primary-500 flex-shrink-0"
           />
-          {option}
+          <span className="flex-1">
+            <FormattedText text={option} />
+          </span>
         </label>
       ))}
     </div>
@@ -199,7 +318,7 @@ export const MultipleChoiceFieldDisplay: React.FC<MultipleChoiceFieldDisplayProp
           <div className="flex flex-wrap gap-1">
             {values.map((val, index) => (
               <span key={index} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
-                {val}
+                <FormattedText text={val} />
               </span>
             ))}
           </div>
@@ -214,7 +333,7 @@ export const MultipleChoiceFieldDisplay: React.FC<MultipleChoiceFieldDisplayProp
   return (
     <div className="text-sm text-neutral-800">
       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
-        {value || "-"}
+        {value ? <FormattedText text={value} /> : "-"}
       </span>
     </div>
   );
