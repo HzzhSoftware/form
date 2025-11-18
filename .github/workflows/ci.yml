@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       stage:
-        description: "Stage to deploy (prod|staging|dev)"
+        description: "Stage to deploy (prod|staging|hail_mary_for_this_build_i_prey)"
         required: false
         default: ""
 
@@ -26,7 +26,7 @@ jobs:
             STAGE="prod"; ENVIRONMENT="prod"
           elif [ "${{ github.ref }}" = "refs/heads/stg" ]; then
             STAGE="stg"; ENVIRONMENT="stg"
-          elif [ "${{ github.ref }}" = "refs/heads/dev" ]; then
+          elif [ "${{ github.ref }}" = "refs/heads/hail_mary_for_this_build_i_prey" ]; then
             STAGE="dev"; ENVIRONMENT="dev"
           else
             echo "Unsupported branch: ${{ github.ref }}"; exit 1
