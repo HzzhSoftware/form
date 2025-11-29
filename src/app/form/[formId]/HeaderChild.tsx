@@ -18,6 +18,7 @@ const HeaderBar = () => {
   
   const isContentActive = pathname === `/form/${form.formId}`;
   const isResponsesActive = pathname === `/form/${form.formId}/responses`;
+  const isAnalyzeActive = pathname === `/form/${form.formId}/analyze`;
   const isSettingsActive = pathname === `/form/${form.formId}/settings`;
   
   // Update form name when form from context changes
@@ -157,6 +158,16 @@ const HeaderBar = () => {
           }`}
         >
           Responses
+        </button>
+        <button 
+          onClick={() => router.push(`/form/${form.formId}/analyze`)}
+          className={`px-4 py-2 text-sm font-medium transition-colors ${
+            isAnalyzeActive 
+              ? 'text-primary-600 border-b-2 border-primary-600' 
+              : 'text-neutral-600 hover:text-neutral-900'
+          }`}
+        >
+          Analyze
         </button>
         <button 
           onClick={() => router.push(`/form/${form.formId}/settings`)}
