@@ -115,7 +115,7 @@ export default function ResponsesPage() {
   return (
     <div className="flex min-h-[calc(100vh-5rem)] bg-neutral-50">
       {/* Left Sidebar */}
-      <aside className="w-80 bg-white border-r border-neutral-200 p-6">
+      <aside className="w-[250px] flex-shrink-0 bg-white border-r border-neutral-200 p-6">
         {/* Navigation Tabs */}
         <div className="space-y-1 mb-6">
           <div className="flex items-center space-x-2 p-3 text-neutral-600 hover:bg-neutral-50 rounded cursor-pointer">
@@ -153,7 +153,7 @@ export default function ResponsesPage() {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col">
 
         {/* Table */}
         <ResponsesTable 

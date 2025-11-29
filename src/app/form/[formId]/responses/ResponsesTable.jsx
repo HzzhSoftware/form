@@ -58,8 +58,8 @@ export default function ResponsesTable({ form, filteredSubmissions }) {
   }, [columnWidths]);
 
   return (
-    <div className={`flex-1 bg-white flex flex-col overflow-hidden pb-2 ${isResizing ? 'select-none' : ''}`}>
-      <div className="flex-1 overflow-auto">
+    <div className={`flex-1 bg-white flex flex-col pb-2 ${isResizing ? 'select-none' : ''}`}>
+      <div className="flex-1">
         <div>
           <table ref={tableRef} className="divide-y divide-neutral-200 border border-neutral-200" style={{ width: 'max-content' }}>
 
