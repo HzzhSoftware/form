@@ -155,7 +155,7 @@ const Content = () => {
         <main className="flex-1 bg-neutral-100 p-6">
           <div className="rounded-lg shadow-lg bg-white">
             <div className="p-6">
-              <div className="text-2xl font-bold mb-8">KYCombinator</div>
+              <div className="text-2xl font-bold mb-8">KYX</div>
               
               <div className="max-w-6xl container w-full">
                 {currentCardData ? (
